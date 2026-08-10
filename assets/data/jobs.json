@@ -1,0 +1,75 @@
+{
+  "jobs": [
+    {
+      "id": "job-001",
+      "title": "PT Aide",
+      "type": "Full-time",
+      "qualifications": [
+        "NC-II in Health Care Holder",
+        "Good organizational and coordination skills",
+        "With or Without Experience"
+      ],
+      "benefits": [
+        "Competitive salary and comprehensive benefits package",
+        "A supportive, collaborative, and people-friendly work environment",
+        "Opportunities for professional development and continuous learning"
+      ],
+      "active": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "job-002",
+      "title": "Warehouse Staff",
+      "type": "Full-time",
+      "qualifications": [
+        "Graduate or undergraduate of any business course",
+        "With experience of warehousing",
+        "With initiative, must know how to use basic computer",
+        "Strong personality, hardworking, honest and trustworthy",
+        "Preferably Male"
+      ],
+      "benefits": [
+        "Competitive salary and comprehensive benefits package",
+        "A supportive, collaborative, and people-friendly work environment",
+        "Opportunities for professional development and continuous learning"
+      ],
+      "active": true,
+      "sortOrder": 2
+    },
+    {
+      "id": "job-003",
+      "title": "Staff Nurse",
+      "type": "Full-time",
+      "qualifications": [
+        "Graduate of Bachelor of Science in Nursing (BSN)",
+        "With or Without Experience",
+        "Must be a licensed Registered Nurse (RN)",
+        "Must be knowledgeable, competent, and has a positive attitude"
+      ],
+      "benefits": [
+        "Competitive salary and comprehensive benefits package",
+        "A supportive, collaborative, and people-friendly work environment",
+        "Opportunities for professional development and continuous learning"
+      ],
+      "active": true,
+      "sortOrder": 3
+    },
+    {
+      "id": "job-004",
+      "title": "Aircon Technician",
+      "type": "Full-time",
+      "qualifications": [
+        "Graduate of Air Conditioning Technician Course or High School Graduate",
+        "At least one (1) year related experience",
+        "Preferably with TESDA Certificate of Training"
+      ],
+      "benefits": [
+        "Competitive salary and comprehensive benefits package",
+        "A supportive, collaborative, and people-friendly work environment",
+        "Opportunities for professional development and continuous learning"
+      ],
+      "active": true,
+      "sortOrder": 4
+    }
+  ]
+}

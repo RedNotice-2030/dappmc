@@ -1,0 +1,942 @@
+
+@font-face {
+  font-family: "Copperplate Gothic";
+  src: url("../fonts/CopperplateCC-Heavy.ttf") format("truetype"),
+       url("../fonts/OPTICopperplate-Heavy.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body.modal-open {
+  padding-right: 0 !important;
+}
+
+.modal-backdrop {
+  z-index: 1050;
+}
+
+.modal {
+  z-index: 1055;
+}
+
+.modal-backdrop.show {
+  opacity: 0.5;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+/* Base class for scroll-animated elements */
+.scroll-animate {
+  opacity: 0;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  will-change: opacity, transform;
+}
+
+/* Initial hidden directions */
+.animate-bottom {
+  transform: translateY(40px);
+}
+
+.animate-left {
+  transform: translateX(-50px);
+}
+
+.animate-right {
+  transform: translateX(50px);
+}
+
+.animate-fade {
+  transform: translateY(0); /* Plain opacity fade */
+}
+
+/* State when scrolled into view */
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.logo-nav {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  width: 40px;
+  height: auto;
+}
+.sitename {
+  font-family: "Copperplate Gothic", sans-serif;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #c6b350;
+  margin-left: 10px;
+}
+.company {
+  font-family: "Copperplate Gothic", sans-serif;
+  color: #fdfdfd;
+}
+:root {
+  --bs-primary-rgb: 13, 110, 253;
+  --bs-success-rgb: 25, 135, 84;
+}
+
+.feature-cards {
+  margin-top: -60px;
+}
+.service-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.motto {
+  font-family: "Copperplate Gothic", sans-serif;
+  color: #ffda22;
+  font-size: 1.2rem;
+  font-weight: bold;
+  /* Dark outline matching the site's navy for legibility and style */
+  /* -webkit-text-stroke: 1px #002c6d;  */
+  /* text-stroke: 1px #002c6d; */
+  /* Fallback multi-directional shadows to simulate an outline */
+  /* text-shadow:
+    1px 1px 0 #002c6d,
+    -1px -1px 0 #002c6d,
+    -1px 1px 0 #002c6d,
+    1px -1px 0 #002c6d,
+    0 1px 0 #002c6d,
+    0 -1px 0 #002c6d; */
+}
+.contact-btn {
+  background-color: #fdfdfd;
+  color: #c6b350;
+  font-weight: bold;
+}
+.navbar{
+  background-color: #fdfdfd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #c6b350;
+}
+.navbar .nav-link.active,
+.navbar .nav-link.active:hover,
+.navbar .nav-link.active:focus {
+  color: #002c6d !important;
+  font-weight: 700;
+  border-bottom: 2px solid #c6b350;
+}
+.site-header {
+  position: relative;
+  z-index: 1030;
+}
+.site-header.sticky-active {
+  position: sticky;
+  top: 0;
+}
+.foot-font{
+  font-family: "Copperplate Gothic", sans-serif;
+  color:#c6b350;
+}
+
+.hero-section {
+  border-bottom: 2px solid #c6b350;
+  background: #002c6d; /* solid dark navy fallback — shows immediately, no image, no gradient */
+  padding: 100px 0 140px;
+  transition: background 0.6s ease;
+}
+
+.hero-section.bg-loaded {
+  background:
+    linear-gradient(rgba(0, 76, 189, 0.349), rgba(0, 102, 255, 0.479)),
+    url("../images/dappmc-bgc.png") center/cover no-repeat;
+}
+
+.info-text{
+  margin-top: 50px;
+  font-family: "Copperplate Gothic", sans-serif;
+}
+/* --- Hero 3D Spinning Icon --- */
+@keyframes spin3d {
+  0% {
+    transform: perspective(800px) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(800px) rotateY(360deg);
+  }
+}
+
+.hero-3d-icon-wrapper {
+  display: inline-block;
+  padding: 10px;
+}
+
+/* Icon variant */
+.hero-3d-icon {
+  display: inline-block;
+  font-size: 8rem; /* Big icon size on desktop */
+  color: #c6b350;  /* Gold Accent */
+  animation: spin3d 6s linear infinite;
+  /* Extruded 3D depth shadows */
+  filter:
+    drop-shadow(1px 1px 0px #9e8d38)
+    drop-shadow(2px 2px 0px #80722a)
+    drop-shadow(3px 3px 0px #61561f)
+    drop-shadow(5px 8px 12px rgba(0, 0, 0, 0.4));
+}
+
+/* Image logo variant (if using an img tag instead of Bootstrap icon) */
+.hero-3d-icon-img {
+  max-width: 180px;
+  height: auto;
+  animation: spin3d 6s linear infinite;
+  filter: drop-shadow(4px 8px 10px rgba(0, 0, 0, 0.4));
+}
+
+/* Responsive adjustment for portrait / narrow screens */
+@media (max-width: 991.88px) {
+  .hero-3d-icon {
+    font-size: 5.5rem; /* Slightly smaller icon on mobile */
+  }
+  .hero-3d-icon-img {
+    max-width: 120px;
+  }
+}
+
+/* --- Fluid Banner Carousel --- */
+.hero-carousel-section {
+  border-top: 3px solid #c6b350;
+  border-bottom: 3px solid #c6b350;
+}
+
+/* Container for relative positioning of overlay text */
+.carousel-slide-container {
+  position: relative;
+  width: 100%;
+}
+
+.carousel-img {
+  width: 100%;
+  aspect-ratio: 12 / 4; /* Maintains the 3:1 widescreen proportion */
+  object-fit: cover;    /* Prevents image distortion */
+  display: block;
+}
+
+/* Dark gradient overlay on top of the image for text readability */
+.carousel-slide-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background: rgba(0, 60, 255, 0.46); */
+  z-index: 1;
+}
+
+/* Caption positioned directly over the image */
+.carousel-caption-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  z-index: 2;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  color: #ffffff;
+}
+
+.text-gold-accent {
+  font-family: "Copperplate Gothic", sans-serif;
+  color: #c6b350;
+}
+
+/* Custom indicator dots styling */
+.carousel-indicators [data-bs-target] {
+  background-color: #c6b350;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .carousel-caption-content h5 {
+    font-size: 1rem;
+  }
+  .carousel-caption-content p {
+    font-size: 0.75rem;
+  }
+}
+
+/* --- Overlay & Caption Hover Transitions --- */
+
+/* 1. Smooth transition setup for overlay and text */
+.carousel-slide-container::before {
+  transition: opacity 0.4s ease, background-color 0.4s ease;
+}
+
+.carousel-caption-content {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* 2. Transparency on hover: reduces background dark overlay */
+.carousel-slide-container:hover::before {
+  opacity: 0.15; /* Adjust between 0 (fully clear image) and 1 (fully dark) */
+}
+
+/* 3. Text fade out on hover */
+.carousel-slide-container:hover .carousel-caption-content {
+  opacity: 0;
+  transform: translate(-50%, -45%); /* Subtle move up as it disappears */
+  pointer-events: none; /* Prevents hovering text area from blocking clicks */
+}
+
+/* --- Continuous HMO Marquee Slider --- */
+.marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  background: transparent;
+  padding: 10px 0;
+  /* Optional: soft fade effect on left and right edges */
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: scrollMarquee 35s linear infinite;
+}
+
+/* Pause marquee animation when user hovers over any logo */
+.marquee-wrapper:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-right: 24px;
+}
+
+.hmo-logo {
+  width: 130px;  /* Standard width container */
+  height: 80px;  /* Standard height container */
+  object-fit: contain; /* Keeps logo proportions intact without stretching */
+  padding: 8px 12px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hmo-logo:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* Keyframe animation for continuous smooth infinite scrolling */
+@keyframes scrollMarquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .hmo-logo {
+    width: 100px;
+    height: 70px;
+    padding: 6px 10px;
+  }
+  .marquee-track {
+    animation-duration: 25s;
+  }
+}
+
+/* Fade & Slide In Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-animate {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0; /* Hidden initially until animation plays */
+}
+
+/* Stagger delays for sequential entry */
+.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.delay-2 {
+  animation-delay: 0.4s;
+}
+
+.delay-3 {
+  animation-delay: 0.6s;
+}
+
+/* Promotional Banner Carousel Styles */
+.promo-img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain; /* Preserves graphic text readability without cropping */
+  background-color: #ffffff;
+}
+
+/* Optional: Slight hover scale effect on action cards */
+.quick-actions-section .rounded-3 {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Flip card styles for package cards */
+/* Flip card container */
+.flip-card {
+  perspective: 1200px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(.2,.9,.3,1);
+  transform-style: preserve-3d;
+}
+
+.flip-card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* Front face: normal flow, sets the natural height */
+.flip-card-front {
+  position: relative;
+  width: 100%;
+  backface-visibility: hidden;
+}
+
+/* Back face: matches front's height exactly, scrolls only if content overflows */
+.flip-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+}
+
+/* Image sizing — update aspect-ratio once you confirm your actual image dimensions */
+.flip-card .card-img-top {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card body */
+.flip-card .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.flip-card-front .card-body .btn {
+  margin-top: auto;
+}
+/* Card appearance tweaks */
+.flip-card .card {
+  border-radius: 8px;
+}
+.flip-card .card-img-top {
+  object-fit: contain;
+  height: 520px;
+  background-color: #f8f9fa; /* fills empty space if aspect ratio doesn't match */
+}
+
+/* Stronger shadow for interactive cards */
+.card.shadow-sm {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card.shadow-sm:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.16);
+}
+
+/* Back face styling */
+.flip-card-back .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Buttons on flip cards: Learn More and Back */
+.btn-flip {
+  background-color: #002c6d;
+  border-color: #002c6d;
+  color: #ffffff;
+  transition: background-color 0.15s ease, transform 0.12s ease;
+}
+.btn-flip:hover,
+.btn-flip:focus {
+  background-color: #001f52;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.btn-close-back {
+  background-color: #002c6d;
+  border-color: #002c6d;
+  color: #ffffff;
+}
+.btn-close-back:hover,
+.btn-close-back:focus {
+  background-color: #001f52;
+  color: #ffffff;
+}
+
+/* Make the back button stick to the bottom of the back face */
+.flip-card-back .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.flip-card-back .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+.flip-card-back .card-body > .mt-3 {
+  margin-top: auto !important;
+  margin-bottom: 0 !important;
+}
+
+
+/* Careers page cards styling */
+.careers-page .card {
+  background-color: #F0F0F0;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+}
+
+/* Sharp modal corners */
+.modal-content,
+.modal-header,
+.modal-body,
+.modal-footer {
+  border-radius: 0 !important;
+}
+
+.careers-page .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.16);
+}
+
+.careers-page .btn-outline-primary {
+  background-color: #002c6d;
+  border-color: #002c6d;
+  color: #ffffff;
+}
+
+.careers-page .btn-outline-primary:hover,
+.careers-page .btn-outline-primary:focus,
+.careers-page .btn-outline-primary:active {
+  background-color: #001f4a;
+  border-color: #001f4a;
+  color: #ffffff;
+}
+
+.quick-actions-section .rounded-3:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.history-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-height: 480px;
+  filter: brightness(0.85) contrast(1.05);
+  display: block;
+}
+
+/* Timeline/Milestone spacing */
+.history-list li {
+  line-height: 1.6;
+  color: #555555;
+}
+
+/* Text wrapping around floating image */
+.history-img-wrapper {
+  float: left;
+  width: 48%; /* Adjust image width relative to text */
+  margin-right: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Clear fix to ensure content below doesn't get messed up */
+.history-content::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* On mobile screens, stack them normally */
+@media (max-width: 768px) {
+  .history-img-wrapper {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+.about-title,.vision-mission-title,.core-values-title,.policy-title, .careers-title, .faqs-title, .news-title, .health-advisories-title, .events-title, .drives-title, .covid-title, .specialties-title, .diagnostic-title, .emergency-title, .team-title {
+  font-family: "Copperplate Gothic", sans-serif;
+  color: #002c6d;
+}
+
+/* Gold Text Outline */
+.gold-outline-heading {
+  font-family: "Copperplate Gothic", sans-serif;
+  text-shadow:
+    -1px -1px 0 #c6b350,
+     1px -1px 0 #c6b350,
+    -1px  1px 0 #c6b350,
+     1px  1px 0 #c6b350;
+}
+
+/* Sticky Sidebar styling */
+.sticky-sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 90px; /* Adjust based on navbar height */
+  z-index: 10;
+}
+
+.doctor-filter-list .list-group-item {
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.doctor-filter-list .list-group-item.active {
+  background-color: #f0f4f9;
+  color: #002c6d;
+  font-weight: 700;
+  border-left-color: #002c6d;
+  border-right: none;
+}
+
+/* Card hover animation */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.doctor-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e9ecef !important;
+}
+
+.doctor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.5rem 1.2rem rgba(0, 44, 109, 0.12) !important;
+}
+
+/* Expandable schedule container transitions */
+.schedule-details {
+  transition: all 0.3s ease-in-out;
+}
+
+.doctor-filter-list {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+/* Custom Specialty Badge Colors */
+.bg-teal-subtle { background-color: #cafff4 !important; }
+.text-teal { color: #0d9488 !important; }
+
+.bg-indigo-subtle { background-color: #c2d0ff !important; }
+.text-indigo { color: #4f46e5 !important; }
+
+.bg-cyan-subtle { background-color: #ddfdff !important; }
+.text-cyan { color: #0891b2 !important; }
+
+.bg-orange-subtle { background-color: #ffedd7 !important; }
+.text-orange { color: #ea580c !important; }
+
+.bg-blue-subtle { background-color: #d8e9ff !important; }
+.text-blue { color: #2563eb !important; }
+
+.bg-purple-subtle { background-color: #ead5ff !important; }
+.text-purple { color: #9333ea !important; }
+
+.bg-red-subtle { background-color: #ffd8d8 !important; }
+.text-red { color: #dc2626 !important; }
+
+.bg-pink-subtle { background-color: #ffe3f2 !important; }
+.text-pink { color: #db2777 !important; }
+
+.bg-violet-subtle { background-color: #e7e2ff !important; }
+.text-violet { color: #7c3aed !important; }
+
+.doctor-image{
+  max-width: 120px;
+  max-height: 120px;
+}
+
+/* Department Head Cards Styling */
+.dept-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.dept-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 44, 109, 0.12) !important;
+  border-color: #c6b350;
+}
+
+.dept-card-header-accent {
+  height: 6px;
+  background: linear-gradient(90deg, #002c6d 0%, #c6b350 100%);
+}
+
+.dept-avatar-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #f0f4f9;
+  border: 3px solid #c6b350;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: 2.2rem;
+  color: #002c6d;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.dept-filter-btn {
+  border-radius: 20px;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.25s ease;
+}
+
+.dept-filter-btn.active {
+  background-color: #002c6d !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 10px rgba(0, 44, 109, 0.25);
+}
+
+.executive-card-highlight {
+  border: 2px solid #c6b350 !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfbf4 100%);
+}
+
+/* ===== FAQ Page Styles ===== */
+/* 1 */
+.faq-intro {
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  color: #555555;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.faq-search-container {
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+}
+
+.faq-search-container .input-group {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.faq-search-container .form-control:focus {
+  border-color: #c6b350;
+  box-shadow: 0 0 0 0.2rem rgba(198, 179, 80, 0.25);
+}
+
+.faq-search-container .btn-primary {
+  background-color: #002c6d;
+  border-color: #002c6d;
+}
+
+.faq-search-container .btn-primary:hover {
+  background-color: #001f52;
+  border-color: #001f52;
+}
+
+.faq-no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6c757d;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.faq-no-results i {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+  color: #c6b350;
+}
+
+.faq-category {
+  margin-bottom: 2.5rem;
+}
+
+.faq-category-title {
+  color: #002c6d;
+  font-family: "Copperplate Gothic", sans-serif;
+  border-bottom: 2px solid #c6b350;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.faq-accordion-button {
+  background-color: #f8f9fa !important;
+  color: #002c6d !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
+.faq-accordion-button::after {
+  filter: brightness(0) saturate(100%) invert(13%) sepia(95%) saturate(2335%) hue-rotate(212deg) brightness(92%) contrast(101%) !important;
+}
+
+.faq-accordion-button:not(.collapsed) {
+  background-color: #002c6d !important;
+  color: #ffffff !important;
+}
+
+.faq-accordion-button:not(.collapsed)::after {
+  filter: brightness(0) invert(1) !important;
+}
+
+.faq-accordion-button:focus {
+  box-shadow: none !important;
+  border-color: #c6b350 !important;
+}
+
+.faq-accordion-button:hover {
+  background-color: #e9ecef !important;
+  color: #002c6d !important;
+}
+
+.faq-accordion-button:not(.collapsed):hover {
+  background-color: #001f52 !important;
+  color: #ffffff !important;
+}
+
+.faq-answer {
+  color: #555555;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.faq-answer ul {
+  margin-bottom: 0;
+  padding-left: 1.2rem;
+}
+
+.faq-answer ul li {
+  margin-bottom: 0.3rem;
+}
+
+.faq-answer a {
+  color: #002c6d;
+  font-weight: 600;
+}
+
+.faq-answer a:hover {
+  color: #c6b350;
+}
+
+.faq-accordion-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease;
+}
+
+.faq-accordion-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.faq-cta-section {
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #002c6d 0%, #001f52 100%);
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+
+.faq-cta-section h4 {
+  color: #ffffff;
+  font-family: "Copperplate Gothic", sans-serif;
+}
+
+.faq-cta-section p {
+  color: #c6b350;
+  margin-bottom: 1.5rem;
+}
+
+.faq-cta-section .btn {
+  background-color: #c6b350;
+  border-color: #c6b350;
+  color: #002c6d;
+  font-weight: 600;
+}
+
+.faq-cta-section .btn:hover {
+  background-color: #b3a046;
+  border-color: #b3a046;
+}
+
+
