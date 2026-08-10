@@ -20,4 +20,8 @@ RUN echo '<Directory /var/www/html/public>\n\
     Require all granted\n\
 </Directory>' >> /etc/apache2/apache2.conf
 
+# Fix permissions so CI4 can write to cache/logs/session
+RUN chown -R www-data:www-data /var/www/html/writable \
+    && chmod -R 775 /var/www/html/writable
+
 WORKDIR /var/www/html
