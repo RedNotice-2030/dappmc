@@ -1,0 +1,23 @@
+CRITICAL - 2026-08-08 19:31:37 --> ParseError: syntax error, unexpected token "<", expecting end of file
+[Method: CLI, Route: routes]
+in APPPATH\Config\Routes.php on line 18.
+ 1 VENDORPATH\codeigniter4\framework\system\CLI\Console.php(41): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 2 SYSTEMPATH\Boot.php(444): CodeIgniter\CLI\Console->run()
+ 3 SYSTEMPATH\Boot.php(166): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+ 4 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+CRITICAL - 2026-08-08 19:32:17 --> ParseError: syntax error, unexpected token "<", expecting end of file
+[Method: CLI, Route: routes]
+in APPPATH\Controllers\Pages.php on line 57.
+ 1 VENDORPATH\composer\ClassLoader.php(427): Composer\Autoload\{closure}('C:\\xampp\\htdocs\\dappmc\\vendor\\composer/../../app\\Controllers\\Pages.php')
+ 2 [internal function]: Composer\Autoload\ClassLoader->loadClass('App\\Controllers\\Pages')
+ 3 VENDORPATH\codeigniter4\framework\system\Router\Router.php(790): class_exists('\\App\\Controllers\\Pages')
+ 4 VENDORPATH\codeigniter4\framework\system\Router\Router.php(228): CodeIgniter\Router\Router->processRouteAttributes()
+ 5 VENDORPATH\codeigniter4\framework\system\Commands\Utilities\Routes\FilterFinder.php(41): CodeIgniter\Router\Router->handle('/')
+ 6 VENDORPATH\codeigniter4\framework\system\Commands\Utilities\Routes\FilterFinder.php(57): CodeIgniter\Commands\Utilities\Routes\FilterFinder->getRouteFilters('/')
+ 7 VENDORPATH\codeigniter4\framework\system\Commands\Utilities\Routes\FilterCollector.php(78): CodeIgniter\Commands\Utilities\Routes\FilterFinder->find('/')
+ 8 VENDORPATH\codeigniter4\framework\system\Commands\Utilities\Routes.php(120): CodeIgniter\Commands\Utilities\Routes\FilterCollector->get('GET', '/')
+ 9 VENDORPATH\codeigniter4\framework\system\CLI\Commands.php(72): CodeIgniter\Commands\Utilities\Routes->run([])
+10 VENDORPATH\codeigniter4\framework\system\CLI\Console.php(47): CodeIgniter\CLI\Commands->run('routes', [])
+11 SYSTEMPATH\Boot.php(444): CodeIgniter\CLI\Console->run()
+12 SYSTEMPATH\Boot.php(166): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+13 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))

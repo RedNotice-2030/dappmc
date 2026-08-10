@@ -1,0 +1,188 @@
+{
+  "doctors": [
+    {
+      "id": "doc-001",
+      "name": "Dr. Juan Dela Cruz",
+      "specialization": "cardiology",
+      "specializationLabel": "Cardiology",
+      "location": "Room 204, Heart Station",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Mon & Wed", "time": "9:00 AM – 1:00 PM" },
+        { "days": "Friday", "time": "2:00 PM – 5:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "doc-002",
+      "name": "Dr. Maria Santos",
+      "specialization": "pediatrics",
+      "specializationLabel": "Pediatrics",
+      "location": "Room 102, Outpatient Dept.",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Tue & Thu", "time": "10:00 AM – 3:00 PM" },
+        { "days": "Saturday", "time": "8:00 AM – 12:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 2
+    },
+    {
+      "id": "doc-003",
+      "name": "Dr. Arthur Pendragon Jr.",
+      "specialization": "radiology",
+      "specializationLabel": "Radiology",
+      "location": "CT Scan & Imaging Center",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Mon – Sat", "time": "8:00 AM – 5:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 3
+    },
+    {
+      "id": "doc-004",
+      "name": "Dr. Roberto Reyes",
+      "specialization": "internal-medicine",
+      "specializationLabel": "Internal Medicine",
+      "location": "Room 301, Main Building",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Mon, Wed, Fri", "time": "1:00 PM – 5:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 4
+    },
+    {
+      "id": "doc-005",
+      "name": "Dr. Elena Ramos",
+      "specialization": "physiology",
+      "specializationLabel": "Physiology",
+      "location": "Physical Medicine & Rehab",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Tue & Thu", "time": "8:00 AM – 12:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 5
+    },
+    {
+      "id": "doc-006",
+      "name": "Dr. Angela Fernandez",
+      "specialization": "anesthesiology",
+      "specializationLabel": "Anesthesiology",
+      "location": "Operating Room Complex",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Mon – Fri", "time": "Surgical Schedule" }
+      ],
+      "active": true,
+      "sortOrder": 6
+    },
+    {
+      "id": "doc-007",
+      "name": "Dr. Victor Mendoza",
+      "specialization": "nephrology",
+      "specializationLabel": "Nephrology",
+      "location": "Dialysis Unit & Room 208",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Mon, Wed, Sat", "time": "8:00 AM – 2:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 7
+    },
+    {
+      "id": "doc-008",
+      "name": "Dr. Carlos Villanueva",
+      "specialization": "urology",
+      "specializationLabel": "Urology",
+      "location": "Room 210, Medical Arts Bldg.",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Tue & Fri", "time": "1:00 PM – 4:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 8
+    },
+    {
+      "id": "doc-009",
+      "name": "Dr. Fernando Aquino",
+      "specialization": "orthopedics",
+      "specializationLabel": "Orthopedics",
+      "location": "Room 105, Bone & Joint Clinic",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Mon & Thu", "time": "10:00 AM – 3:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 9
+    },
+    {
+      "id": "doc-010",
+      "name": "Dr. Patricia Alonzo",
+      "specialization": "pulmonology",
+      "specializationLabel": "Pulmonology",
+      "location": "Pulmonary Care Unit",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Wed & Sat", "time": "9:00 AM – 1:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 10
+    },
+    {
+      "id": "doc-011",
+      "name": "Dr. Manuel Soriano",
+      "specialization": "ent",
+      "specializationLabel": "ENT (Otolaryngology)",
+      "location": "Room 304, ENT Center",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Tue & Fri", "time": "9:00 AM – 12:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 11
+    },
+    {
+      "id": "doc-012",
+      "name": "Dr. Ricardo Castillo",
+      "specialization": "general-surgery",
+      "specializationLabel": "General Surgery",
+      "location": "Room 201, Surgical Suite",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Mon, Wed, Fri", "time": "2:00 PM – 5:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 12
+    },
+    {
+      "id": "doc-013",
+      "name": "Dr. Sofia Gutierrez",
+      "specialization": "ob-gynecology",
+      "specializationLabel": "OB-Gynecology",
+      "location": "Room 108, Women's Health",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Mon – Sat", "time": "9:00 AM – 3:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 13
+    },
+    {
+      "id": "doc-014",
+      "name": "Dr. Eduardo Morales",
+      "specialization": "neurology",
+      "specializationLabel": "Neurology",
+      "location": "Room 302, Neuro Clinic",
+      "image": "assets/images/doctors/DAPPMC FINAL LOGO_1.png",
+      "schedule": [
+        { "days": "Thu & Sat", "time": "1:00 PM – 4:00 PM" }
+      ],
+      "active": true,
+      "sortOrder": 14
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "packages": [
+    {
+      "id": "pkg-001",
+      "name": "Women's Health Package",
+      "shortDescription": "Includes Lipid Profile, Urinalysis, Pap Smear, 12-Lead ECG, and Breast Ultrasound.",
+      "fullDescription": "Avail our August Women's Health promo package valid until August 31, 2026 only.",
+      "image": "assets/images/packages/whp1.jpg",
+      "promoBadge": "20% OFF",
+      "promoDetails": "Promo valid Aug 1–31, 2026 · Cash transactions only",
+      "operatingHours": "8:00am to 5:00pm, Mondays to Fridays.",
+      "availmentSteps": [
+        "Contact DAPPMC Information landline at 228-2202 or mobile number 09499946474.",
+        "The information staff will assist your schedule and book accordingly.",
+        "The information staff will provide preparation guidelines and ask for the PWD/Senior Citizen ID Number if the client is a PWD/Senior Citizen."
+      ],
+      "paymentOptions": [
+        "Pay in cash",
+        "Pay online via online banking payment schemes",
+        "Pay through GCash or PayMaya",
+        "Email the proof of payment to dchi.accounting@yahoo.com"
+      ],
+      "active": true,
+      "sortOrder": 1
+    },
+    {
+      "id": "pkg-002",
+      "name": "Thyroid Health Package",
+      "shortDescription": "Includes Neck Ultrasound, TSH, T3, and T4.",
+      "fullDescription": "Avail our August Thyroid Health promo package valid until August 31, 2026 only.",
+      "image": "assets/images/packages/thp1.jpg",
+      "promoBadge": "20% OFF",
+      "promoDetails": "Promo valid Aug 1–31, 2026 · Cash transactions only",
+      "operatingHours": "8:00am to 5:00pm, Mondays to Fridays.",
+      "availmentSteps": [
+        "Contact DAPPMC Information landline at 228-2202 or mobile number 09499946474.",
+        "The information staff will assist your schedule and book accordingly.",
+        "The information staff will provide preparation guidelines and ask for the PWD/Senior Citizen ID Number if the client is a PWD/Senior Citizen."
+      ],
+      "paymentOptions": [
+        "Pay in cash",
+        "Pay online via online banking payment schemes",
+        "Pay through GCash or PayMaya",
+        "Email the proof of payment to dchi.accounting@yahoo.com"
+      ],
+      "active": true,
+      "sortOrder": 2
+    },
+    {
+      "id": "pkg-003",
+      "name": "Prostate Cancer Awareness Month",
+      "shortDescription": "Package A: Includes Prostate Specific Antigen (PSA), Ultrasound of Prostate. Package B: Includes Prostate Specific Antigen (PSA), Ultrasound of KUB & Prostate",
+      "fullDescription": "Avail our August promo package in celebration of Prostate Cancer Awareness Month valid until August 31, 2026 only.",
+      "image": "assets/images/packages/pcam1.jpg",
+      "promoBadge": "20% OFF",
+      "promoDetails": "Promo valid Aug 1–31, 2026 · Cash transactions only",
+      "operatingHours": "8:00am to 5:00pm, Mondays to Fridays.",
+      "availmentSteps": [
+        "Contact DAPPMC Information landline at 228-2202 or mobile number 09499946474.",
+        "The information staff will assist your schedule and book accordingly.",
+        "The information staff will provide preparation guidelines and ask for the PWD/Senior Citizen ID Number if the client is a PWD/Senior Citizen."
+      ],
+      "paymentOptions": [
+        "Pay in cash",
+        "Pay online via online banking payment schemes",
+        "Pay through GCash or PayMaya",
+        "Email the proof of payment to dchi.accounting@yahoo.com"
+      ],
+      "active": true,
+      "sortOrder": 3
+    }
+  ]
+}
