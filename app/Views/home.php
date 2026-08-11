@@ -197,7 +197,7 @@
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card border-0 shadow-sm h-100 scroll-animate animate-fade">
+              <div class="card border-0 shadow-sm h-100 scroll-animate animate-bottom">
                 <div class="service-image">
                   <img src="<?= base_url('assets/images/services/Heart Station.jpg') ?>" alt="Heart Station" />
                 </div>
@@ -242,7 +242,7 @@
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card border-0 shadow-sm h-100 scroll-animate animate-fade">
+              <div class="card border-0 shadow-sm h-100 scroll-animate animate-bottom">
                 <div class="service-image">
                   <img src="<?= base_url('assets/images/services/Facilities.JPG') ?>" alt="Services and Facilities" />
                 </div>
