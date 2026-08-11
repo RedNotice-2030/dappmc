@@ -480,6 +480,7 @@ footer {
 /* Card body */
 .flip-card .card-body {
   display: flex;
+  aspect-ratio: 4.16 / auto;
   flex-direction: column;
 }
 
@@ -493,6 +494,7 @@ footer {
 .flip-card .card-img-top {
   object-fit: contain;
   height: 520px;
+  width: 416px;
   background-color: #f8f9fa; /* fills empty space if aspect ratio doesn't match */
 }
 
