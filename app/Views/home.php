@@ -214,7 +214,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card border-0 shadow-sm h-100 scroll-animate animate-right">
                 <div class="service-image">
-                  <img src="<?= base_url('assets/images/services/pulmo.jpg') ?>" alt="Pulmonary Services" />
+                  <img src="<?= base_url('assets/images/services/Pulmonary.jpg') ?>" alt="Pulmonary Services" />
                 </div>
                 <div class="card-body p-4 text-center">
                   <h5 class="fw-bold">Pulmonary Services</h5>
