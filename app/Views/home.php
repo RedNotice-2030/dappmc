@@ -183,10 +183,8 @@
           <div class="row g-4">
             <div class="col-md-6 col-lg-4">
               <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-left">
-                <div
-                  class="service-icon bg-primary-subtle text-primary fs-2 mx-auto mb-3"
-                >
-                  <i class="bi bi-droplet-half" style="color: #c6b350;"></i>
+                <div class="service-icon mx-auto mb-3">
+                  <img src="<?= base_url('assets/images/services/Laboratory.JPG') ?>" alt="Laboratory" />
                 </div>
                 <h5 class="fw-bold">Laboratory</h5>
                 <p class="text-muted small">
@@ -198,10 +196,8 @@
             </div>
             <div class="col-md-6 col-lg-4">
               <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-fade">
-                <div
-                  class="service-icon bg-primary-subtle text-primary fs-2 mx-auto mb-3"
-                >
-                  <i class="bi bi-heart-pulse-fill" style="color: #c6b350;"></i>
+                <div class="service-icon mx-auto mb-3">
+                  <img src="<?= base_url('assets/images/services/Heart Station.jpg') ?>" alt="Heart Station" />
                 </div>
                 <h5 class="fw-bold">Heart Station</h5>
                 <p class="text-muted small">
@@ -213,10 +209,8 @@
             </div>
             <div class="col-md-6 col-lg-4">
               <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-right">
-                <div
-                  class="service-icon bg-primary-subtle text-primary fs-2 mx-auto mb-3"
-                >
-                  <i class="bi bi-lungs-fill" style="color: #c6b350;"></i>
+                <div class="service-icon mx-auto mb-3">
+                  <img src="<?= base_url('assets/images/ct-scan.png') ?>" alt="Pulmonary Services" />
                 </div>
                 <h5 class="fw-bold">Pulmonary Services</h5>
                 <p class="text-muted small">
@@ -228,10 +222,8 @@
             </div>
             <div class="col-md-6 col-lg-4">
               <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-left">
-                <div
-                  class="service-icon bg-primary-subtle text-primary fs-2 mx-auto mb-3"
-                >
-                  <i class="bi bi-person-walking" style="color: #c6b350;"></i>
+                <div class="service-icon mx-auto mb-3">
+                  <img src="<?= base_url('assets/images/services/Rehab.jpg') ?>" alt="Physical Medicine & Rehabilitation" />
                 </div>
                 <h5 class="fw-bold">Physical Medicine & Rehabilitation</h5>
                 <p class="text-muted small">
@@ -243,10 +235,8 @@
             </div>
             <div class="col-md-6 col-lg-4">
               <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-fade">
-                <div
-                  class="service-icon bg-primary-subtle text-primary fs-2 mx-auto mb-3"
-                >
-                  <i class="bi bi-building-add" style="color: #c6b350;"></i>
+                <div class="service-icon mx-auto mb-3">
+                  <img src="<?= base_url('assets/images/services/Facilities.JPG') ?>" alt="Services and Facilities" />
                 </div>
                 <h5 class="fw-bold">Services and Facilities</h5>
                 <p class="text-muted small">
@@ -257,10 +247,8 @@
             </div>
             <div class="col-md-6 col-lg-4">
               <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-right">
-                <div
-                  class="service-icon bg-primary-subtle text-primary fs-2 mx-auto mb-3"
-                >
-                  <i class="bi bi-hospital" style="color: #c6b350;"></i>
+                <div class="service-icon mx-auto mb-3">
+                  <img src="<?= base_url('assets/images/services/accommodations.jpg') ?>" alt="Accommodations" />
                 </div>
                 <h5 class="fw-bold">Accommodations</h5>
                 <p class="text-muted small">
