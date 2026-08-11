@@ -435,7 +435,7 @@ footer {
 /* Flip card container */
 .flip-card {
   perspective: 1200px;
-  aspect-ratio: 4.16 / 7.3;
+  aspect-ratio: 4.16 / auto;
 }
 
 .flip-card-inner {
