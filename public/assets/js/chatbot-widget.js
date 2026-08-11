@@ -133,7 +133,7 @@
   const css = `
   .cbw-bubble {
     position: fixed; bottom: 24px; ${side}: 24px; z-index: 999999;
-    width: 60px; height: 60px; border-radius: 50%;
+    width: 80px; height: 80px; border-radius: 50%;
     background: transparent; border: none;
     filter: drop-shadow(0 6px 14px rgba(0,0,0,0.25));
     cursor: pointer; display: flex; align-items: center; justify-content: center;
