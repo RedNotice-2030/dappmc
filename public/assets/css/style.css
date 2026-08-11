@@ -104,18 +104,17 @@ footer {
 .feature-cards {
   margin-top: -60px;
 }
-.service-icon {
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+#services .card {
   overflow: hidden;
-  border: 3px solid #c6b350;
 }
 
-.service-icon img {
+.service-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.service-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;

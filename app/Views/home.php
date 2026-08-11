@@ -182,80 +182,92 @@
           </div>
           <div class="row g-4">
             <div class="col-md-6 col-lg-4">
-              <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-left">
-                <div class="service-icon mx-auto mb-3">
+              <div class="card border-0 shadow-sm h-100 scroll-animate animate-left">
+                <div class="service-image">
                   <img src="<?= base_url('assets/images/services/Laboratory.JPG') ?>" alt="Laboratory" />
                 </div>
-                <h5 class="fw-bold">Laboratory</h5>
-                <p class="text-muted small">
-                  Our state-of-the-art laboratory provides fast and accurate
-                  results. We prioritize patient care and use advanced equipment
-                  to ensure quality services.
-                </p>
+                <div class="card-body p-4 text-center">
+                  <h5 class="fw-bold">Laboratory</h5>
+                  <p class="text-muted small">
+                    Our state-of-the-art laboratory provides fast and accurate
+                    results. We prioritize patient care and use advanced equipment
+                    to ensure quality services.
+                  </p>
+                </div>
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-fade">
-                <div class="service-icon mx-auto mb-3">
+              <div class="card border-0 shadow-sm h-100 scroll-animate animate-fade">
+                <div class="service-image">
                   <img src="<?= base_url('assets/images/services/Heart Station.jpg') ?>" alt="Heart Station" />
                 </div>
-                <h5 class="fw-bold">Heart Station</h5>
-                <p class="text-muted small">
-                  Offers specialized cardiovascular diagnostic tests, including
-                  ECGs and echocardiograms, to monitor and evaluate your heart
-                  health accurately.
-                </p>
+                <div class="card-body p-4 text-center">
+                  <h5 class="fw-bold">Heart Station</h5>
+                  <p class="text-muted small">
+                    Offers specialized cardiovascular diagnostic tests, including
+                    ECGs and echocardiograms, to monitor and evaluate your heart
+                    health accurately.
+                  </p>
+                </div>
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-right">
-                <div class="service-icon mx-auto mb-3">
+              <div class="card border-0 shadow-sm h-100 scroll-animate animate-right">
+                <div class="service-image">
                   <img src="<?= base_url('assets/images/ct-scan.png') ?>" alt="Pulmonary Services" />
                 </div>
-                <h5 class="fw-bold">Pulmonary Services</h5>
-                <p class="text-muted small">
-                  Delivers comprehensive respiratory care and diagnostic testing
-                  to help evaluate, treat, and manage lung and breathing
-                  conditions.
-                </p>
+                <div class="card-body p-4 text-center">
+                  <h5 class="fw-bold">Pulmonary Services</h5>
+                  <p class="text-muted small">
+                    Delivers comprehensive respiratory care and diagnostic testing
+                    to help evaluate, treat, and manage lung and breathing
+                    conditions.
+                  </p>
+                </div>
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-left">
-                <div class="service-icon mx-auto mb-3">
+              <div class="card border-0 shadow-sm h-100 scroll-animate animate-left">
+                <div class="service-image">
                   <img src="<?= base_url('assets/images/services/Rehab.jpg') ?>" alt="Physical Medicine & Rehabilitation" />
                 </div>
-                <h5 class="fw-bold">Physical Medicine & Rehabilitation</h5>
-                <p class="text-muted small">
-                  Dedicated to restoring mobility, strength, and function through
-                  personalized physical therapy and tailored rehabilitation
-                  programs.
-                </p>
+                <div class="card-body p-4 text-center">
+                  <h5 class="fw-bold">Physical Medicine & Rehabilitation</h5>
+                  <p class="text-muted small">
+                    Dedicated to restoring mobility, strength, and function through
+                    personalized physical therapy and tailored rehabilitation
+                    programs.
+                  </p>
+                </div>
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-fade">
-                <div class="service-icon mx-auto mb-3">
+              <div class="card border-0 shadow-sm h-100 scroll-animate animate-fade">
+                <div class="service-image">
                   <img src="<?= base_url('assets/images/services/Facilities.JPG') ?>" alt="Services and Facilities" />
                 </div>
-                <h5 class="fw-bold">Services and Facilities</h5>
-                <p class="text-muted small">
-                  Provides modern equipment, emergency care, and specialized
-                  medical units to ensure complete, high-quality patient support.
-                </p>
+                <div class="card-body p-4 text-center">
+                  <h5 class="fw-bold">Services and Facilities</h5>
+                  <p class="text-muted small">
+                    Provides modern equipment, emergency care, and specialized
+                    medical units to ensure complete, high-quality patient support.
+                  </p>
+                </div>
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card border-0 shadow-sm h-100 p-4 text-center scroll-animate animate-right">
-                <div class="service-icon mx-auto mb-3">
+              <div class="card border-0 shadow-sm h-100 scroll-animate animate-right">
+                <div class="service-image">
                   <img src="<?= base_url('assets/images/services/accommodations.jpg') ?>" alt="Accommodations" />
                 </div>
-                <h5 class="fw-bold">Accommodations</h5>
-                <p class="text-muted small">
-                  Offers comfortable, clean, and well-equipped patient rooms
-                  designed to provide a safe and peaceful environment for
-                  recovery.
-                </p>
+                <div class="card-body p-4 text-center">
+                  <h5 class="fw-bold">Accommodations</h5>
+                  <p class="text-muted small">
+                    Offers comfortable, clean, and well-equipped patient rooms
+                    designed to provide a safe and peaceful environment for
+                    recovery.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
