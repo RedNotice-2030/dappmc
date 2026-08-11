@@ -144,7 +144,7 @@ footer {
 .navbar .nav-link.active:focus {
   color: #002c6d !important;
   font-weight: 700;
-  border-bottom: 2px solid #c6b350;
+  /* border-bottom: 2px solid #c6b350; */
 }
 .site-header {
   position: relative;
