@@ -435,7 +435,7 @@ footer {
 /* Flip card container */
 .flip-card {
   perspective: 1200px;
-  aspect-ratio: 4.16 / auto;
+  aspect-ratio: 4.16 / 7.3;
 }
 
 .flip-card-inner {
@@ -493,8 +493,8 @@ footer {
 }
 .flip-card .card-img-top {
   object-fit: contain;
-  height: 520px;
-  width: 416px;
+  /* height: 520px;
+  width: 416px; */
   background-color: #f8f9fa; /* fills empty space if aspect ratio doesn't match */
 }
 
