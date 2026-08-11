@@ -41,7 +41,7 @@
     accentDark: "#001c47",    // added dark accent for hover states
     bg: "#FFFFFF",
     text: "#1A1A1A",
-    position: "right"         // "right" or "left"
+    position: "left"         // "right" or "left"
   };
 
   // =========================================================
