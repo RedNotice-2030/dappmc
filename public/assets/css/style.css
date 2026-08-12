@@ -125,8 +125,8 @@ footer {
 .motto {
   font-family: "Copperplate Gothic", sans-serif;
   color: #ffda22;
-  font-size: 2rem;
-  font-weight: 900;
+  font-size: 1.2rem;
+  font-weight: bold;
   /* Dark outline matching the site's navy for legibility and style */
   /* -webkit-text-stroke: 1px #002c6d;  */
   /* text-stroke: 1px #002c6d; */
