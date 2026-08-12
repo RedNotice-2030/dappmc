@@ -224,3 +224,4 @@ document.addEventListener("keydown", (e) => {
     window.location.href = new URL("cms", window.location.origin + window.location.pathname);
   }
 });
+

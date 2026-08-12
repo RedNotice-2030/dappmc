@@ -1,12 +1,14 @@
 
-@font-face {
+/* @font-face {
   font-family: "Copperplate Gothic";
+  src: url("../fonts/Copperplate-Gothic-Std-31-BC.ttf") format("truetype");
+  src: url("../fonts/Copperplate Gothic Bold Regular.ttf") format("truetype");
   src: url("../fonts/CopperplateCC-Heavy.ttf") format("truetype"),
        url("../fonts/OPTICopperplate-Heavy.otf") format("opentype");
   font-weight: 900;
-  font-style: normal;
+  font-style: bold;
   font-display: swap;
-}
+} */
 
 html {
   scroll-behavior: smooth;
@@ -86,14 +88,14 @@ footer {
   height: auto;
 }
 .sitename {
-  font-family: "Copperplate Gothic", sans-serif;
+  font-family: "Copperplate Gothic", "Sans Serif";
   font-weight: bold;
   font-size: 1.5rem;
   color: #c6b350;
   margin-left: 10px;
 }
 .company {
-  font-family: "Copperplate Gothic", sans-serif;
+  font-family: "Copperplate Gothic", "Sans Serif";
   color: #fdfdfd;
 }
 :root {
@@ -123,8 +125,8 @@ footer {
 .motto {
   font-family: "Copperplate Gothic", sans-serif;
   color: #ffda22;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 2rem;
+  font-weight: 900;
   /* Dark outline matching the site's navy for legibility and style */
   /* -webkit-text-stroke: 1px #002c6d;  */
   /* text-stroke: 1px #002c6d; */

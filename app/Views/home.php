@@ -15,7 +15,8 @@
                 MEDICAL CENTER
               </h1>
               <p class="motto lead mb-4 fw-bold hero-animate delay-2">
-                INTEGRITY - COMPASSION - ACCOUNTABILITY - RELIABILITY - EXCELLENCE
+                INTEGRITY - COMPASSION - ACCOUNTABILITY - RELIABILITY - EXCELLENCE 
+                <!-- <span id="motto"></span> -->
               </p>
               <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3 hero-animate delay-3">
                 <a
@@ -332,4 +333,16 @@
         </div>
       </section>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+      var typed = new Typed('#motto', {
+        strings: ['INTEGRITY', 'COMPASSION', 'ACCOUNTABILITY', 'RELIABILITY', 'EXCELLENCE'], // Array of strings to type
+        typeSpeed: 60,      // Typing speed in milliseconds
+        backSpeed: 40,      // Backspacing speed in milliseconds
+        backDelay: 1000,    // Time to pause before backspacing
+        loop: true,          // Repeat continuously
+        showCursor: true,
+        cursorChar: '|'
+      });
+    </script>
 <?= view('partials/footer') ?>
