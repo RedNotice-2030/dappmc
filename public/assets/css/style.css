@@ -178,7 +178,7 @@ footer {
 
 .hero-section.bg-loaded {
   background:
-    linear-gradient(rgba(0, 86, 216, 0.349), rgba(18, 113, 255, 0.479))
+    linear-gradient(rgba(0, 60, 150, 0.349), rgba(0, 102, 255, 0.438))
     ,url("../images/dappmc-bgc.png") center/cover no-repeat
     ;
 }
