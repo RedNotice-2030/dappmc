@@ -51,6 +51,12 @@ class Pages extends BaseController
 
     public function cms(): string
     {
-        return view('cms', ['title' => 'DAPPMC - Content Manager']);
+        $session = service('session');
+
+        return view('cms', [
+            'title'      => 'DAPPMC - Content Manager',
+            'isLoggedIn' => $session->get('is_logged_in') === true,
+            'sessionUser' => $session->get('username') ?? '',
+        ]);
     }
 }

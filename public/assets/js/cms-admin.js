@@ -6,22 +6,27 @@
  * (cms.html). It provides:
  *
  *   1. LOGIN AUTHENTICATION
- *      - Validates username/password against stored credentials
- *      - Default credentials: admin / dappmc2026
+ *      - Validates username/password against the MySQL users table
+ *      - Passwords are hashed with PHP's password_hash()
+ *      - Session is managed server-side by CodeIgniter 4
  *      - Credentials can be changed in the Settings tab
- *      - Session persists in localStorage until logout
  *
  *   2. CONTENT MANAGEMENT (CRUD operations)
  *      - News items (news, advisories, events, drives, alerts)
  *      - Health packages (flip cards on services.html)
  *      - Job openings (career cards on careers.html)
+ *      - Doctors (doctor profiles on doctors.html)
  *
- *   3. DATA UTILITIES
+ *   3. USER ACCOUNT MANAGEMENT
+ *      - List all CMS users from the MySQL database
+ *      - Add, edit, and deactivate/reactivate user accounts
+ *
+ *   4. DATA UTILITIES
  *      - Export current collection as JSON file
  *      - Import JSON from clipboard
  *      - Reset to original file data
  *
- *   4. SETTINGS
+ *   5. SETTINGS
  *      - Change login credentials
  *      - View CMS documentation
  *
@@ -37,18 +42,6 @@
   // ==========================================================================
   // CONFIGURATION
   // ==========================================================================
-
-  /** Storage key for login credentials in localStorage */
-  var AUTH_STORAGE_KEY = 'dappmc-cms-auth';
-
-  /** Storage key for session (logged in state) */
-  var SESSION_STORAGE_KEY = 'dappmc-cms-session';
-
-  /** Default credentials used on first load (before user changes them) */
-  var DEFAULT_CREDENTIALS = {
-    username: 'admin',
-    password: 'dappmc2026'
-  };
 
   /** Current active tab in the admin panel */
   var currentTab = 'news';
@@ -100,70 +93,104 @@
   };
 
   // ==========================================================================
-  // AUTHENTICATION
+  // AUTHENTICATION (server-side sessions via MySQL)
   // ==========================================================================
 
+  /** Holds the currently authenticated user (from server) */
+  var currentUser = null;
+
   /**
-   * Get the stored credentials from localStorage.
-   * Falls back to defaults if none are stored.
-   * @returns {{username: string, password: string}}
+   * Get the currently authenticated user.
+   * @returns {Object|null}
    */
-  function getCredentials() {
-    try {
-      var stored = localStorage.getItem(AUTH_STORAGE_KEY);
-      if (stored) {
-        var parsed = JSON.parse(stored);
-        if (parsed.username && parsed.password) {
-          return parsed;
+  function getCurrentUser() {
+    return currentUser;
+  }
+
+  /**
+   * Check with the server if a session is active.
+   * @returns {Promise<Object|null>} user object or null
+   */
+  function checkServerSession() {
+    return fetch('auth/check', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        if (data.logged_in) {
+          currentUser = data.user;
+          return data.user;
         }
-      }
-    } catch (e) {
-      console.warn('Invalid stored credentials, using defaults.', e);
-    }
-    return DEFAULT_CREDENTIALS;
+        currentUser = null;
+        return null;
+      })
+      .catch(function (err) {
+        console.error('Session check failed:', err);
+        currentUser = null;
+        return null;
+      });
   }
 
   /**
-   * Save new credentials to localStorage.
+   * Attempt to log in with the provided credentials via the server.
    * @param {string} username
    * @param {string} password
-   */
-  function saveCredentials(username, password) {
-    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({
-      username: username,
-      password: password
-    }));
-  }
-
-  /**
-   * Check if the user is currently logged in.
-   * @returns {boolean}
-   */
-  function isLoggedIn() {
-    return localStorage.getItem(SESSION_STORAGE_KEY) === 'true';
-  }
-
-  /**
-   * Attempt to log in with the provided credentials.
-   * @param {string} username
-   * @param {string} password
-   * @returns {boolean} true if login succeeded
+   * @returns {Promise<Object|null>} user object on success, null on failure
    */
   function attemptLogin(username, password) {
-    var creds = getCredentials();
-    if (username === creds.username && password === creds.password) {
-      localStorage.setItem(SESSION_STORAGE_KEY, 'true');
-      return true;
-    }
-    return false;
+    return fetch('auth/login', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password)
+    })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          if (response.ok && data.success) {
+            currentUser = data.user;
+            return data.user;
+          }
+          // Pass the server's error message for display
+          return { error: (data && data.message) || 'Invalid username or password.' };
+        });
+      })
+      .catch(function (err) {
+        console.error('Login request failed:', err);
+        return null;
+      });
   }
 
   /**
-   * Log out the current user.
+   * Log out the current user (destroys the server session).
+   * @returns {Promise<boolean>}
    */
   function logout() {
-    localStorage.removeItem(SESSION_STORAGE_KEY);
-    showLoginScreen();
+    return fetch('auth/logout', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      }
+    })
+      .then(function (response) {
+        currentUser = null;
+        showLoginScreen();
+        return response.ok;
+      })
+      .catch(function (err) {
+        console.error('Logout request failed:', err);
+        currentUser = null;
+        showLoginScreen();
+        return false;
+      });
   }
 
   /**
@@ -183,9 +210,51 @@
   function showCmsApp() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('cms-app').classList.add('visible');
-    var creds = getCredentials();
+    var username = currentUser ? (currentUser.username || currentUser.full_name || 'Admin') : 'Admin';
     document.getElementById('logged-in-user').innerHTML =
-      '<i class="bi bi-person-circle me-1"></i>' + creds.username;
+      '<i class="bi bi-person-circle me-1"></i>' + username;
+    updateNavForRole(); 
+  }
+  /**
+ * Show or hide the "User Accounts" nav link based on the current user's role.
+ */
+function updateNavForRole() {
+  var role = currentUser ? currentUser.role : null;
+  var isAdmin = role === 'admin';
+  var isHrManager = role === 'hr_manager';
+  var isEditor = role === 'editor';
+  var canManageJobs = isAdmin || isHrManager;
+  // var navLink = document.querySelector('[data-cms-tab="users"]');
+  // if (navLink) {
+  //   navLink.style.display = isAdmin ? '' : 'none';
+  // }
+
+  // var mobileOption = document.querySelector('#mobile-tab-select option[value="users"]');
+  // if (mobileOption) {
+  //   mobileOption.style.display = isAdmin ? '' : 'none';
+  // }
+  // Users tab — admin only
+    toggleNavItem('users', isAdmin);
+    toggleNavItem('jobs', canManageJobs);
+    toggleNavItem('news', !isHrManager);
+    toggleNavItem('packages', !isHrManager);
+    toggleNavItem('doctors', !isEditor);
+}
+
+/**
+   * Show or hide a sidebar nav-link and its mobile <option> by tab name.
+   * @param {string} tab
+   * @param {boolean} visible
+   */
+  function toggleNavItem(tab, visible) {
+    var navLink = document.querySelector('[data-cms-tab="' + tab + '"]');
+    if (navLink) {
+      navLink.style.display = visible ? '' : 'none';
+    }
+    var mobileOption = document.querySelector('#mobile-tab-select option[value="' + tab + '"]');
+    if (mobileOption) {
+      mobileOption.style.display = visible ? '' : 'none';
+    }
   }
 
   // ==========================================================================
@@ -194,9 +263,14 @@
 
   /**
    * Switch the active panel/tab in the admin interface.
-   * @param {string} tab - 'news', 'packages', 'jobs', or 'settings'
+   * @param {string} tab - 'news', 'packages', 'jobs', 'doctors', 'users', 'settings'
    */
-  function switchTab(tab) {
+function switchTab(tab) {
+    // Block non-admins from the users tab even if they force-navigate to it
+    if (tab === 'users' && !(currentUser && currentUser.role === 'admin')) {
+      tab = 'news';
+    }
+
     currentTab = tab;
 
     // Hide all panels, show the selected one
@@ -221,6 +295,7 @@
       packages: 'Health Packages Manager',
       jobs: 'Job Openings Manager',
       doctors: 'Doctors Manager',
+      users: 'User Accounts Manager',
       settings: 'CMS Settings'
     };
     document.getElementById('cms-page-title').textContent = titles[tab] || 'Content Manager';
@@ -234,6 +309,8 @@
       renderJobsList();
     } else if (tab === 'doctors') {
       renderDoctorsList();
+    } else if (tab === 'users') {
+      renderUsersList();
     } else if (tab === 'settings') {
       loadSettings();
     }
@@ -718,32 +795,41 @@
       ? paymentsText.split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
       : [];
 
-    // Build item object
-    var item = {
-      id: id || CMS.generateId('pkg'),
-      name: name,
-      shortDescription: shortDescription,
-      fullDescription: fullDescription,
-      image: image,
-      promoBadge: promoBadge,
-      promoDetails: promoDetails,
-      operatingHours: operatingHours,
-      availmentSteps: availmentSteps,
-      paymentOptions: paymentOptions,
-      active: active,
-      sortOrder: sortOrder
-    };
+    // Auto-increment sortOrder: find the highest existing sortOrder + 1
+    var maxSort = 1;
+    CMS.getItems('packages').then(function (items) {
+      items.forEach(function (p) {
+        if (p.sortOrder && p.sortOrder > maxSort) {
+          maxSort = p.sortOrder;
+        }
+      });
+      // Build item object with auto-incremented sortOrder
+      var item = {
+        id: id || CMS.generateId('pkg'),
+        name: name,
+        shortDescription: shortDescription,
+        fullDescription: fullDescription,
+        image: image,
+        promoBadge: promoBadge,
+        promoDetails: promoDetails,
+        operatingHours: operatingHours,
+        availmentSteps: availmentSteps,
+        paymentOptions: paymentOptions,
+        active: active,
+        sortOrder: sortOrder || (maxSort + 1)
+      };
 
-    // Save via CMS data layer
-    CMS.saveItem('packages', item).then(function () {
-      toastr.success('Package saved successfully!', 'Success');
-      var modalEl = document.getElementById('package-item-modal');
-      var modal = bootstrap.Modal.getInstance(modalEl);
-      if (modal) modal.hide();
-      renderPackagesList();
-    }).catch(function (err) {
-      console.error(err);
-      toastr.error('Failed to save package.', 'Error');
+      // Save via CMS data layer
+      CMS.saveItem('packages', item).then(function () {
+        toastr.success('Package saved successfully!', 'Success');
+        var modalEl = document.getElementById('package-item-modal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+        renderPackagesList();
+      }).catch(function (err) {
+        console.error(err);
+        toastr.error('Failed to save package.', 'Error');
+      });
     });
   }
 
@@ -948,11 +1034,11 @@
   /**
    * Export the current collection as a downloadable JSON file.
    */
-  function exportCurrent() {
-    CMS.exportData(currentTab, currentTab + '.json').then(function () {
-      toastr.success('Exported ' + currentTab + '.json', 'Export');
-    });
-  }
+  // function exportCurrent() {
+  //   CMS.exportData(currentTab, currentTab + '.json').then(function () {
+  //     toastr.success('Exported ' + currentTab + '.json', 'Export');
+  //   });
+  // }
 
   /**
    * Open the import modal.
@@ -1016,6 +1102,300 @@
   }
 
   // ==========================================================================
+  // USER ACCOUNT MANAGEMENT
+  // ==========================================================================
+
+  /**
+   * Render the list of users in the admin panel.
+   */
+  function renderUsersList() {
+    var container = document.getElementById('users-items-list');
+    if (!container) return;
+
+    fetch('users/list', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        if (!data.success) {
+          container.innerHTML =
+            '<div class="empty-state">' +
+            '  <i class="bi bi-people"></i>' +
+            '  <h6 class="fw-bold">Failed to load users</h6>' +
+            '  <p class="mb-0">' + CMS.escapeHtml(data.message || 'Please try again.') + '</p>' +
+            '</div>';
+          return;
+        }
+
+        var users = data.users || [];
+
+        // Empty state
+        if (users.length === 0) {
+          container.innerHTML =
+            '<div class="empty-state">' +
+            '  <i class="bi bi-people"></i>' +
+            '  <h6 class="fw-bold">No users found</h6>' +
+            '  <p class="mb-0">Click "Add User" to create your first account.</p>' +
+            '</div>';
+          return;
+        }
+
+        var currentUserId = currentUser ? currentUser.id : null;
+
+        // Build user rows
+        var html = '';
+        users.forEach(function (user) {
+          var isSelf = currentUserId !== null && String(user.id) === String(currentUserId);
+          var userIsActive = user.is_active == 1;
+          var statusBadge = userIsActive
+            ? '<span class="badge bg-success-subtle text-success badge-category">Active</span>'
+            : '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>';
+          var roleBadge = user.role === 'admin'
+            ? '<span class="badge bg-primary-subtle text-primary badge-category">Admin</span>'
+            : '<span class="badge bg-info-subtle text-info-emphasis badge-category">' + CMS.escapeHtml(user.role || 'user') + '</span>';
+          var selfBadge = isSelf
+            ? ' <span class="badge bg-warning-subtle text-warning-emphasis badge-category">You</span>'
+            : '';
+          var lastLogin = user.last_login
+            ? CMS.formatDate(user.last_login.substring(0, 10))
+            : 'Never';
+
+          html +=
+            '<div class="item-row">' +
+            '  <div class="d-flex align-items-center gap-3 flex-grow-1">' +
+            statusBadge +
+            roleBadge +
+            selfBadge +
+            '    <div class="flex-grow-1">' +
+            '      <div class="item-title">' + CMS.escapeHtml(user.username) + '</div>' +
+            '      <div class="item-meta">' +
+            '        <i class="bi bi-envelope me-1"></i>' + CMS.escapeHtml(user.email) +
+            '        <span class="ms-2"><i class="bi bi-clock-history me-1"></i>Last login: ' + CMS.escapeHtml(lastLogin) + '</span>' +
+            '      </div>' +
+            '    </div>' +
+            '  </div>' +
+            '  <div class="d-flex gap-1">' +
+            '    <button class="btn btn-sm btn-outline-primary btn-edit-user" data-id="' + user.id + '">' +
+            '      <i class="bi bi-pencil"></i>' +
+            '    </button>';
+          if (userIsActive) {
+            html +=
+              '    <button class="btn btn-sm btn-outline-danger btn-deactivate-user" data-id="' + user.id + '"' + (isSelf ? ' disabled title="You cannot deactivate your own account"' : '') + '>' +
+              '      <i class="bi bi-person-slash"></i>' +
+              '    </button>';
+          } else {
+            html +=
+              '    <button class="btn btn-sm btn-outline-success btn-activate-user" data-id="' + user.id + '">' +
+              '      <i class="bi bi-person-check"></i>' +
+              '    </button>';
+          }
+          html +=
+            '  </div>' +
+            '</div>';
+        });
+
+        container.innerHTML = html;
+        bindUserActions();
+      })
+      .catch(function (err) {
+        console.error('Failed to load users:', err);
+        container.innerHTML =
+          '<div class="empty-state">' +
+          '  <i class="bi bi-people"></i>' +
+          '  <h6 class="fw-bold">Failed to load users</h6>' +
+          '  <p class="mb-0">Please refresh the page and try again.</p>' +
+          '</div>';
+      });
+  }
+
+  /**
+   * Bind edit/deactivate/activate buttons for user rows.
+   */
+  function bindUserActions() {
+    document.querySelectorAll('.btn-edit-user').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        fetchUsers().then(function (users) {
+          var user = users.find(function (u) { return String(u.id) === String(id); });
+          if (user) openUserModal(user);
+        });
+      });
+    });
+
+    document.querySelectorAll('.btn-deactivate-user').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        if (!confirm('Deactivate this user? They will no longer be able to log in.')) return;
+        setUserActive(id, 0);
+      });
+    });
+
+    document.querySelectorAll('.btn-activate-user').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        setUserActive(id, 1);
+      });
+    });
+  }
+
+  /**
+   * Fetch all users from the server.
+   * @returns {Promise<Array>}
+   */
+  function fetchUsers() {
+    return fetch('users/list', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        return data.success ? (data.users || []) : [];
+      });
+  }
+
+  /**
+   * Open the user modal for adding or editing.
+   * @param {Object|null} user - existing user to edit, or null for new
+   */
+  function openUserModal(user) {
+    document.getElementById('user-modal-title').textContent = user ? 'Edit User' : 'Add User';
+    document.getElementById('user-item-id').value = user ? user.id : '';
+    document.getElementById('user-item-username').value = user ? (user.username || '') : '';
+    document.getElementById('user-item-fullname').value = user ? (user.full_name || '') : '';
+    document.getElementById('user-item-email').value = user ? (user.email || '') : '';
+    document.getElementById('user-item-role').value = user ? (user.role || 'admin') : 'admin';
+    document.getElementById('user-item-password').value = '';
+    document.getElementById('user-item-password-confirm').value = '';
+    document.getElementById('user-item-active').checked = user ? user.is_active == 1 : true;
+
+    // For new users: password required. For edits: password optional (blank = keep current)
+    document.getElementById('user-item-password').required = !user;
+    document.getElementById('user-password-help').textContent = user
+      ? '(leave blank to keep current)'
+      : '(min 6 characters)';
+
+    var modal = new bootstrap.Modal(document.getElementById('user-item-modal'));
+    modal.show();
+  }
+
+  /**
+   * Save a user from the modal form (create or update via server).
+   */
+  function saveUserItem() {
+    var id = document.getElementById('user-item-id').value;
+    var username = document.getElementById('user-item-username').value.trim();
+    var fullName = document.getElementById('user-item-fullname').value.trim();
+    var email = document.getElementById('user-item-email').value.trim();
+    var role = document.getElementById('user-item-role').value;
+    var password = document.getElementById('user-item-password').value;
+    var passwordConfirm = document.getElementById('user-item-password-confirm').value;
+    var isActive = document.getElementById('user-item-active').checked ? 1 : 0;
+
+    // Validation
+    if (!username || !email) {
+      toastr.warning('Username and email are required.', 'Validation');
+      return;
+    }
+    if (password !== passwordConfirm) {
+      toastr.warning('Passwords do not match.', 'Validation');
+      return;
+    }
+    if (!id && !password) {
+      toastr.warning('Password is required for new users.', 'Validation');
+      return;
+    }
+    if (password && password.length < 6) {
+      toastr.warning('Password must be at least 6 characters.', 'Validation');
+      return;
+    }
+
+    // Build form data
+    var params = new URLSearchParams();
+    params.append('username', username);
+    params.append('full_name', fullName);
+    params.append('email', email);
+    params.append('role', role);
+    params.append('is_active', isActive);
+    if (password) params.append('password', password);
+
+    var url = id ? 'users/update/' + id : 'users/create';
+
+    fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: params.toString()
+    })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          return { ok: response.ok, data: data };
+        });
+      })
+      .then(function (result) {
+        if (result.ok && result.data.success) {
+          toastr.success(result.data.message || 'User saved successfully!', 'Success');
+          var modalEl = document.getElementById('user-item-modal');
+          var modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) modal.hide();
+          renderUsersList();
+        } else {
+          toastr.error(result.data.message || 'Failed to save user.', 'Error');
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error('Failed to save user.', 'Error');
+      });
+  }
+
+  /**
+   * Activate or deactivate a user.
+   * @param {number} id
+   * @param {number} isActive - 1 to activate, 0 to deactivate
+   */
+  function setUserActive(id, isActive) {
+    var params = new URLSearchParams();
+    params.append('is_active', isActive);
+
+    fetch('users/set-active/' + id, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: params.toString()
+    })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          return { ok: response.ok, data: data };
+        });
+      })
+      .then(function (result) {
+        if (result.ok && result.data.success) {
+          toastr.success(result.data.message || 'User status updated.', 'Success');
+          renderUsersList();
+        } else {
+          toastr.error(result.data.message || 'Failed to update user status.', 'Error');
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error('Failed to update user status.', 'Error');
+      });
+  }
+
+  // ==========================================================================
   // SETTINGS
   // ==========================================================================
 
@@ -1023,14 +1403,14 @@
    * Load current settings into the settings form.
    */
   function loadSettings() {
-    var creds = getCredentials();
-    document.getElementById('settings-username').value = creds.username;
+    var username = currentUser ? currentUser.username : '';
+    document.getElementById('settings-username').value = username;
     document.getElementById('settings-password').value = '';
     document.getElementById('settings-password-confirm').value = '';
   }
 
   /**
-   * Save new login credentials from the settings form.
+   * Save new login credentials from the settings form (updates the database via server).
    */
   function saveSettings() {
     var username = document.getElementById('settings-username').value.trim();
@@ -1055,12 +1435,37 @@
       return;
     }
 
-    // Save credentials
-    saveCredentials(username, password);
-    document.getElementById('logged-in-user').innerHTML =
-      '<i class="bi bi-person-circle me-1"></i>' + username;
-    toastr.success('Login credentials updated successfully!', 'Success');
-    loadSettings();
+    // Update credentials on the server
+    fetch('auth/change-password', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password)
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        if (data.success) {
+          // Update the local user info
+          if (currentUser) {
+            currentUser.username = username;
+          }
+          document.getElementById('logged-in-user').innerHTML =
+            '<i class="bi bi-person-circle me-1"></i>' + username;
+          toastr.success('Login credentials updated successfully!', 'Success');
+          loadSettings();
+        } else {
+          toastr.error(data.message || 'Failed to update credentials.', 'Error');
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error('Failed to update credentials.', 'Error');
+      });
   }
 
   // ==========================================================================
@@ -1088,19 +1493,30 @@
       var username = document.getElementById('login-username').value.trim();
       var password = document.getElementById('login-password').value;
 
-      if (attemptLogin(username, password)) {
-        showCmsApp();
-        switchTab('news');
-        toastr.success('Welcome back, ' + username + '!', 'Login Successful');
-      } else {
-        document.getElementById('login-error').style.display = 'block';
-      }
+      // Disable the button while the request is in flight
+      var submitBtn = e.target.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      attemptLogin(username, password).then(function (result) {
+        if (submitBtn) submitBtn.disabled = false;
+        if (result && !result.error) {
+          showCmsApp();
+          switchTab('news');
+          toastr.success('Welcome back, ' + username + '!', 'Login Successful');
+        } else {
+          var errMsg = (result && result.error) || 'Invalid username or password.';
+          var errEl = document.getElementById('login-error');
+          errEl.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>' + errMsg;
+          errEl.style.display = 'block';
+        }
+      });
     });
 
     // --- LOGOUT ---
     document.getElementById('btn-logout').addEventListener('click', function () {
-      logout();
-      toastr.info('You have been logged out.', 'Logout');
+      logout().then(function () {
+        toastr.info('You have been logged out.', 'Logout');
+      });
     });
 
     // --- TAB SWITCHING (sidebar) ---
@@ -1144,31 +1560,37 @@
     document.getElementById('btn-add-doctor').addEventListener('click', function () {
       openDoctorModal(null);
     });
+    document.getElementById('btn-add-user').addEventListener('click', function () {
+      openUserModal(null);
+    });
 
     // --- SAVE BUTTONS ---
     document.getElementById('btn-save-news').addEventListener('click', saveNewsItem);
     document.getElementById('btn-save-package').addEventListener('click', savePackageItem);
     document.getElementById('btn-save-job').addEventListener('click', saveJobItem);
     document.getElementById('btn-save-doctor').addEventListener('click', saveDoctorItem);
+    document.getElementById('btn-save-user').addEventListener('click', saveUserItem);
 
     // --- DELETE CONFIRM ---
     document.getElementById('btn-confirm-delete').addEventListener('click', confirmDelete);
 
     // --- EXPORT / IMPORT / RESET ---
-    document.getElementById('btn-export').addEventListener('click', exportCurrent);
-    document.getElementById('btn-import').addEventListener('click', openImportModal);
-    document.getElementById('btn-confirm-import').addEventListener('click', confirmImport);
-    document.getElementById('btn-reset').addEventListener('click', resetCurrent);
+    // document.getElementById('btn-export').addEventListener('click', exportCurrent);
+    // document.getElementById('btn-import').addEventListener('click', openImportModal);
+    // document.getElementById('btn-confirm-import').addEventListener('click', confirmImport);
+    // document.getElementById('btn-reset').addEventListener('click', resetCurrent);
 
     // --- SETTINGS ---
     document.getElementById('btn-save-settings').addEventListener('click', saveSettings);
 
-    // --- CHECK LOGIN STATE ---
-    if (isLoggedIn()) {
-      showCmsApp();
-      switchTab('news');
-    } else {
-      showLoginScreen();
-    }
+    // --- CHECK LOGIN STATE (server-side session) ---
+    checkServerSession().then(function (user) {
+      if (user) {
+        showCmsApp();
+        switchTab('news');
+      } else {
+        showLoginScreen();
+      }
+    });
   });
 })(window, window.CMS);

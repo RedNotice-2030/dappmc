@@ -59,8 +59,8 @@
       .login-hint code { background: #e2e8f0; padding: 0.1rem 0.4rem; border-radius: 4px; color: #002c6d; }
       .cms-app { display: none; }
       .cms-app.visible { display: block; }
-      .logout-btn { color: #fff; background: transparent; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.85rem; transition: all 0.2s ease; }
-      .logout-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: #c6b350; color: #c6b350; }
+      .logout-btn { color: #002c6d; background: transparent; border: 1px solid #002c6d; border-radius: 8px; padding: 0.4rem 0.75rem; font-size: 0.85rem; transition: all 0.2s ease; }
+      .logout-btn:hover { background: #dc2626; border-color: #dc2626; color: #fff; }
     </style>
   </head>
   <body>
@@ -89,10 +89,10 @@
           </button>
         </form>
         <div class="login-hint">
-          <strong>Default credentials:</strong><br />
-          Username: <code>admin</code><br />
-          Password: <code>dappmc2026</code><br />
-          <small class="text-muted">You can change these in the settings tab after logging in.</small>
+          <strong>Secure sign-in:</strong><br />
+          Your credentials are verified through the hospital database.
+          <br />
+          <small class="text-muted">Contact the system administrator if you need access.</small>
         </div>
       </div>
     </div>
@@ -112,6 +112,7 @@
                 <a class="nav-link" href="#" data-cms-tab="packages"><i class="bi bi-box-seam"></i> Health Packages</a>
                 <a class="nav-link" href="#" data-cms-tab="jobs"><i class="bi bi-briefcase"></i> Job Openings</a>
                 <a class="nav-link" href="#" data-cms-tab="doctors"><i class="bi bi-person-badge"></i> Doctors</a>
+                <a class="nav-link" href="#" data-cms-tab="users"><i class="bi bi-people"></i> User Accounts</a>
                 <a class="nav-link" href="#" data-cms-tab="settings"><i class="bi bi-gear"></i> Settings</a>
                 <a class="nav-link" href="<?= site_url('') ?>"><i class="bi bi-house-door"></i> View Website</a>
               </nav>
@@ -130,9 +131,9 @@
               </div>
               <div class="d-flex gap-2 align-items-center">
                 <span class="text-muted small d-none d-md-inline" id="logged-in-user"><i class="bi bi-person-circle me-1"></i>admin</span>
-                <button class="btn btn-cms-gold btn-sm" id="btn-export"><i class="bi bi-download me-1"></i> Export JSON</button>
+                <!-- <button class="btn btn-cms-gold btn-sm" id="btn-export"><i class="bi bi-download me-1"></i> Export JSON</button>
                 <button class="btn btn-outline-secondary btn-sm" id="btn-import"><i class="bi bi-upload me-1"></i> Import JSON</button>
-                <button class="btn btn-outline-danger btn-sm" id="btn-reset"><i class="bi bi-arrow-counterclockwise me-1"></i> Reset</button>
+                <button class="btn btn-outline-danger btn-sm" id="btn-reset"><i class="bi bi-arrow-counterclockwise me-1"></i> Reset</button> -->
                 <button class="logout-btn" id="btn-logout" title="Logout"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
               </div>
             </div>
@@ -144,6 +145,7 @@
                   <option value="packages">Health Packages</option>
                   <option value="jobs">Job Openings</option>
                   <option value="doctors">Doctors</option>
+                  <option value="users">User Accounts</option>
                   <option value="settings">Settings</option>
                 </select>
               </div>
@@ -212,6 +214,21 @@
                 </div>
               </div>
 
+              <div id="panel-users" class="cms-panel" style="display: none">
+                <div class="cms-card">
+                  <div class="cms-card-header">
+                    <div>
+                      <h5 class="mb-0 fw-bold" style="color: #002c6d"><i class="bi bi-people me-2" style="color: #c6b350"></i>User Accounts</h5>
+                      <small class="text-muted">Manage CMS user accounts — add, edit, or deactivate users</small>
+                    </div>
+                    <button class="btn btn-cms-primary btn-sm" id="btn-add-user"><i class="bi bi-plus-lg me-1"></i> Add User</button>
+                  </div>
+                  <div class="cms-card-body">
+                    <div id="users-items-list"></div>
+                  </div>
+                </div>
+              </div>
+
               <div id="panel-settings" class="cms-panel" style="display: none">
                 <div class="cms-card">
                   <div class="cms-card-header">
@@ -248,15 +265,15 @@
                             without editing HTML code manually.
                           </p>
                           <ul class="small text-muted mb-3">
-                            <li>Content is stored in JSON files under <code>assets/data/</code></li>
-                            <li>Changes are saved to your browser's localStorage</li>
+                            <li>User accounts are stored securely in the <code>users</code> MySQL table</li>
+                            <li>Session is managed server-side by CodeIgniter 4</li>
+                            <li>Content is still stored in JSON files under <code>assets/data/</code></li>
                             <li>Use <strong>Export JSON</strong> to download updated data files</li>
-                            <li>Replace the files in <code>assets/data/</code> to publish changes</li>
                           </ul>
-                          <div class="alert alert-warning small mb-0">
-                            <i class="bi bi-exclamation-triangle me-1"></i>
-                            <strong>Note:</strong> This is a client-side CMS. For multi-user access with a database,
-                            you would need a server-side solution (e.g., Firebase, Supabase, or a custom backend).
+                          <div class="alert alert-success small mb-0">
+                            <i class="bi bi-shield-check me-1"></i>
+                            <strong>Database Connected:</strong> Login credentials are verified against the
+                            hospital's MySQL database with secure password hashing.
                           </div>
                         </div>
                       </div>
@@ -513,8 +530,66 @@
       </div>
     </div>
 
+    <!-- User Account Modal -->
+    <div class="modal fade" id="user-item-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="user-modal-title">Add User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="user-item-form">
+              <input type="hidden" id="user-item-id" />
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Username</label>
+                  <input type="text" class="form-control" id="user-item-username" required placeholder="e.g. jdelacruz" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" class="form-control" id="user-item-fullname" placeholder="e.g. Juan Dela Cruz" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" id="user-item-email" required placeholder="user@dappmc.ph" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Role</label>
+                  <select class="form-select" id="user-item-role">
+                    <option value="admin">Admin</option>
+                    <option value="editor">Editor</option>
+                    <option value="viewer">Viewer</option>
+                    <option value="hr_manager">HR Manager</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Password <span class="help-text" id="user-password-help">(min 6 characters)</span></label>
+                  <input type="password" class="form-control" id="user-item-password" autocomplete="new-password" placeholder="Enter password" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Confirm Password</label>
+                  <input type="password" class="form-control" id="user-item-password-confirm" autocomplete="new-password" placeholder="Confirm password" />
+                </div>
+                <div class="col-12">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="user-item-active" checked />
+                    <label class="form-check-label" for="user-item-active">Active (can log in)</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-cms-primary" id="btn-save-user">Save User</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Import Modal -->
-    <div class="modal fade" id="import-modal" tabindex="-1" aria-hidden="true">
+    <!-- <div class="modal fade" id="import-modal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -531,7 +606,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="delete-modal" tabindex="-1" aria-hidden="true">
