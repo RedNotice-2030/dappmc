@@ -1,2 +1,5 @@
 .env
-writable/
+writable/*
+!writable/index.html
+!writable/ssl/
+!writable/ssl/ca.pem

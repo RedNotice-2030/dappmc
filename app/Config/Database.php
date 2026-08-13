@@ -37,7 +37,12 @@ class Database extends Config
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
         'swapPre'      => '',
-        'encrypt'      => false,
+        'encrypt'      => [
+            'ssl_key'    => null,
+            'ssl_cert'   => null,
+            'ssl_ca'     => WRITEPATH . 'ssl/aiven-ca.pem',
+            'ssl_verify' => true,
+        ],
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
