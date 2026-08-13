@@ -49,7 +49,7 @@
     {
       "id": "pkg-003",
       "name": "Prostate Cancer Awareness Month",
-      "shortDescription": "Package A: Includes Prostate Specific Antigen (PSA), Ultrasound of Prostate.\n Package B: Includes Prostate Specific Antigen (PSA), Ultrasound of KUB & Prostate",
+      "shortDescription": "Package A: Includes Prostate Specific Antigen (PSA), Ultrasound of Prostate.\nPackage B: Includes Prostate Specific Antigen (PSA), Ultrasound of KUB & Prostate",
       "fullDescription": "Avail our August promo package in celebration of Prostate Cancer Awareness Month valid until August 31, 2026 only.",
       "image": "assets/images/packages/pcam1.jpg",
       "promoBadge": "20% OFF",
