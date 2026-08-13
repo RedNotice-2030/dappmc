@@ -28,6 +28,12 @@ $routes->get('users/list', 'Users::index');
 $routes->post('users/create', 'Users::create');
 $routes->post('users/update/(:num)', 'Users::update/$1');
 $routes->post('users/set-active/(:num)', 'Users::setActive/$1');
+$routes->get('careers/jobs.json', 'Jobs::publicList');       // public, for content-renderer.js
+$routes->get('jobs/list', 'Jobs::index');                     // admin
+$routes->post('jobs/create', 'Jobs::create');
+$routes->post('jobs/update/(:num)', 'Jobs::update/$1');
+$routes->post('jobs/delete/(:num)', 'Jobs::delete/$1');
+$routes->get('jobs/benefits', 'Jobs::benefitsList');
 // $routes->get('debug-ssl-check', function() {
 //     $path = WRITEPATH . 'ssl/aiven-ca.pem';
 //     echo 'Path: ' . $path . '<br>';
