@@ -28,3 +28,9 @@ $routes->get('users/list', 'Users::index');
 $routes->post('users/create', 'Users::create');
 $routes->post('users/update/(:num)', 'Users::update/$1');
 $routes->post('users/set-active/(:num)', 'Users::setActive/$1');
+$routes->get('debug-ssl-check', function() {
+    $path = WRITEPATH . 'ssl/aiven-ca.pem';
+    echo 'Path: ' . $path . '<br>';
+    echo 'Exists: ' . (file_exists($path) ? 'YES' : 'NO') . '<br>';
+    echo 'Readable: ' . (is_readable($path) ? 'YES' : 'NO');
+});
