@@ -23,26 +23,43 @@ class JobModel extends Model
         }
         $jobs = $builder->get()->getResultArray();
 
+        if (empty($jobs)) {
+            return [];
+        }
+
+        $jobIds = array_column($jobs, 'id');
+
+        // One query for ALL qualifications across all jobs
+        $allQualifications = $this->db->table('job_qualifications')
+            ->whereIn('job_id', $jobIds)
+            ->orderBy('sort_order', 'ASC')
+            ->get()->getResultArray();
+
+        // One query for ALL benefits across all jobs
+        $allBenefits = $this->db->table('benefits')
+            ->select('benefits.id, benefits.benefit_text, job_benefits.job_id')
+            ->join('job_benefits', 'job_benefits.benefit_id = benefits.id')
+            ->whereIn('job_benefits.job_id', $jobIds)
+            ->orderBy('benefits.sort_order', 'ASC')
+            ->get()->getResultArray();
+
+        // Group by job_id in PHP (no extra DB round-trips)
+        $qualByJob = [];
+        foreach ($allQualifications as $q) {
+            $qualByJob[$q['job_id']][] = $q['qualification_text'];
+        }
+
+        $benefitsByJob = [];
+        $benefitIdsByJob = [];
+        foreach ($allBenefits as $b) {
+            $benefitsByJob[$b['job_id']][] = $b['benefit_text'];
+            $benefitIdsByJob[$b['job_id']][] = (int) $b['id'];
+        }
+
         foreach ($jobs as &$job) {
-            $job['qualifications'] = array_column(
-                $this->db->table('job_qualifications')
-                    ->where('job_id', $job['id'])
-                    ->orderBy('sort_order', 'ASC')
-                    ->get()->getResultArray(),
-                'qualification_text'
-            );
-
-            $job['benefits'] = array_column(
-                $this->db->table('benefits')
-                    ->select('benefits.benefit_text')
-                    ->join('job_benefits', 'job_benefits.benefit_id = benefits.id')
-                    ->where('job_benefits.job_id', $job['id'])
-                    ->orderBy('benefits.sort_order', 'ASC')
-                    ->get()->getResultArray(),
-                'benefit_text'
-            );
-
-            // Match old JSON shape exactly
+            $job['qualifications'] = $qualByJob[$job['id']] ?? [];
+            $job['benefits']       = $benefitsByJob[$job['id']] ?? [];
+            $job['benefit_ids']    = $benefitIdsByJob[$job['id']] ?? [];
             $job['type']      = ucwords(str_replace('-', ' ', $job['employment_type']));
             $job['active']    = (bool) $job['active'];
             $job['sortOrder'] = (int) $job['sort_order'];

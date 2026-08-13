@@ -431,7 +431,11 @@
                 </div>
                 <div class="col-md-4">
                   <label class="form-label">Employment Type</label>
-                  <input type="text" class="form-control" id="job-item-type" placeholder="Full-time" />
+                  <select class="form-select" id="job-item-type">
+                    <option value="full-time">Full-time</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="project-based">Project-based</option>
+                  </select>
                 </div>
                 <div class="col-md-4">
                   <label class="form-label">Sort Order</label>
@@ -442,8 +446,11 @@
                   <textarea class="form-control" id="job-item-qualifications" rows="4" placeholder="Qualification 1&#10;Qualification 2&#10;Qualification 3"></textarea>
                 </div>
                 <div class="col-12">
-                  <label class="form-label">What We Offer <span class="help-text">(one per line)</span></label>
-                  <textarea class="form-control" id="job-item-benefits" rows="3" placeholder="Benefit 1&#10;Benefit 2&#10;Benefit 3"></textarea>
+                  <label class="form-label">What We Offer <span class="help-text">(check all that apply)</span></label>
+                  <div id="job-item-benefits-list" class="border rounded p-2" style="max-height: 160px; overflow-y: auto;"></div>
+                  <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="btn-add-new-benefit">
+                    <i class="bi bi-plus-lg me-1"></i> Add New Benefit
+                  </button>
                 </div>
                 <div class="col-12">
                   <div class="form-check form-switch">

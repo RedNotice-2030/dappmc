@@ -445,23 +445,41 @@ function switchTab(tab) {
   }
 
   // ==========================================================================
-  // JOBS LIST RENDERING
+  // JOBS LIST RENDERING (DB-backed)
   // ==========================================================================
 
-  /**
-   * Render the list of job openings in the admin panel.
-   */
+  var cachedBenefits = [];
+
+  function fetchAdminJobs() {
+    return fetch('jobs/list', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) { return data.success ? (data.jobs || []) : []; });
+  }
+
+  function fetchBenefits() {
+    return fetch('jobs/benefits', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) {
+        cachedBenefits = data.success ? (data.benefits || []) : [];
+        return cachedBenefits;
+      });
+  }
+
   function renderJobsList() {
     var container = document.getElementById('jobs-items-list');
     if (!container) return;
 
-    CMS.getItems('jobs').then(function (items) {
-      // Sort by sortOrder
-      items.sort(function (a, b) {
-        return (a.sortOrder || 0) - (b.sortOrder || 0);
-      });
+    fetchAdminJobs().then(function (items) {
+      items.sort(function (a, b) { return (a.sortOrder || 0) - (b.sortOrder || 0); });
 
-      // Empty state
       if (items.length === 0) {
         container.innerHTML =
           '<div class="empty-state">' +
@@ -472,7 +490,6 @@ function switchTab(tab) {
         return;
       }
 
-      // Build item rows
       var html = '';
       items.forEach(function (job) {
         var statusBadge = job.active === false
@@ -489,10 +506,10 @@ function switchTab(tab) {
           '    </div>' +
           '  </div>' +
           '  <div class="d-flex gap-1">' +
-          '    <button class="btn btn-sm btn-outline-primary btn-edit-job" data-id="' + CMS.escapeHtml(job.id) + '">' +
+          '    <button class="btn btn-sm btn-outline-primary btn-edit-job" data-id="' + job.id + '">' +
           '      <i class="bi bi-pencil"></i>' +
           '    </button>' +
-          '    <button class="btn btn-sm btn-outline-danger btn-delete-job" data-id="' + CMS.escapeHtml(job.id) + '">' +
+          '    <button class="btn btn-sm btn-outline-danger btn-delete-job" data-id="' + job.id + '">' +
           '      <i class="bi bi-trash"></i>' +
           '    </button>' +
           '  </div>' +
@@ -502,6 +519,152 @@ function switchTab(tab) {
       container.innerHTML = html;
       bindJobActions();
     });
+  }
+
+  function bindJobActions() {
+    document.querySelectorAll('.btn-edit-job').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        fetchAdminJobs().then(function (items) {
+          var item = items.find(function (i) { return String(i.id) === String(id); });
+          if (item) openJobModal(item);
+        });
+      });
+    });
+
+    document.querySelectorAll('.btn-delete-job').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        deleteTarget = { type: 'job', id: btn.getAttribute('data-id') };
+        var modal = new bootstrap.Modal(document.getElementById('delete-modal'));
+        modal.show();
+      });
+    });
+  }
+
+  // ==========================================================================
+  // JOB MODAL (ADD/EDIT) — DB-backed
+  // ==========================================================================
+
+  function renderBenefitCheckboxes(checkedIds) {
+    var container = document.getElementById('job-item-benefits-list');
+    if (!container) return;
+
+    checkedIds = (checkedIds || []).map(function (id) { return Number(id); });
+    var html = '';
+    cachedBenefits.forEach(function (b) {
+      var isChecked = checkedIds.indexOf(Number(b.id)) !== -1;
+      html +=
+        '<div class="form-check">' +
+        '  <input class="form-check-input job-benefit-checkbox" type="checkbox" value="' + b.id + '" id="benefit-' + b.id + '"' + (isChecked ? ' checked' : '') + '>' +
+        '  <label class="form-check-label small" for="benefit-' + b.id + '">' + CMS.escapeHtml(b.benefit_text) + '</label>' +
+        '</div>';
+    });
+    container.innerHTML = html || '<p class="text-muted small mb-0">No benefits yet — add one below.</p>';
+  }
+
+  function openJobModal(item) {
+    var modalEl = document.getElementById('job-item-modal');
+    document.getElementById('job-modal-title').textContent = item ? 'Edit Job Opening' : 'Add Job Opening';
+    document.getElementById('job-item-id').value = item ? item.id : '';
+    document.getElementById('job-item-title').value = item ? (item.title || '') : '';
+    document.getElementById('job-item-type').value = item ? (item.employment_type || 'full-time') : 'full-time';
+    document.getElementById('job-item-sort').value = item ? (item.sortOrder || 1) : 1;
+    document.getElementById('job-item-qualifications').value = item ? (item.qualifications || []).join('\n') : '';
+    document.getElementById('job-item-active').checked = item ? item.active !== false : true;
+
+    fetchBenefits().then(function () {
+      renderBenefitCheckboxes(item ? item.benefit_ids : []);
+    });
+
+    var modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  }
+
+  function saveJobItem() {
+    var id = document.getElementById('job-item-id').value;
+    var title = document.getElementById('job-item-title').value.trim();
+    var employmentType = document.getElementById('job-item-type').value;
+    var sortOrder = parseInt(document.getElementById('job-item-sort').value, 10) || 1;
+    var qualificationsText = document.getElementById('job-item-qualifications').value.trim();
+    var active = document.getElementById('job-item-active').checked ? 1 : 0;
+
+    if (!title) {
+      toastr.warning('Please fill in the job title.', 'Validation');
+      return;
+    }
+
+    var qualifications = qualificationsText
+      ? qualificationsText.split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
+      : [];
+
+    var benefitIds = Array.from(document.querySelectorAll('.job-benefit-checkbox:checked')).map(function (cb) {
+      return parseInt(cb.value, 10);
+    });
+
+    var params = new URLSearchParams();
+    params.append('title', title);
+    params.append('employment_type', employmentType);
+    params.append('sort_order', sortOrder);
+    params.append('active', active);
+    params.append('qualifications', JSON.stringify(qualifications));
+    params.append('benefit_ids', JSON.stringify(benefitIds));
+
+    var url = id ? 'jobs/update/' + id : 'jobs/create';
+
+    fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
+      .then(function (result) {
+        if (result.ok && result.data.success) {
+          toastr.success(result.data.message || 'Job saved successfully!', 'Success');
+          var modalEl = document.getElementById('job-item-modal');
+          var modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) modal.hide();
+          renderJobsList();
+        } else {
+          toastr.error(result.data.message || 'Failed to save job.', 'Error');
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error('Failed to save job.', 'Error');
+      });
+  }
+
+  function addNewBenefit() {
+    var text = prompt('Enter the new benefit text:');
+    if (!text || !text.trim()) return;
+
+    var params = new URLSearchParams();
+    params.append('benefit_text', text.trim());
+
+    fetch('jobs/benefits/create', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) {
+        if (data.success) {
+          toastr.success('Benefit added.', 'Success');
+          var previouslyChecked = Array.from(document.querySelectorAll('.job-benefit-checkbox:checked')).map(function (cb) { return parseInt(cb.value, 10); });
+          previouslyChecked.push(data.id);
+          fetchBenefits().then(function () { renderBenefitCheckboxes(previouslyChecked); });
+        } else {
+          toastr.error(data.message || 'Failed to add benefit.', 'Error');
+        }
+      });
   }
 
   // ==========================================================================
@@ -615,28 +778,6 @@ function switchTab(tab) {
     });
   }
 
-  /**
-   * Bind edit/delete buttons for job items.
-   */
-  function bindJobActions() {
-    document.querySelectorAll('.btn-edit-job').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var id = btn.getAttribute('data-id');
-        CMS.getItems('jobs').then(function (items) {
-          var item = items.find(function (i) { return i.id === id; });
-          if (item) openJobModal(item);
-        });
-      });
-    });
-
-    document.querySelectorAll('.btn-delete-job').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        deleteTarget = { collection: 'jobs', id: btn.getAttribute('data-id') };
-        var modal = new bootstrap.Modal(document.getElementById('delete-modal'));
-        modal.show();
-      });
-    });
-  }
 
   /**
    * Bind edit/delete buttons for doctor items.
@@ -833,79 +974,7 @@ function switchTab(tab) {
     });
   }
 
-  // ==========================================================================
-  // JOB MODAL (ADD/EDIT)
-  // ==========================================================================
-
-  /**
-   * Open the job modal for adding or editing.
-   * @param {Object|null} item - existing job to edit, or null for new
-   */
-  function openJobModal(item) {
-    var modalEl = document.getElementById('job-item-modal');
-    document.getElementById('job-modal-title').textContent = item ? 'Edit Job Opening' : 'Add Job Opening';
-    document.getElementById('job-item-id').value = item ? item.id : '';
-    document.getElementById('job-item-title').value = item ? (item.title || '') : '';
-    document.getElementById('job-item-type').value = item ? (item.type || 'Full-time') : 'Full-time';
-    document.getElementById('job-item-sort').value = item ? (item.sortOrder || 1) : 1;
-    document.getElementById('job-item-qualifications').value = item && item.qualifications ? item.qualifications.join('\n') : '';
-    document.getElementById('job-item-benefits').value = item && item.benefits ? item.benefits.join('\n') : '';
-    document.getElementById('job-item-active').checked = item ? item.active !== false : true;
-
-    var modal = new bootstrap.Modal(modalEl);
-    modal.show();
-  }
-
-  /**
-   * Save the job from the modal form.
-   * Creates a new job or updates an existing one.
-   */
-  function saveJobItem() {
-    var id = document.getElementById('job-item-id').value;
-    var title = document.getElementById('job-item-title').value.trim();
-    var type = document.getElementById('job-item-type').value.trim() || 'Full-time';
-    var sortOrder = parseInt(document.getElementById('job-item-sort').value, 10) || 1;
-    var qualificationsText = document.getElementById('job-item-qualifications').value.trim();
-    var benefitsText = document.getElementById('job-item-benefits').value.trim();
-    var active = document.getElementById('job-item-active').checked;
-
-    // Validation
-    if (!title) {
-      toastr.warning('Please fill in the job title.', 'Validation');
-      return;
-    }
-
-    // Parse line-separated lists
-    var qualifications = qualificationsText
-      ? qualificationsText.split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
-      : [];
-    var benefits = benefitsText
-      ? benefitsText.split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
-      : [];
-
-    // Build item object
-    var item = {
-      id: id || CMS.generateId('job'),
-      title: title,
-      type: type,
-      qualifications: qualifications,
-      benefits: benefits,
-      active: active,
-      sortOrder: sortOrder
-    };
-
-    // Save via CMS data layer
-    CMS.saveItem('jobs', item).then(function () {
-      toastr.success('Job opening saved successfully!', 'Success');
-      var modalEl = document.getElementById('job-item-modal');
-      var modal = bootstrap.Modal.getInstance(modalEl);
-      if (modal) modal.hide();
-      renderJobsList();
-    }).catch(function (err) {
-      console.error(err);
-      toastr.error('Failed to save job opening.', 'Error');
-    });
-  }
+  
 
   // ==========================================================================
   // DOCTOR MODAL (ADD/EDIT)
@@ -1004,6 +1073,29 @@ function switchTab(tab) {
   function confirmDelete() {
     if (!deleteTarget) return;
 
+    if (deleteTarget.type === 'job') {
+      fetch('jobs/delete/' + deleteTarget.id, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          if (data.success) {
+            toastr.success('Job deleted successfully!', 'Success');
+            var modalEl = document.getElementById('delete-modal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+            deleteTarget = null;
+            renderJobsList();
+          } else {
+            toastr.error(data.message || 'Failed to delete job.', 'Error');
+          }
+        });
+      return;
+    }
+
+    // existing behavior for news/packages/doctors (localStorage-based)
     CMS.deleteItem(deleteTarget.collection, deleteTarget.id).then(function () {
       toastr.success('Item deleted successfully!', 'Success');
       var modalEl = document.getElementById('delete-modal');
@@ -1011,16 +1103,9 @@ function switchTab(tab) {
       if (modal) modal.hide();
       deleteTarget = null;
 
-      // Re-render the appropriate list
-      if (currentTab === 'news') {
-        renderNewsList();
-      } else if (currentTab === 'packages') {
-        renderPackagesList();
-      } else if (currentTab === 'jobs') {
-        renderJobsList();
-      } else if (currentTab === 'doctors') {
-        renderDoctorsList();
-      }
+      if (currentTab === 'news') renderNewsList();
+      else if (currentTab === 'packages') renderPackagesList();
+      else if (currentTab === 'doctors') renderDoctorsList();
     }).catch(function (err) {
       console.error(err);
       toastr.error('Failed to delete item.', 'Error');
@@ -1564,6 +1649,11 @@ function switchTab(tab) {
       openUserModal(null);
     });
 
+    var addBenefitBtn = document.getElementById('btn-add-new-benefit');
+    if (addBenefitBtn) {
+      addBenefitBtn.addEventListener('click', addNewBenefit);
+    }
+    
     // --- SAVE BUTTONS ---
     document.getElementById('btn-save-news').addEventListener('click', saveNewsItem);
     document.getElementById('btn-save-package').addEventListener('click', savePackageItem);
