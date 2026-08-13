@@ -474,7 +474,7 @@
       image +
       '          <div class="card-body d-flex flex-column">' +
       '            <h5 class="fw-bold mb-2">' + CMS.escapeHtml(pkg.name) + '</h5>' +
-      '            <p class="small text-muted mb-2">' + CMS.escapeHtml(pkg.shortDescription) + '</p>' +
+      '            <p class="small text-muted mb-2">' + CMS.escapeHtml(pkg.shortDescription).replace(/\n/g, '<br>') + '</p>' +
       (pkg.promoDetails
         ? '<p class="small text-danger fw-bold mb-3">' + CMS.escapeHtml(pkg.promoDetails) + '</p>'
         : '') +
