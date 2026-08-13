@@ -502,7 +502,8 @@
       }
 
       // Fall back to the JSON file
-      return fetch('assets/data/' + collection + '.json')
+      var url = collection === 'jobs' ? 'careers/jobs.json' : 'assets/data/' + collection + '.json';
+      return fetch(url)
         .then(function (response) {
           if (!response.ok) {
             throw new Error('Failed to load ' + collection + '.json');

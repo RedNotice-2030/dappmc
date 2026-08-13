@@ -161,7 +161,25 @@ class Database extends Config
     //            'time'     => 'H:i:s',
     //        ],
     //    ];
-
+    public array $local = [
+        'DSN'          => '',
+        'hostname'     => 'localhost',
+        'username'     => 'root',
+        'password'     => '',
+        'database'     => 'dappmc',
+        'DBDriver'     => 'MySQLi',
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8mb4',
+        'DBCollat'     => 'utf8mb4_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => 3306,
+    ];
     /**
      * This database connection is used when running PHPUnit database tests.
      *
@@ -207,3 +225,4 @@ class Database extends Config
         }
     }
 }
+
