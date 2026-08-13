@@ -34,3 +34,12 @@ $routes->get('debug-ssl-check', function() {
     echo 'Exists: ' . (file_exists($path) ? 'YES' : 'NO') . '<br>';
     echo 'Readable: ' . (is_readable($path) ? 'YES' : 'NO');
 });
+$routes->get('debug-db-config', function() {
+    $db = config('Database')->default;
+    echo 'Hostname: ' . ($db['hostname'] ?: '(empty)') . '<br>';
+    echo 'Username: ' . ($db['username'] ?: '(empty)') . '<br>';
+    echo 'Database: ' . ($db['database'] ?: '(empty)') . '<br>';
+    echo 'Port: ' . ($db['port'] ?: '(empty)') . '<br>';
+    echo 'DBDriver: ' . ($db['DBDriver'] ?: '(empty)') . '<br>';
+    echo 'SSL CA: ' . (is_array($db['encrypt']) ? ($db['encrypt']['ssl_ca'] ?? '(not set)') : 'encrypt is not an array: ' . var_export($db['encrypt'], true));
+});
