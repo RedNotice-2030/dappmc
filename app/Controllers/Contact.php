@@ -31,7 +31,7 @@ class Contact extends BaseController
 
         $email = Services::email();
         $email->setTo($this->recipientEmail);
-        $email->setFrom(config('Email')->fromEmail, config('Email')->fromName);
+        $email->setFrom(config('Email')->fromEmail, 'DAPPMC Cares');
         if (filter_var($contact, FILTER_VALIDATE_EMAIL)) {
             $email->setReplyTo($contact, $name);
         }

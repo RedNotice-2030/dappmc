@@ -754,19 +754,28 @@ footer {
   background: linear-gradient(90deg, #002c6d 0%, #c6b350 100%);
 }
 
-.dept-avatar-circle {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background-color: #f0f4f9;
-  border: 3px solid #c6b350;
+.dept-avatar-square {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  font-size: 2.2rem;
+  background: #f0f4f9;
+  border: 2px solid #c6b350;
+}
+
+.dept-avatar-square img.dept-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dept-avatar-square i {
+  font-size: 3.25rem; /* scaled up proportionally with the box */
   color: #002c6d;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .dept-filter-btn {
