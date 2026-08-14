@@ -362,7 +362,7 @@
                 </div>
                 <div class="col-md-4">
                   <label class="form-label">Sort Order</label>
-                  <input type="number" class="form-control" id="package-item-sort" value="1" min="1" />
+                  <input type="number" class="form-control" id="package-item-sort"/>
                 </div>
                 <div class="col-12">
                   <label class="form-label">Short Description <span class="help-text">(shown on the front of the card)</span></label>
