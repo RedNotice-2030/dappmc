@@ -63,7 +63,6 @@ class Jobs extends BaseController
 
         $title = trim((string) $this->request->getPost('title'));
         $type  = trim((string) $this->request->getPost('employment_type')) ?: 'full-time';
-        $sort  = (int) $this->request->getPost('sort_order') ?: 1;
         $active = (int) $this->request->getPost('active') ? 1 : 0;
         $qualifications = json_decode($this->request->getPost('qualifications') ?? '[]', true) ?: [];
         $benefitIds     = json_decode($this->request->getPost('benefit_ids') ?? '[]', true) ?: [];
@@ -71,6 +70,9 @@ class Jobs extends BaseController
         if ($title === '') {
             return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => 'Job title is required.']);
         }
+
+        $maxSort = $this->jobModel->db->table('jobs')->selectMax('sort_order')->get()->getRow('sort_order') ?? 0;
+        $sort = $maxSort + 1;
 
         $jobId = $this->jobModel->insert([
             'title'           => $title,
