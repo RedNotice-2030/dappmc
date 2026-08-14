@@ -654,6 +654,14 @@ function updateNavForRole() {
     document.getElementById('job-item-qualifications').value = item ? (item.qualifications || []).join('\n') : '';
     document.getElementById('job-item-active').checked = item ? item.active !== false : true;
 
+    // Sort order is only manually editable when editing an existing job —
+    // new jobs get auto-assigned the next available position.
+    var sortField = document.getElementById('job-item-sort');
+    var sortGroup = sortField.closest('.col-md-4');
+    if (sortGroup) {
+      sortGroup.style.display = item ? '' : 'none';
+    }
+
     fetchBenefits().then(function () {
       renderBenefitCheckboxes(item ? item.benefit_ids : []);
     });
