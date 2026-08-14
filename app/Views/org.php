@@ -134,7 +134,7 @@
             ],
             [
               'icon' => 'bi-display-fill',
-              'name' => 'Mizhelle D. Dela Crush, MIT',
+              'name' => 'Mizhelle D. Dela Cruz, MIT',
               'title' => 'Head Hospital Information System',
               'image' => 'assets/images/heads/MIS.png',
               'badge' => 'bg-violet-subtle text-violet',
