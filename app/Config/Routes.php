@@ -35,6 +35,7 @@ $routes->post('jobs/update/(:num)', 'Jobs::update/$1');
 $routes->post('jobs/delete/(:num)', 'Jobs::delete/$1');
 $routes->get('jobs/benefits', 'Jobs::benefitsList');
 $routes->post('jobs/benefits/create', 'Jobs::createBenefit');
+$routes->post('jobs/set-active/(:num)', 'Jobs::setActive/$1');
 // $routes->get('debug-ssl-check', function() {
 //     $path = WRITEPATH . 'ssl/aiven-ca.pem';
 //     echo 'Path: ' . $path . '<br>';

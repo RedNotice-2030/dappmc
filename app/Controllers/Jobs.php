@@ -7,6 +7,9 @@ use App\Models\JobModel;
 class Jobs extends BaseController
 {
     protected JobModel $jobModel;
+    /**
+     * @var \CodeIgniter\Session\Session
+     */
     protected $session;
 
     public function __construct()
@@ -90,7 +93,7 @@ class Jobs extends BaseController
         return $this->response->setStatusCode(201)->setJSON(['success' => true, 'message' => 'Job created.', 'id' => $jobId]);
     }
 
-    public function update($id)
+    public function update(int $id)
     {
         $guard = $this->requireHrOrAdmin();
         if ($guard !== null) return $guard;
@@ -132,16 +135,24 @@ class Jobs extends BaseController
         return $this->response->setJSON(['success' => true, 'message' => 'Job updated.']);
     }
 
-    public function delete($id)
+    public function setActive(int $id)
     {
         $guard = $this->requireHrOrAdmin();
         if ($guard !== null) return $guard;
 
+        $isActive = (int) $this->request->getPost('active');
+        if ($isActive !== 0 && $isActive !== 1) {
+            return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => 'Invalid active state.']);
+        }
+
         if ($this->jobModel->find($id) === null) {
             return $this->response->setStatusCode(404)->setJSON(['success' => false, 'message' => 'Job not found.']);
         }
-        $this->jobModel->delete($id); // FK CASCADE cleans up qualifications + job_benefits rows
-        return $this->response->setJSON(['success' => true, 'message' => 'Job deleted.']);
+
+        $this->jobModel->update($id, ['active' => $isActive]);
+
+        $verb = $isActive ? 'activated' : 'deactivated';
+        return $this->response->setJSON(['success' => true, 'message' => 'Job ' . $verb . ' successfully.']);
     }
 
     /**

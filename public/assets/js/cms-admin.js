@@ -241,7 +241,7 @@ function updateNavForRole() {
     toggleNavItem('doctors', !isEditor);
 }
 
-/**
+  /**
    * Show or hide a sidebar nav-link and its mobile <option> by tab name.
    * @param {string} tab
    * @param {boolean} visible
@@ -257,6 +257,41 @@ function updateNavForRole() {
     }
   }
 
+  /**
+   * Returns true if the given role is allowed to view the given tab.
+   * Mirrors the same rules used in updateNavForRole().
+   */
+  function isTabAllowedForRole(tab, role) {
+    var isAdmin = role === 'admin';
+    var isHrManager = role === 'hr_manager';
+    var isEditor = role === 'editor';
+    var canManageJobs = isAdmin || isHrManager;
+
+    switch (tab) {
+      case 'users':    return isAdmin;
+      case 'jobs':      return canManageJobs;
+      case 'news':      return !isHrManager;
+      case 'packages':  return !isHrManager;
+      case 'doctors':   return !isEditor;
+      case 'settings':  return true; // everyone can access settings
+      default:          return true;
+    }
+  }
+
+  /**
+   * Finds the first tab (in sidebar order) that the given role is allowed to view.
+   * Used to pick where to land a user after login.
+   */
+  function getFirstAllowedTab(role) {
+    var tabOrder = ['news', 'packages', 'jobs', 'doctors', 'users', 'settings'];
+    for (var i = 0; i < tabOrder.length; i++) {
+      if (isTabAllowedForRole(tabOrder[i], role)) {
+        return tabOrder[i];
+      }
+    }
+    return 'settings'; // fallback, should never actually hit this
+  }
+
   // ==========================================================================
   // TAB SWITCHING
   // ==========================================================================
@@ -265,10 +300,12 @@ function updateNavForRole() {
    * Switch the active panel/tab in the admin interface.
    * @param {string} tab - 'news', 'packages', 'jobs', 'doctors', 'users', 'settings'
    */
-function switchTab(tab) {
-    // Block non-admins from the users tab even if they force-navigate to it
-    if (tab === 'users' && !(currentUser && currentUser.role === 'admin')) {
-      tab = 'news';
+  function switchTab(tab) {
+    var role = currentUser ? currentUser.role : null;
+
+    // Block force-navigation to any tab the current role isn't allowed to view
+    if (!isTabAllowedForRole(tab, role)) {
+      tab = getFirstAllowedTab(role);
     }
 
     currentTab = tab;
@@ -492,9 +529,10 @@ function switchTab(tab) {
 
       var html = '';
       items.forEach(function (job) {
-        var statusBadge = job.active === false
-          ? '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>'
-          : '<span class="badge bg-success-subtle text-success badge-category">Active</span>';
+        var isActive = job.active !== false;
+        var statusBadge = isActive
+          ? '<span class="badge bg-success-subtle text-success badge-category">Active</span>'
+          : '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>';
 
         html +=
           '<div class="item-row">' +
@@ -508,10 +546,19 @@ function switchTab(tab) {
           '  <div class="d-flex gap-1">' +
           '    <button class="btn btn-sm btn-outline-primary btn-edit-job" data-id="' + job.id + '">' +
           '      <i class="bi bi-pencil"></i>' +
-          '    </button>' +
-          '    <button class="btn btn-sm btn-outline-danger btn-delete-job" data-id="' + job.id + '">' +
-          '      <i class="bi bi-trash"></i>' +
-          '    </button>' +
+          '    </button>';
+        if (isActive) {
+          html +=
+            '    <button class="btn btn-sm btn-outline-danger btn-deactivate-job" data-id="' + job.id + '">' +
+            '      <i class="bi bi-eye-slash"></i>' +
+            '    </button>';
+        } else {
+          html +=
+            '    <button class="btn btn-sm btn-outline-success btn-activate-job" data-id="' + job.id + '">' +
+            '      <i class="bi bi-eye"></i>' +
+            '    </button>';
+        }
+        html +=
           '  </div>' +
           '</div>';
       });
@@ -532,13 +579,48 @@ function switchTab(tab) {
       });
     });
 
-    document.querySelectorAll('.btn-delete-job').forEach(function (btn) {
+    document.querySelectorAll('.btn-deactivate-job').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        deleteTarget = { type: 'job', id: btn.getAttribute('data-id') };
-        var modal = new bootstrap.Modal(document.getElementById('delete-modal'));
-        modal.show();
+        var id = btn.getAttribute('data-id');
+        if (!confirm('Hide this job from the website? You can reactivate it anytime.')) return;
+        setJobActive(id, 0);
       });
     });
+
+    document.querySelectorAll('.btn-activate-job').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-id');
+        setJobActive(id, 1);
+      });
+    });
+  }
+
+  function setJobActive(id, isActive) {
+    var params = new URLSearchParams();
+    params.append('active', isActive);
+
+    fetch('jobs/set-active/' + id, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) {
+        if (data.success) {
+          toastr.success(data.message || 'Job status updated.', 'Success');
+          renderJobsList();
+        } else {
+          toastr.error(data.message || 'Failed to update job status.', 'Error');
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error('Failed to update job status.', 'Error');
+      });
   }
 
   // ==========================================================================
@@ -1063,54 +1145,7 @@ function switchTab(tab) {
     });
   }
 
-  // ==========================================================================
-  // DELETE CONFIRMATION
-  // ==========================================================================
-
-  /**
-   * Confirm and execute the pending delete operation.
-   */
-  function confirmDelete() {
-    if (!deleteTarget) return;
-
-    if (deleteTarget.type === 'job') {
-      fetch('jobs/delete/' + deleteTarget.id, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      })
-        .then(function (response) { return response.json(); })
-        .then(function (data) {
-          if (data.success) {
-            toastr.success('Job deleted successfully!', 'Success');
-            var modalEl = document.getElementById('delete-modal');
-            var modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) modal.hide();
-            deleteTarget = null;
-            renderJobsList();
-          } else {
-            toastr.error(data.message || 'Failed to delete job.', 'Error');
-          }
-        });
-      return;
-    }
-
-    // existing behavior for news/packages/doctors (localStorage-based)
-    CMS.deleteItem(deleteTarget.collection, deleteTarget.id).then(function () {
-      toastr.success('Item deleted successfully!', 'Success');
-      var modalEl = document.getElementById('delete-modal');
-      var modal = bootstrap.Modal.getInstance(modalEl);
-      if (modal) modal.hide();
-      deleteTarget = null;
-
-      if (currentTab === 'news') renderNewsList();
-      else if (currentTab === 'packages') renderPackagesList();
-      else if (currentTab === 'doctors') renderDoctorsList();
-    }).catch(function (err) {
-      console.error(err);
-      toastr.error('Failed to delete item.', 'Error');
-    });
-  }
+  
 
   // ==========================================================================
   // EXPORT / IMPORT / RESET
@@ -1586,7 +1621,7 @@ function switchTab(tab) {
         if (submitBtn) submitBtn.disabled = false;
         if (result && !result.error) {
           showCmsApp();
-          switchTab('news');
+          switchTab(getFirstAllowedTab(result.role));
           toastr.success('Welcome back, ' + username + '!', 'Login Successful');
         } else {
           var errMsg = (result && result.error) || 'Invalid username or password.';
@@ -1661,9 +1696,6 @@ function switchTab(tab) {
     document.getElementById('btn-save-doctor').addEventListener('click', saveDoctorItem);
     document.getElementById('btn-save-user').addEventListener('click', saveUserItem);
 
-    // --- DELETE CONFIRM ---
-    document.getElementById('btn-confirm-delete').addEventListener('click', confirmDelete);
-
     // --- EXPORT / IMPORT / RESET ---
     // document.getElementById('btn-export').addEventListener('click', exportCurrent);
     // document.getElementById('btn-import').addEventListener('click', openImportModal);
@@ -1677,7 +1709,7 @@ function switchTab(tab) {
     checkServerSession().then(function (user) {
       if (user) {
         showCmsApp();
-        switchTab('news');
+        switchTab(getFirstAllowedTab(user.role));
       } else {
         showLoginScreen();
       }
