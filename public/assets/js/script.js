@@ -182,9 +182,6 @@ if (heroSection) {
   };
 }
 
-// // chatbase widget
-// (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="BbsARig3GwVrL87JP7-t_";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
-
 document.addEventListener('DOMContentLoaded', function () {
   const privacyModalEl = document.getElementById('privacy-policy-modal');
   const agreeBtn = document.getElementById('btn-agree-privacy');
@@ -225,3 +222,82 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+(function () {
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var contactModal = document.getElementById('contact-us-modal');
+    if (!contactModal) return;
+
+    contactModal.addEventListener('show.bs.modal', function () {
+      document.getElementById('contact-form').reset();
+    });
+
+    document.getElementById('btn-send-message').addEventListener('click', function () {
+      var name = document.getElementById('your-name').value.trim();
+      var contact = document.getElementById('your-email-no').value.trim();
+      var message = document.getElementById('message-text').value.trim();
+
+      if (!name || !contact || !message) {
+        if (window.toastr) {
+          toastr.warning('Please fill in all fields.', 'Validation');
+        } else {
+          alert('Please fill in all fields.');
+        }
+        return;
+      }
+
+      var submitBtn = document.getElementById('btn-send-message');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      var params = new URLSearchParams();
+      params.append('name', name);
+      params.append('contact', contact);
+      params.append('message', message);
+
+      fetch('contact/send', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: params.toString()
+      })
+        .then(function (response) {
+          return response.json().then(function (data) {
+            return { ok: response.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send message';
+
+          if (result.ok && result.data.success) {
+            var modal = bootstrap.Modal.getInstance(contactModal);
+            if (modal) modal.hide();
+            if (window.toastr) {
+              toastr.success(result.data.message || 'Message sent!', 'Success');
+            } else {
+              alert(result.data.message || 'Message sent!');
+            }
+          } else {
+            if (window.toastr) {
+              toastr.error(result.data.message || 'Failed to send message.', 'Error');
+            } else {
+              alert(result.data.message || 'Failed to send message.');
+            }
+          }
+        })
+        .catch(function (err) {
+          console.error(err);
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send message';
+          if (window.toastr) {
+            toastr.error('Something went wrong. Please try again.', 'Error');
+          }
+        });
+    });
+  });
+})();

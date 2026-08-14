@@ -37,7 +37,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <form id="apply-form">
+              <form id="apply-form" enctype="multipart/form-data">
                 <div class="mb-3">
                   <label class="form-label">Full Name</label>
                   <input type="text" class="form-control" id="applicant-name" required />
@@ -47,21 +47,20 @@
                   <input type="text" class="form-control" id="applicant-contact" required />
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Files Link (Google Drive, etc.)</label>
-                  <input type="url" class="form-control" id="applicant-resume" placeholder="https://..." />
-                  <div class="form-text text-muted">
-                    Upload your documents to Google Drive and set sharing so we
-                    can access them. The best option is
-                    <strong>Anyone with the link can view</strong>. If you
-                    prefer, you may also choose
-                    <strong>Anyone with the link can comment</strong> or
-                    <strong>Editor</strong>.
-                  </div>
+                  <label class="form-label">Resume <span class="text-danger">*</span></label>
+                  <input type="file" class="form-control" id="applicant-resume-file" accept=".pdf,application/pdf" required />
+                  <div class="form-text text-muted">PDF only, max 10MB.</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Application Letter</label>
+                  <input type="file" class="form-control" id="applicant-letter-file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                  <div class="form-text text-muted">Word document (.doc or .docx) only, max 10MB. Optional.</div>
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Cover Message (optional)</label>
                   <textarea class="form-control" id="applicant-message" rows="3"></textarea>
                 </div>
+                <div class="alert alert-danger d-none" id="apply-error"></div>
               </form>
             </div>
             <div class="modal-footer">
@@ -82,5 +81,6 @@
     <script src="' . base_url('assets/js/cms.js') . '"></script>
     <script src="' . base_url('assets/js/animations.js') . '"></script>
     <script src="' . base_url('assets/js/content-renderer.js') . '"></script>
+    <script src="' . base_url('assets/js/careers.js') . '"></script>
 ']) ?>
 
