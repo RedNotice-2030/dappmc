@@ -268,7 +268,7 @@
                             <li>User accounts are stored securely in the <code>users</code> MySQL table</li>
                             <li>Session is managed server-side by CodeIgniter 4</li>
                             <li>Content is still stored in JSON files under <code>assets/data/</code></li>
-                            <li>Use <strong>Export JSON</strong> to download updated data files</li>
+                            <!-- <li>Use <strong>Export JSON</strong> to download updated data files</li> -->
                           </ul>
                           <div class="alert alert-success small mb-0">
                             <i class="bi bi-shield-check me-1"></i>
