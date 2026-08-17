@@ -333,7 +333,7 @@
         </div>
       </section>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script>
       var typed = new Typed('#motto', {
         strings: ['INTEGRITY', 'COMPASSION', 'ACCOUNTABILITY', 'RELIABILITY', 'EXCELLENCE'], // Array of strings to type
@@ -344,5 +344,5 @@
         showCursor: true,
         cursorChar: '|'
       });
-    </script>
+    </script> -->
 <?= view('partials/footer') ?>

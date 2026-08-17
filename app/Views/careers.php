@@ -81,6 +81,5 @@
     <script src="' . base_url('assets/js/cms.js') . '"></script>
     <script src="' . base_url('assets/js/animations.js') . '"></script>
     <script src="' . base_url('assets/js/content-renderer.js') . '"></script>
-    <script src="' . base_url('assets/js/careers.js') . '"></script>
 ']) ?>
 
