@@ -59,7 +59,10 @@
       fetch('careers/apply', {
         method: 'POST',
         credentials: 'same-origin',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        headers: { 
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-TOKEN': CSRF.tokenValue
+        },
         body: formData
       })
         .then(function (response) {

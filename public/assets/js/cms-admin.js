@@ -147,7 +147,8 @@
       credentials: 'same-origin',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-TOKEN': CSRF.tokenValue
       },
       body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password)
     })
@@ -177,7 +178,8 @@
       credentials: 'same-origin',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-TOKEN': CSRF.tokenValue
       }
     })
       .then(function (response) {
@@ -604,7 +606,8 @@ function updateNavForRole() {
       credentials: 'same-origin',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-TOKEN': CSRF.tokenValue
       },
       body: params.toString()
     })
@@ -706,7 +709,8 @@ function updateNavForRole() {
       credentials: 'same-origin',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-TOKEN': CSRF.tokenValue
       },
       body: params.toString()
     })
@@ -740,7 +744,8 @@ function updateNavForRole() {
       credentials: 'same-origin',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-TOKEN': CSRF.tokenValue
       },
       body: params.toString()
     })
@@ -1460,7 +1465,8 @@ function updateNavForRole() {
       credentials: 'same-origin',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-TOKEN': CSRF.tokenValue
       },
       body: params.toString()
     })
@@ -1569,7 +1575,8 @@ function updateNavForRole() {
       credentials: 'same-origin',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-TOKEN': CSRF.tokenValue
       },
       body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password)
     })
