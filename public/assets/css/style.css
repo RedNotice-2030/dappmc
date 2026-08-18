@@ -962,4 +962,12 @@ footer {
   border-color: #b3a046;
 }
 
+.diagnostic-card{
+  border-color: white;
+  box-shadow: none;
+  
+}
 
+.icare-text{
+  font-family: "Copperplate Gothic", sans-serif;
+}
