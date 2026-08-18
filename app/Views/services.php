@@ -23,7 +23,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">HEART STATION</h5>
+                  <h5 class="card-title service-card-title fw-bold">HEART STATION</h5>
                   <ul>
                     <li>2D-ECHOGRAPHY (Transthoracic with Doppler Studies)
                       <ul>
@@ -50,7 +50,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">LABORATORY DEPARTMENT</h5>
+                  <h5 class="card-title service-card-title fw-bold">LABORATORY DEPARTMENT</h5>
                   <ul>
                     <li>HEMATOLOGY</li>
                     <li>CLINICAL CHEMISTRY</li>
@@ -70,7 +70,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">PULMONARY SERVICES</h5>
+                  <h5 class="card-title service-card-title fw-bold">PULMONARY SERVICES</h5>
                   <ul>
                     <li>ARTERIAL BLOOD GAS</li>
                     <li>PULMONARY FUNCTION TEST</li>
@@ -94,7 +94,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">RADIOLOGY DEPARTMENT</h5>
+                  <h5 class="card-title service-card-title fw-bold">RADIOLOGY DEPARTMENT</h5>
                   <ul>
                     <li>DIAGNOSTIC X-RAY (FILMLESS)</li>
                     <li>ULTRASOUND</li>
@@ -108,7 +108,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">PHISICAL MEDICINE AND REHABILITATION</h5>
+                  <h5 class="card-title service-card-title fw-bold">PHISICAL MEDICINE AND REHABILITATION</h5>
                   <ul>
                     <li>PHYSICAL THERAPY</li>
                     <li>OCCUPATIONAL THERAPY</li>
@@ -123,7 +123,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">AMBULATORY CARE UNIT</h5>
+                  <h5 class="card-title service-card-title fw-bold">AMBULATORY CARE UNIT</h5>
                   <ul>
                     <li>ENDOSCOPY</li>
                     <li>COLONOSCOPY</li>
@@ -139,7 +139,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">ADDITIONAL SERVICES</h5>
+                  <h5 class="card-title service-card-title fw-bold">ADDITIONAL SERVICES</h5>
                   <ul>
                     <li>Z-PACKAGE FOR PREMATURE OR SMALL BABIES PACKAGE</li>
                     <li>PHILHEALTH PHYSICAL MEDICINE, REHABILITAION AND ASSISTIVE MOBILITY DEVICES BENEFIT PACKAGE</li>
@@ -154,7 +154,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">SERVICES AND FACILITIES</h5>
+                  <h5 class="card-title service-card-title fw-bold">SERVICES AND FACILITIES</h5>
                   <ul>
                     <li>24-HOUR EMERGENCY DEPARTMENT</li>
                     <li>OUT PATIENT DEPARTMENT
@@ -184,7 +184,7 @@
             <div class="col-md-6 col-lg-4">
               <div class="card diagnostic-card h-100 scroll-animate animate-bottom">
                 <div class="card-body">
-                  <h5 class="card-title fw-bold">ACCOMMODATIONS</h5>
+                  <h5 class="card-title service-card-title fw-bold">ACCOMMODATIONS</h5>
                   <ul>
                     <li>SUITE ROOMS</li>
                     <li>PRIVATE ROOMS</li>

@@ -965,7 +965,10 @@ footer {
 .diagnostic-card{
   border-color: white;
   box-shadow: none;
-  
+}
+
+.service-card-title{
+  font-family: "Copperplate Gothic", sans-serif;
 }
 
 .icare-text{
