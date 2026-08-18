@@ -102,7 +102,7 @@
               Core Values
             </h1>
             <p class="text-center mt-3 mx-auto scroll-animate animate-bottom delay-2" style="max-width: 800px">
-              <strong>Integrity, Compassion, Accountability, Reliability, and Excellence</strong>
+              <strong class="icare-text">Integrity, Compassion, Accountability, Reliability, and Excellence</strong>
             </p>
           </div>
         </div>
