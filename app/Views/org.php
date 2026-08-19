@@ -134,12 +134,12 @@
             ],
             [
               'icon' => 'bi-display-fill',
-              'name' => 'Mizhelle D. Dela Cruz, MIT',
+              'name' => 'Mizhelle D. Dela Cruz, MIT, DBMIS',
               'title' => 'Head Hospital Information System',
               'image' => 'assets/images/heads/MIS.png',
               'badge' => 'bg-violet-subtle text-violet',
               'badgeText' => 'Information Technology',
-              'dept' => 'HIS / IT Department'
+              'dept' => 'HIS / MIS Department'
             ]
           ];
           ?>

@@ -28,6 +28,14 @@ $routes->get('users/list', 'Users::index');
 $routes->post('users/create', 'Users::create');
 $routes->post('users/update/(:num)', 'Users::update/$1');
 $routes->post('users/set-active/(:num)', 'Users::setActive/$1');
+
+// --- News API (AJAX) ---
+$routes->get('api/news', 'News::index');
+$routes->get('api/news/category/(:any)', 'News::byCategory/$1');
+$routes->get('api/news/admin', 'News::adminList');
+$routes->post('api/news/create', 'News::create');
+$routes->post('api/news/update/(:num)', 'News::update/$1');
+$routes->post('api/news/delete/(:num)', 'News::delete/$1');
 $routes->get('careers/jobs.json', 'Jobs::publicList');       // public, for content-renderer.js
 $routes->get('jobs/list', 'Jobs::index');                     // admin
 $routes->post('jobs/create', 'Jobs::create');
