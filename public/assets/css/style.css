@@ -574,6 +574,7 @@ footer {
 .modal-body,
 .modal-footer {
   border-radius: 0 !important;
+  border: none !important;
 }
 
 .careers-page .card:hover {

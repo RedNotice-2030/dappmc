@@ -463,9 +463,9 @@
     }).join('');
 
     var paymentHtml = (pkg.paymentOptions || []).map(function (opt) {
-      var clean = String(opt).replace('dchi.accounting@yahoo.com', 'dchi.accounting@yahoo.com');
+      var clean = String(opt).replace('tdchi.accounting@yahoo.com', 'tdchi.accounting@yahoo.com');
       var linkified = clean.replace(
-        /(dchi\.accounting@yahoo\.com)/g,
+        /(tdchi\.accounting@yahoo\.com)/g,
         '<a href="mailto:$1">$1</a>'
       );
       return '<li>' + linkified + '</li>';
