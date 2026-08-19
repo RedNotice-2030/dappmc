@@ -42,8 +42,15 @@
    * Render all news sections on the page.
    * Each section (news, advisories, events, drives, alerts) renders its own card grid.
    */
+  function fetchNewsItems() {
+    return fetch('api/news', { method: 'GET', credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function (response) { return response.json(); })
+      .then(function (data) { return data.success ? (data.news || []) : []; })
+      .catch(function (err) { console.error('Failed to fetch news from API:', err); return CMS.getItems('news'); });
+  }
+
   function renderNewsSections() {
-    CMS.getItems('news').then(function (items) {
+    fetchNewsItems().then(function (items) {
       // Group items by category
       var grouped = {};
       items.forEach(function (item) {

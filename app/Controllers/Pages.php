@@ -31,7 +31,19 @@ class Pages extends BaseController
 
     public function news(): string
     {
-        return view('news', ['title' => 'DAPPMC - News & Announcements']);
+        $newsModel = model(\App\Models\NewsModel::class);
+        $newsItems = $newsModel->getNews();
+
+        // Decode tags for each item
+        $items = [];
+        foreach ($newsItems as $item) {
+            $items[] = $newsModel->decodeTags($item);
+        }
+
+        return view('news', [
+            'title' => 'DAPPMC - News & Announcements',
+            'newsItems' => $items,
+        ]);
     }
 
     public function faqs(): string
