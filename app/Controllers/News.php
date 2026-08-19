@@ -7,6 +7,9 @@ use App\Models\NewsModel;
 class News extends BaseController
 {
     protected NewsModel $newsModel;
+    /**
+     * @var \CodeIgniter\Session\Session
+     */
     protected $session;
 
     public function __construct()
@@ -56,7 +59,7 @@ class News extends BaseController
     /**
      * Public: Get active news items filtered by category.
      */
-    public function byCategory($category)
+    public function byCategory(string $category)
     {
         $items = $this->newsModel->getNews($category);
 
@@ -168,7 +171,7 @@ class News extends BaseController
     /**
      * Admin: Update an existing news item.
      */
-    public function update($id)
+    public function update(int $id)
     {
         $guard = $this->requireAuth();
         if ($guard !== null) return $guard;
@@ -239,7 +242,7 @@ class News extends BaseController
         ]);
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         $guard = $this->requireAuth();
         if ($guard !== null) return $guard;
