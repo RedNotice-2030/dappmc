@@ -298,7 +298,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form id="news-item-form">
+            <form id="news-item-form" enctype="multipart/form-data">
               <input type="hidden" id="news-item-id" />
               <div class="row g-3">
                 <div class="col-md-6">
@@ -328,8 +328,12 @@
                   <textarea class="form-control" id="news-item-content" rows="5" placeholder="Full article content..."></textarea>
                 </div>
                 <div class="col-12">
-                  <label class="form-label">Image URL <span class="help-text">(optional — leave blank for a themed icon)</span></label>
-                  <input type="text" class="form-control" id="news-item-image" placeholder="assets/images/your-image.jpg" />
+                  <label class="form-label">Image <span class="help-text">(optional — recommended 16:9 aspect ratio, e.g. 1200×675px. Leave blank for a themed icon.)</span></label>
+                  <input type="file" class="form-control" id="news-item-image-file" accept="image/jpeg,image/png,image/webp" />
+                  <input type="hidden" id="news-item-image" />
+                  <div class="mt-2" id="news-item-image-preview" style="display:none;">
+                    <img src="" alt="Current image" style="max-width:200px; max-height:120px; border-radius:8px; border:1px solid #e2e8f0;" id="news-item-image-preview-img">
+                  </div>
                 </div>
                 <div class="col-12">
                   <label class="form-label">Tags <span class="help-text">(comma-separated, optional)</span></label>

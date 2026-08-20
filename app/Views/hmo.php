@@ -37,7 +37,7 @@
             <?php foreach ($hmoLogos as $logo): ?>
             <div class="col-6 col-md-4 col-lg-3 scroll-animate animate-bottom">
               <div class="card h-100 shadow-sm border-0 p-3 d-flex align-items-center justify-content-center" style="min-height: 120px;">
-                <img src="<?= base_url('assets/images/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="img-fluid hmo-logo" style="max-height: 60px; width: auto;" />
+                <img src="<?= base_url('assets/images/hmo/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="img-fluid hmo-logo" style="max-height: 60px; width: auto;" />
               </div>
             </div>
             <?php endforeach; ?>
