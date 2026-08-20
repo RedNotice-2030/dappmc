@@ -425,9 +425,15 @@
             "bg-secondary-subtle text-secondary";
           var dateLabel = CMS.formatDate(item.date);
 
+          var isActive = item.is_active !== 0 && item.is_active !== false;
+          var statusBadge = isActive
+            ? '<span class="badge bg-success-subtle text-success badge-category">Active</span>'
+            : '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>';
+
           html +=
             '<div class="item-row">' +
             '  <div class="d-flex align-items-center gap-3 flex-grow-1">' +
+            statusBadge +
             '    <span class="badge ' + badgeClass + ' badge-category">' +
             CMS.escapeHtml(catLabel) +
             "</span>" +
@@ -443,12 +449,23 @@
             CMS.escapeHtml(item.id) +
             '">' +
             '      <i class="bi bi-pencil"></i>' +
-            "    </button>" +
-            '    <button class="btn btn-sm btn-outline-danger btn-delete-news" data-id="' +
-            CMS.escapeHtml(item.id) +
-            '">' +
-            '      <i class="bi bi-trash"></i>' +
-            "    </button>" +
+            "    </button>";
+          if (isActive) {
+            html +=
+              '    <button class="btn btn-sm btn-outline-danger btn-deactivate-news" data-id="' +
+              CMS.escapeHtml(item.id) +
+              '">' +
+              '      <i class="bi bi-eye-slash"></i>' +
+              "    </button>";
+          } else {
+            html +=
+              '    <button class="btn btn-sm btn-outline-success btn-activate-news" data-id="' +
+              CMS.escapeHtml(item.id) +
+              '">' +
+              '      <i class="bi bi-eye"></i>' +
+              "    </button>";
+          }
+          html +=
             "  </div>" +
             "</div>";
         });
@@ -794,37 +811,49 @@
       });
     });
 
-    document.querySelectorAll(".btn-delete-news").forEach(function (btn) {
+    document.querySelectorAll(".btn-deactivate-news").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var id = btn.getAttribute("data-id");
-        if (!confirm("Delete this news item? This cannot be undone.")) return;
-
-        fetch("api/news/delete/" + id, {
-          method: "POST",
-          credentials: "same-origin",
-          headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            'X-CSRF-TOKEN': CSRF.tokenValue
-          }
-        })
-          .then(function (response) {
-            return response.json();
-          })
-          .then(function (data) {
-            if (data.success) {
-              toastr.success(data.message || "News item deleted.", "Success");
-              renderNewsList();
-            } else {
-              toastr.error(data.message || "Failed to delete news item.", "Error");
-            }
-          })
-          .catch(function (err) {
-            console.error(err);
-            toastr.error("Failed to delete news item.", "Error");
-          });
+        if (!confirm("Hide this news item from the website? You can reactivate it anytime.")) return;
+        setNewsActive(id, 0);
       });
     });
+
+    document.querySelectorAll(".btn-activate-news").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-id");
+        setNewsActive(id, 1);
+      });
+    });
+  }
+
+  function setNewsActive(id, isActive) {
+    var params = new URLSearchParams();
+    params.append("is_active", isActive);
+
+    fetch("api/news/set-active/" + id, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "X-CSRF-TOKEN": CSRF.tokenValue
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) {
+        if (data.success) {
+          toastr.success(data.message || "News item status updated.", "Success");
+          renderNewsList();
+        } else {
+          toastr.error(data.message || "Failed to update news item status.", "Error");
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error("Failed to update news item status.", "Error");
+      });
   }
 
   /**
