@@ -318,14 +318,14 @@
                 ['wellcare.png', 'WellCare'],
               ]; ?>
               <?php foreach ($hmoLogos as $logo): ?>
-                <img src="<?= base_url('assets/images/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="hmo-logo" />
+                <img src="<?= base_url('assets/images/hmo/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="hmo-logo" />
               <?php endforeach; ?>
             </div>
 
             <!-- Group 2 (Exact Duplicate for Infinite Loop Effect) -->
             <div class="marquee-content" aria-hidden="true">
               <?php foreach ($hmoLogos as $logo): ?>
-                <img src="<?= base_url('assets/images/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="hmo-logo" />
+                <img src="<?= base_url('assets/images/hmo/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="hmo-logo" />
               <?php endforeach; ?>
             </div>
 

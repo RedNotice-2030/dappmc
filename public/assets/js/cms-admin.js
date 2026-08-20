@@ -1004,7 +1004,17 @@
     document.getElementById("news-item-content").value = item
       ? item.content || ""
       : "";
-    document.getElementById("news-item-image").value = item ? item.image || "" : "";
+    document.getElementById("news-item-image").value = item ? (item.image || "") : "";
+    document.getElementById("news-item-image-file").value = "";
+
+    var previewWrap = document.getElementById("news-item-image-preview");
+    var previewImg = document.getElementById("news-item-image-preview-img");
+    if (item && item.image) {
+      previewImg.src = item.image;
+      previewWrap.style.display = "block";
+    } else {
+      previewWrap.style.display = "none";
+    }
     document.getElementById("news-item-tags").value =
       item && item.tags ? item.tags.join(", ") : "";
 
@@ -1043,15 +1053,21 @@
       : [];
 
     // Build form data
-    var params = new URLSearchParams();
-    params.append("category", category);
-    params.append("title", title);
-    params.append("excerpt", excerpt);
-    params.append("content", content);
-    params.append("image", image);
-    params.append("date", date);
-    params.append("tags", JSON.stringify(tags));
-    params.append("is_active", 1);
+    var imageFile = document.getElementById("news-item-image-file").files[0];
+    var existingImage = document.getElementById("news-item-image").value;
+
+    var formData = new FormData();
+    formData.append("category", category);
+    formData.append("title", title);
+    formData.append("excerpt", excerpt);
+    formData.append("content", content);
+    formData.append("date", date);
+    formData.append("tags", JSON.stringify(tags));
+    formData.append("is_active", 1);
+    formData.append("existing_image", existingImage);
+    if (imageFile) {
+      formData.append("image_file", imageFile);
+    }
 
     var url = id ? "api/news/update/" + id : "api/news/create";
 
@@ -1060,10 +1076,10 @@
       credentials: "same-origin",
       headers: {
         "X-Requested-With": "XMLHttpRequest",
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        'X-CSRF-TOKEN': CSRF.tokenValue
+        "X-CSRF-TOKEN": CSRF.tokenValue
+        // No Content-Type here — the browser sets the correct multipart boundary automatically for FormData
       },
-      body: params.toString()
+      body: formData
     })
       .then(function (response) {
         return response.json().then(function (data) {

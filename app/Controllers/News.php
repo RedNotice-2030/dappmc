@@ -106,7 +106,7 @@ class News extends BaseController
         $title    = trim((string) $this->request->getPost('title'));
         $excerpt  = trim((string) $this->request->getPost('excerpt'));
         $content  = trim((string) $this->request->getPost('content'));
-        $image    = trim((string) $this->request->getPost('image'));
+        $image = $this->handleImageUpload(null);
         $date     = trim((string) $this->request->getPost('date'));
         $tagsRaw  = $this->request->getPost('tags');
         $isActive = (int) $this->request->getPost('is_active');
@@ -188,7 +188,8 @@ class News extends BaseController
         $title    = trim((string) $this->request->getPost('title'));
         $excerpt  = trim((string) $this->request->getPost('excerpt'));
         $content  = trim((string) $this->request->getPost('content'));
-        $image    = trim((string) $this->request->getPost('image'));
+        $existingImage = trim((string) $this->request->getPost('existing_image'));
+        $image = $this->handleImageUpload($existingImage);
         $date     = trim((string) $this->request->getPost('date'));
         $tagsRaw  = $this->request->getPost('tags');
         $isActive = (int) $this->request->getPost('is_active');
@@ -272,6 +273,26 @@ class News extends BaseController
             'success' => true,
             'message' => 'News item ' . $verb . ' successfully.',
         ]);
+    }
+
+    private function handleImageUpload(?string $existingImage): string
+    {
+        $file = $this->request->getFile('image_file');
+
+        if ($file !== null && $file->isValid() && $file->getSize() > 0) {
+            if (!in_array($file->getExtension(), ['jpg', 'jpeg', 'png', 'webp'], true)) {
+                return $existingImage ?? '';
+            }
+            if ($file->getSizeByUnit('mb') > 5) {
+                return $existingImage ?? '';
+            }
+
+            $newName = $file->getRandomName();
+            $file->move(FCPATH . 'assets/images/news', $newName);
+            return 'assets/images/news/' . $newName;
+        }
+
+        return $existingImage ?? '';
     }
 
     // public function delete(int $id)
