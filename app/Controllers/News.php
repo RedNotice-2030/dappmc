@@ -242,10 +242,18 @@ class News extends BaseController
         ]);
     }
 
-    public function delete(int $id)
+    public function setActive(int $id)
     {
         $guard = $this->requireAuth();
         if ($guard !== null) return $guard;
+
+        $isActive = (int) $this->request->getPost('is_active');
+        if ($isActive !== 0 && $isActive !== 1) {
+            return $this->response->setStatusCode(400)->setJSON([
+                'success' => false,
+                'message' => 'Invalid active state.',
+            ]);
+        }
 
         $item = $this->newsModel->find($id);
         if ($item === null) {
@@ -255,11 +263,35 @@ class News extends BaseController
             ]);
         }
 
-        $this->newsModel->delete($id);
+        $this->newsModel->skipValidation(true);
+        $this->newsModel->update($id, ['is_active' => $isActive]);
+        $this->newsModel->skipValidation(false);
 
+        $verb = $isActive ? 'activated' : 'deactivated';
         return $this->response->setJSON([
             'success' => true,
-            'message' => 'News item deleted successfully.',
+            'message' => 'News item ' . $verb . ' successfully.',
         ]);
     }
+
+    // public function delete(int $id)
+    // {
+    //     $guard = $this->requireAuth();
+    //     if ($guard !== null) return $guard;
+
+    //     $item = $this->newsModel->find($id);
+    //     if ($item === null) {
+    //         return $this->response->setStatusCode(404)->setJSON([
+    //             'success' => false,
+    //             'message' => 'News item not found.',
+    //         ]);
+    //     }
+
+    //     $this->newsModel->delete($id);
+
+    //     return $this->response->setJSON([
+    //         'success' => true,
+    //         'message' => 'News item deleted successfully.',
+    //     ]);
+    // }
 }
