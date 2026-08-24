@@ -105,7 +105,7 @@ class RatingModel extends Model
     private function referenceCode(): string
     {
         $chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-        $out = 'SA-';
+        $out = 'DAPPMC-';
 
         for ($i = 0; $i < 4; $i++) {
             $out .= $chars[random_int(0, strlen($chars) - 1)];

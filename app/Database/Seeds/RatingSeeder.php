@@ -28,7 +28,7 @@ class RatingSeeder extends Seeder
                 'communication_rating' => 5,
                 'comment'              => 'Dr. Reyes drew my echo results on paper so I could understand them. Nobody rushed me.',
                 'would_recommend'      => 1,
-                'reference_code'       => 'SA-K2M7',
+                'reference_code'       => 'DAPPMC-K2M7',
             ],
             [
                 'patient_name'         => 'Daniel Whitfield',
@@ -42,7 +42,7 @@ class RatingSeeder extends Seeder
                 'communication_rating' => 4,
                 'comment'              => 'The triage nurse kept me updated even when there was no news. The wait itself needs work.',
                 'would_recommend'      => 1,
-                'reference_code'       => 'SA-9TXP',
+                'reference_code'       => 'DAPPMC-9TXP',
             ],
             [
                 'patient_name'         => 'Priya Raman',
@@ -56,7 +56,7 @@ class RatingSeeder extends Seeder
                 'communication_rating' => 5,
                 'comment'              => 'The child-life specialist turned my daughter\'s IV into a spaceship mission.',
                 'would_recommend'      => 1,
-                'reference_code'       => 'SA-H4RD',
+                'reference_code'       => 'DAPPMC-H4RD',
             ],
             [
                 'patient_name'         => 'Helena Duarte',
@@ -70,7 +70,7 @@ class RatingSeeder extends Seeder
                 'communication_rating' => 3,
                 'comment'              => 'Treated kindly, but I sat 40 minutes past my appointment with zero explanation.',
                 'would_recommend'      => 0,
-                'reference_code'       => 'SA-D5SZ',
+                'reference_code'       => 'DAPPMC-D5SZ',
             ],
         ];
 

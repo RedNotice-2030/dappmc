@@ -505,7 +505,7 @@
 
   function scheduleToast() {
     try {
-      if (sessionStorage.getItem('sa-rated') === '1' || sessionStorage.getItem('sa-prompt-dismissed') === '1') return;
+      if (sessionStorage.getItem('dappmc-rated') === '1' || sessionStorage.getItem('dappmc-prompt-dismissed') === '1') return;
     } catch (error) {
       // ignore private-mode storage issues
     }
@@ -521,12 +521,12 @@
   function hideToast(fromOpen) {
     $('[data-rate-toast]')?.classList.add('ru-hidden');
     if (!fromOpen) {
-      try { sessionStorage.setItem('sa-prompt-dismissed', '1'); } catch (error) {}
+      try { sessionStorage.setItem('dappmc-prompt-dismissed', '1'); } catch (error) {}
     }
   }
 
   function rememberRated() {
-    try { sessionStorage.setItem('sa-rated', '1'); } catch (error) {}
+    try { sessionStorage.setItem('dappmc-rated', '1'); } catch (error) {}
   }
 
   function setText(selector, text) {
