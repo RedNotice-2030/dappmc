@@ -2,7 +2,7 @@
     <main>
       
       <!-- History / About Us Section -->
-      <section class="py-5 bg-white" id="history">
+      <section class="py-5" id="history">
         <div class="container my-4">
           <h1 class="about-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">
             About Us
