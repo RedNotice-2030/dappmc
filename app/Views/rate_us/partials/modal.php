@@ -15,7 +15,8 @@ $categories = [
                 <p data-modal-kicker>Step 1 / 3 — Score</p>
                 <h2 id="rate-modal-title" data-modal-title>How did we do?</h2>
             </div>
-            <button type="button" aria-label="Close rating form" data-close-rate-modal>×</button>
+            <button type="button" aria-label="Close rating form" data-close-rate-modal>✕</button>
+            <!-- <button type="button" class="btn-close" data-close-rate-modal aria-label="Close">x</button> -->
         </header>
 
         <div class="ru-progress" aria-hidden="true">
@@ -105,7 +106,7 @@ $categories = [
                 <div class="ru-success-mark">✓</div>
                 <h3>On the ward ledger.</h3>
                 <p>Your survey was saved under reference</p>
-                <strong data-success-reference>SA-0000</strong>
+                <strong data-success-reference>DAPPMC-0000</strong>
                 <small data-success-meta></small>
             </div>
 
