@@ -1,0 +1,15 @@
+{
+  "labels": {
+    "1": "Poor",
+    "2": "Fair",
+    "3": "Good",
+    "4": "Very good",
+    "5": "Excellent"
+  },
+  "categories": [
+    { "key": "staffRating", "label": "Care team" },
+    { "key": "cleanlinessRating", "label": "Cleanliness" },
+    { "key": "waitRating", "label": "Wait time" },
+    { "key": "communicationRating", "label": "Communication" }
+  ]
+}

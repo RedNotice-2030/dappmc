@@ -191,12 +191,12 @@
             ]; ?>
             <div class="marquee-content">
               <?php foreach ($hmoLogos as $logo): ?>
-                <img src="<?= base_url('assets/images/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="hmo-logo" />
+                <img src="<?= base_url('assets/images/hmo/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="hmo-logo" />
               <?php endforeach; ?>
             </div>
             <div class="marquee-content" aria-hidden="true">
               <?php foreach ($hmoLogos as $logo): ?>
-                <img src="<?= base_url('assets/images/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="hmo-logo" />
+                <img src="<?= base_url('assets/images/hmo/' . $logo[0]) ?>" alt="<?= esc($logo[1]) ?>" class="hmo-logo" />
               <?php endforeach; ?>
             </div>
           </div>

@@ -13,7 +13,7 @@
           $executiveTeam = [
             [
               'icon' => 'bi-person-badge-fill',
-              'name' => 'Nanette P Franco, MD, FPARM, MSHSM',
+              'name' => 'Nanette P. Franco, MD, FPARM, MSHSM',
               'title' => 'Chief Executive Officer',
               'image' => 'assets/images/heads/CEO.png',
               'badge' => 'bg-warning-subtle text-warning-emphasis',
@@ -158,8 +158,10 @@
                       <i class="<?= esc($member['icon']) ?>"></i>
                     <?php endif; ?>
                   </div>
+                  <br>
                   <?php if (!empty($member['name'])): ?>
                     <h5 class="fw-bold mb-0" style="color: #002c6d"><?= esc($member['name']) ?></h5>
+                    <br>
                     <span class="badge <?= esc($member['badge']) ?> fw-semibold px-3 py-2 rounded-pill mb-2">
                     <?= esc($member['title']) ?>
                     </span>
@@ -190,8 +192,10 @@
                       <i class="<?= esc($member['icon']) ?>"></i>
                     <?php endif; ?>
                   </div>
+                  <br>
                   <?php if (!empty($member['name'])): ?>
                     <h5 class="fw-bold mb-0" style="color: #002c6d"><?= esc($member['name']) ?></h5>
+                    <br>
                   <?php endif; ?>
                   <span class="badge <?= esc($member['badge']) ?> fw-semibold px-3 py-2 rounded-pill mb-2">
                     <?= esc($member['title']) ?>

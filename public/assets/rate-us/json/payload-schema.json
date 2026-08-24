@@ -1,0 +1,18 @@
+{
+  "postEndpoint": "/api/ratings",
+  "contentType": "application/json",
+  "required": ["department", "visitDate", "overall"],
+  "properties": {
+    "patientName": { "type": "string", "maxLength": 100, "required": false },
+    "email": { "type": "string", "format": "email", "maxLength": 150, "required": false },
+    "department": { "type": "string", "required": true },
+    "visitDate": { "type": "string", "format": "YYYY-MM-DD", "required": true },
+    "overall": { "type": "integer", "minimum": 1, "maximum": 5, "required": true },
+    "staffRating": { "type": "integer", "minimum": 1, "maximum": 5, "required": false },
+    "cleanlinessRating": { "type": "integer", "minimum": 1, "maximum": 5, "required": false },
+    "waitRating": { "type": "integer", "minimum": 1, "maximum": 5, "required": false },
+    "communicationRating": { "type": "integer", "minimum": 1, "maximum": 5, "required": false },
+    "comment": { "type": "string", "maxLength": 600, "required": false },
+    "wouldRecommend": { "type": ["boolean", "null"], "required": false }
+  }
+}

@@ -48,6 +48,16 @@ $routes->post('jobs/benefits/create', 'Jobs::createBenefit');
 $routes->post('jobs/set-active/(:num)', 'Jobs::setActive/$1');
 $routes->post('careers/apply', 'Careers::apply');
 $routes->post('contact/send', 'Contact::send');
+
+
+
+$routes->get('rate-us', 'RateUs::index');
+$routes->group('api', static function (RouteCollection $routes) {
+    $routes->get('ratings', 'RateUs::ratings');
+    $routes->post('ratings', 'RateUs::create');
+    $routes->options('ratings', 'RateUs::options');
+});
+
 // $routes->get('debug-ssl-check', function() {
 //     $path = WRITEPATH . 'ssl/aiven-ca.pem';
 //     echo 'Path: ' . $path . '<br>';
