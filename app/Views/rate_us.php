@@ -1,70 +1,35 @@
-<!-- <?php
-$departments = $departments ?? [];
-$initialData = $initialData ?? ['stats' => null, 'reviews' => []];
-$csrf = $csrf ?? ['tokenName' => null, 'headerName' => 'X-CSRF-TOKEN', 'hash' => null];
+    <?php
+        $departments = $departments ?? [];
+        $initialData = $initialData ?? ['stats' => null, 'reviews' => []];
+        $csrf = $csrf ?? ['tokenName' => null, 'headerName' => 'X-CSRF-TOKEN', 'hash' => null];
 
-$config = [
-    'apiUrl'      => site_url('api/ratings'),
-    'departments' => $departments,
-    'initialData' => $initialData,
-    'csrf'        => $csrf,
-    'today'       => date('Y-m-d'),
-];
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>St. Alder General — Patient Experience Desk</title>
-    <meta name="description" content="Rate your hospital visit and see live patient experience feedback.">
-    <?php if (! empty($csrf['hash'])): ?>
-        <meta name="ci4-csrf-header" content="<?= esc($csrf['headerName']) ?>">
-        <meta name="ci4-csrf-token" content="<?= esc($csrf['hash']) ?>">
-    <?php endif; ?>
-    <link rel="stylesheet" href="<?= esc(base_url('assets/rate-us/css/rate-us.css')) ?>">
-</head> -->
+        $config = [
+            'apiUrl'      => site_url('api/ratings'),
+            'departments' => $departments,
+            'initialData' => $initialData,
+            'csrf'        => $csrf,
+            'today'       => date('Y-m-d'),
+        ];
+        ?>
 
-    <?= $this->include('rate_us/partials/modal') ?>
-<?= view('partials/header', ['title' => 'DAPPMC - HMO Partners']) ?>
+    
+    <?= view('partials/header', ['title' => 'DAPPMC - Rate Us']) ?>
 
-    <link rel="stylesheet" href="<?= esc(base_url('assets/rate-us/css/rate-us.css')) ?>">
-<body>
-    <script type="application/json" id="rate-us-config"><?= json_encode($config, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 
-    <!-- <div class="ru-status-strip">
-        <div class="ru-container ru-status-inner">
-            <p><span class="ru-cross">✚</span> EMERGENCY — CALL 911 <span>/</span> AMBULANCE BAY OPEN <span>/</span> OPEN 24 · 7 · 365</p>
-            <p><span class="ru-pulse">⌁</span> ER WAIT ≈ <b data-er-wait>11</b> MIN <span data-clock>--:--:--</span></p>
-        </div>
-    </div>
-
-    <header class="ru-header">
-        <div class="ru-container ru-nav">
-            <a class="ru-brand" href="#top" aria-label="St. Alder General home">
-                <span class="ru-brand-mark">✚</span>
-                <span>
-                    <strong>St. Alder General</strong>
-                    <small>Patient experience desk</small>
-                </span>
-            </a>
-            <nav class="ru-nav-links" aria-label="Page navigation">
-                <a href="#promise">Our promise</a>
-                <a href="#wall">Feedback wall</a>
-                <button type="button" class="ru-btn ru-btn-primary" data-open-rate-modal>★ Rate your visit</button>
-            </nav>
-        </div>
-    </header> -->
+    <body>
+    <script type="application/json" id="rate-us-config">
+        <?= json_encode($config, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>
+    </script>
 
     <main id="top">
         <section class="ru-hero ru-cross-grid">
             <div class="ru-container ru-hero-grid">
                 <div class="ru-reveal">
-                    <p class="ru-kicker">⌁ Ward feedback · live ledger</p>
+                    <p class="ru-kicker">⌁ Feedback · live ledger</p>
                     <h1>Care worth putting <em>on the record.</em></h1>
                     <p class="ru-lead">
-                        Every visit to St. Alder ends with an open question: <strong>how did we do?</strong>
-                        Your rating goes straight to the ward ledger, feeds the monitor, and is read at Monday's quality round.
+                        Every visit to DAPPMC ends with an open question: <strong>how did we do?</strong>
+                        Your rating gets reviewed weekly.
                     </p>
                     <div class="ru-actions">
                         <button type="button" class="ru-btn ru-btn-primary" data-open-rate-modal>Rate your visit →</button>
@@ -86,12 +51,28 @@ $config = [
                 <div class="ru-reveal">
                     <p class="ru-kicker">The ledger rules</p>
                     <h2>What happens to your feedback</h2>
-                    <p class="ru-muted-text">A rating box is only as honest as the pipeline behind it. These commitments are printed on every ward desk.</p>
+                    <br>
+                    <p class="ru-muted-text">A rating box is only as honest as the pipeline behind it. These commitments are printed and reviewed weekly.</p>
                 </div>
                 <div class="ru-promise-list">
-                    <article class="ru-reveal"><span>01</span><div><h3>Logged instantly</h3><p>Your survey lands in the database the moment you submit. Low scores can be flagged for immediate review.</p></div></article>
-                    <article class="ru-reveal"><span>02</span><div><h3>Read at quality round</h3><p>Ward leads review every comment, unedited, during the weekly quality meeting.</p></div></article>
-                    <article class="ru-reveal"><span>03</span><div><h3>Reply within five working days</h3><p>Leave an email and a member of the patient experience team can respond personally.</p></div></article>
+                    <article class="ru-reveal"><span>01</span>
+                        <div>
+                            <h3>Logged instantly</h3>
+                            <p>Your survey lands in the database the moment you submit. Low scores can be flagged for immediate review.</p>
+                        </div>
+                    </article>
+                    <!-- <article class="ru-reveal"><span>02</span>
+                        <div>
+                            <h3>Read at quality round</h3>
+                            <p>Ward leads review every comment, unedited, during the weekly quality meeting.</p>
+                        </div>
+                    </article> -->
+                    <article class="ru-reveal"><span>02</span>
+                        <div>
+                            <h3>Reply within five working days</h3>
+                            <p>Leave an email and a member of the patient experience team can respond personally.</p>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
@@ -131,11 +112,12 @@ $config = [
         </section>
     </main>
 
-    
-<?= view('partials/footer') ?>
 
+    <?= view('partials/footer') ?>
+    <?= $this->include('rate_us/partials/modal') ?>
     <?= $this->include('rate_us/partials/review_card') ?>
 
     <script src="<?= esc(base_url('assets/rate-us/js/rate-us.js')) ?>" defer></script>
 </body>
+
 </html>

@@ -24,6 +24,8 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
     />
     <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>?v=2" />
+    <link rel="stylesheet" href="<?= esc(base_url('assets/rate-us/css/rate-us.css')) ?>">
+    
   </head>
   <body>
     <div class="site-header">

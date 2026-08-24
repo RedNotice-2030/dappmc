@@ -94,7 +94,7 @@ $categories = [
                     </label>
                     <label>
                         <span class="ru-label">Email <em>(optional)</em></span>
-                        <input type="email" name="email" data-field="email" maxlength="150" placeholder="For our written reply">
+                        <input type="email" name="email" data-field="email" maxlength="150" placeholder="For our written reply" autocomplete="@gmail.com">
                     </label>
                 </div>
 

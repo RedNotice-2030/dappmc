@@ -648,14 +648,21 @@ a {
 .ru-modal-shell {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  position:fixed;
+  inset:0;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
 }
 .ru-modal-backdrop {
   position: absolute;
+  z-index:0;
   inset: 0;
   background: rgba(7, 31, 26, 0.68);
   animation: ruFade 0.22s ease both;
@@ -674,6 +681,12 @@ a {
   box-shadow: var(--ru-shadow);
   animation: ruModal 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+.ru-modal label{
+    display:block;
+    width:100%;
+}
+
 .ru-modal-head {
   display: flex;
   justify-content: space-between;
@@ -806,7 +819,7 @@ a {
   border-top: 0;
 }
 .ru-category-inputs span {
-  font-weight: 800;
+  font-weight: 600;
 }
 .ru-department-grid {
   display: grid;
@@ -823,7 +836,7 @@ a {
   padding: 10px;
   text-align: left;
   color: rgba(16, 32, 28, 0.75);
-  font-weight: 800;
+  font-weight: 600;
 }
 .ru-department-grid button.is-active,
 .ru-choice-row button.is-active {
@@ -871,7 +884,8 @@ a {
     monospace;
 }
 .ru-choice-row {
-  display: inline-flex;
+  display:flex;
+  width:100%;
   gap: 6px;
   border: 1px solid var(--ru-line);
   border-radius: 8px;
@@ -881,6 +895,7 @@ a {
 .ru-choice-row button {
   border: 0;
   text-align: center;
+  flex:1;
   padding: 8px 12px;
 }
 .ru-summary-card {
