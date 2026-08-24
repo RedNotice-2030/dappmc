@@ -88,7 +88,7 @@
             <li class="nav-item"><a class="nav-link" href="<?= site_url('faqs') ?>">FAQs</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#contact-us-modal">Contact Us</a></li>
             <!-- <li class="nav-item"><a class="nav-link" href="<?= site_url('cms') ?>" title="Content Manager"><i class="bi bi-gear-fill"></i></a></li> -->
-            <!-- <button type="button" class="ru-btn ru-btn-primary" data-open-rate-modal>★ Rate your visit</button> -->
+            <li class="nav-item"><a class="nav-link" href="<?= site_url('rate-us') ?>">Rate Us</a></li>
           </ul>
         </div>
       </div>
