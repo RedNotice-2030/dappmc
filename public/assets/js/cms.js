@@ -1,24 +1,3 @@
-/**
- * DAPPMC Content Management System — Core Data Layer
- * 
- * This lightweight CMS lets you manage website content (news, packages, etc.)
- * without editing HTML code manually.
- * 
- * HOW IT WORKS:
- * 1. Content is stored in JSON files inside assets/data/
- * 2. Pages fetch and render this JSON dynamically via JavaScript
- * 3. The CMS admin panel (cms.html) lets you add/edit/delete content
- * 4. Changes are saved to localStorage (for immediate testing) and can be
- *    exported as JSON to update the data files permanently
- * 
- * USAGE (for developers):
- *   CMS.getData('news')                    -> loads news.json
- *   CMS.getData('packages')                -> loads packages.json
- *   CMS.saveItem('news', item)             -> adds/updates an item
- *   CMS.deleteItem('news', itemId)         -> deletes an item
- *   CMS.exportData('news')                 -> downloads news.json
- *   CMS.importData('news', jsonString)      -> replaces all data
- */
 (function (window) {
   'use strict';
 
@@ -457,14 +436,6 @@
       if (localData) {
         try {
           var parsed = JSON.parse(localData);
-
-          // Auto-recover from a known corruption bug: an earlier version of
-          // saveItem() could persist a NON-categorized collection (jobs,
-          // packages) as an empty array, wiping out the existing data.
-          // Detect and discard such empty overrides so the file data is used.
-          // Only discard when EVERY array in the stored object is empty,
-          // since categorized collections (e.g. news) can legitimately have
-          // some categories with no items.
           var arrayKeys = 0;
           var emptyArrayKeys = 0;
           var isCorrupted = false;

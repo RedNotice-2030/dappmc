@@ -1,6 +1,6 @@
 <?php /** @var \CodeIgniter\View\View $this */ ?>
 <?= view('partials/header', ['title' => 'DAPPMC - Home']) ?>
-    <main>
+    <main class="bg-white">
       <!-- Hero Section -->
       <section class="hero-section text-white">
         <div class="container text-center text-lg-start">
@@ -40,7 +40,7 @@
       </section>
 
       <!-- Quick Action Cards Section -->
-      <section class="quick-actions-section bg-light py-4 border-bottom">
+      <section class="quick-actions-section bg-white py-4 border-bottom">
         <div class="container">
           <div class="row g-3">
             
@@ -81,7 +81,7 @@
         </div>
       </section>
       <!-- Banner Carousel Section -->
-      <section class="hero-carousel-section scroll-animate animate-bottom">
+      <section class="hero-carousel-section bg-white scroll-animate animate-bottom">
         <div class="container-fluid p-0">
           <div
             id="dappmcCarousel"
@@ -173,7 +173,7 @@
       </section>
 
       <!-- Services Section -->
-      <section id="services" class="py-5 my-5">
+      <section id="services bg-white" class="py-5 bg-white my-5">
         <div class="container">
           <div
             class="info-text text-center mx-auto mb-5 scroll-animate animate-bottom"
@@ -279,7 +279,7 @@
       </section>
 
       <!-- Accredited HMO Partners Section (Continuous Scroll) -->
-      <section id="hmo-partners" class="py-5 border-bottom">
+      <section id="hmo-partners" class="py-5 bg-white border-bottom">
         <div class="container text-center mb-4 scroll-animate animate-bottom">
           <div class="info-text mx-auto" style="max-width: 600px">
             <h6 class="text-uppercase fw-bold" style="color: #c6b350;">HMO & Insurance Partners</h6>

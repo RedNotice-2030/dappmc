@@ -405,6 +405,15 @@
     });
   }
 
+  
+
+  function fetchPackageItems() {
+    return fetch('services/packages.json', { method: 'GET', credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(function (response) { return response.json(); })
+      .then(function (data) { return data.packages || []; })
+      .catch(function (err) { console.error('Failed to fetch packages from API:', err); return CMS.getItems('packages'); });
+  }
+
   /**
    * Render all packages on the page.
    */
@@ -412,7 +421,7 @@
     var container = document.querySelector(containerSelector);
     if (!container) return;
 
-    CMS.getItems('packages').then(function (items) {
+    fetchPackageItems().then(function (items) {
       // Sort by sortOrder, filter active
       var activeItems = items
         .filter(function (item) { return item.active !== false; })

@@ -1,6 +1,6 @@
 <?= view('partials/header', ['title' => 'DAPPMC - Careers']) ?>
-    <main>
-      <section class="py-5">
+    <main class="bg-white">
+      <section class="py-5 bg-white">
         <div class="container my-4">
           <h1 class="careers-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">
             Join Our Team
@@ -17,7 +17,7 @@
         </div>
       </section>
 
-      <section class="py-5">
+      <section class="py-5 bg-white">
         <div class="container">
           <h2 class="careers-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">
             Open Positions

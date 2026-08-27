@@ -1,8 +1,8 @@
 <?= view('partials/header', ['title' => 'DAPPMC - Doctors & Specialists']) ?>
-    <main>
+    <main class="bg-white">
       
 
-      <section id="doctors" class="py-5 bg-light">
+      <section id="doctors" class="py-5 bg-white">
         <div class="container">
           <div class="text-center mb-5">
             <h6 class="text-uppercase fw-bold" style="color: #c6b350">

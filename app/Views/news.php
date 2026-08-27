@@ -1,6 +1,6 @@
 <?= view('partials/header', ['title' => 'DAPPMC - News & Announcements']) ?>
-    <main>
-      <section class="py-5 news-section" id="news">
+    <main class="bg-white">
+      <section class="py-5 news-section bg-white" id="news">
         <div class="container my-4">
           <h1 class="news-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">News & Announcements</h1>
           <div class="row g-4 news-card-container">
@@ -14,7 +14,7 @@
           </div>
         </div>
       </section>
-      <section class="py-5 health-advisories-section" id="advisories">
+      <section class="py-5 health-advisories-section bg-white" id="advisories">
         <div class="container my-4">
           <h1 class="health-advisories-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">Health Advisories</h1>
           <div class="row g-4 news-card-container">
@@ -28,7 +28,7 @@
           </div>
         </div>
       </section>
-      <section class="py-5 events-section" id="events">
+      <section class="py-5 events-section bg-white" id="events">
         <div class="container my-4">
           <h1 class="events-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">Hospital Events</h1>
           <div class="row g-4 news-card-container">
@@ -42,7 +42,7 @@
           </div>
         </div>
       </section>
-      <section class="py-5 drives-section" id="drives">
+      <section class="py-5 drives-section bg-white" id="drives">
         <div class="container my-4">
           <h1 class="drives-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">Health Drives</h1>
           <div class="row g-4 news-card-container">
@@ -56,7 +56,7 @@
           </div>
         </div>
       </section>
-      <section class="py-5 covid-section" id="alerts">
+      <section class="py-5 covid-section bg-white" id="alerts">
         <div class="container my-4">
           <h1 class="covid-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">COVID Alerts</h1>
           <div class="row g-4 news-card-container">

@@ -1,8 +1,8 @@
 <?= view('partials/header', ['title' => 'DAPPMC - About Us']) ?>
-    <main>
+    <main class="bg-white">
       
       <!-- History / About Us Section -->
-      <section class="py-5" id="history">
+      <section class="py-5 bg-white" id="history">
         <div class="container my-4">
           <h1 class="about-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">
             About Us
@@ -60,7 +60,7 @@
         </div>
       </section>
 
-      <section id="vision-mission" class="py-5">
+      <section id="vision-mission" class="py-5 bg-white">
         <div>
           <div>
             <h1 class="vision-mission-title text-center mt-5 scroll-animate animate-bottom delay-1 gold-outline-heading">
@@ -78,7 +78,7 @@
         </div>
       </section>
 
-      <section id="ims-policy" class="py-5">
+      <section id="ims-policy" class="py-5 bg-white">
         <div>
           <div>
             <h1 class="policy-title text-center mt-5 scroll-animate animate-bottom delay-1 gold-outline-heading">
@@ -95,7 +95,7 @@
         </div>
       </section>
 
-      <section id="core-values" class="py-5">
+      <section id="core-values" class="py-5 bg-white">
         <div>
           <div>
             <h1 class="core-values-title text-center mt-5 scroll-animate animate-bottom delay-1 gold-outline-heading">
@@ -108,7 +108,7 @@
         </div>
       </section>
 
-      <section class="py-5 location-section" id="location">
+      <section class="py-5 location-section bg-white" id="location">
         <div class="container">
           <h2 class="about-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">
             Visit Us
@@ -155,7 +155,7 @@
       </section>
 
       <!-- Accredited HMO Partners Section -->
-      <section id="hmo-partners" class="py-5 border-bottom">
+      <section id="hmo-partners" class="py-5 border-bottom bg-white">
         <div class="container text-center mb-4 scroll-animate animate-bottom">
           <div class="info-text mx-auto" style="max-width: 600px">
             <h6 class="text-uppercase fw-bold" style="color: #c6b350">HMO & Insurance Partners</h6>

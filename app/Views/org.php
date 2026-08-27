@@ -1,6 +1,6 @@
 <?= view('partials/header', ['title' => 'DAPPMC - Organization']) ?>
-    <main>
-      <section class="py-5">
+    <main class="bg-white">
+      <section class="py-5 bg-white">
         <div class="container my-4">
           <h1 class="team-title fw-bold text-center mb-2 gold-outline-heading scroll-animate animate-bottom">
             Meet the team

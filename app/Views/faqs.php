@@ -1,6 +1,6 @@
 <?= view('partials/header', ['title' => 'DAPPMC - FAQs']) ?>
-    <main>
-      <section class="py-5">
+    <main class="bg-white">
+      <section class="py-5 bg-white">
         <div class="container my-4">
           <h1
             class="faqs-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom"
@@ -13,7 +13,7 @@
         </div>
       </section>
 
-      <section class="py-5">
+      <section class="py-5 bg-white">
         <div class="container">
           <div class="faq-search-container scroll-animate animate-bottom delay-1">
             <div class="input-group">

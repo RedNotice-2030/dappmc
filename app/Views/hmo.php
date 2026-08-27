@@ -1,6 +1,6 @@
 <?= view('partials/header', ['title' => 'DAPPMC - HMO Partners']) ?>
-    <main>
-      <section class="py-5">
+    <main class="bg-white">
+      <section class="py-5 bg-white">
         <div class="container my-4">
           <h1 class="hmo-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">
             HMO & Insurance Partners

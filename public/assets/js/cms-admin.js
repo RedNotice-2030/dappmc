@@ -509,17 +509,23 @@
   /**
    * Render the list of health packages in the admin panel.
    */
+  function fetchAdminPackages() {
+    return fetch("packages/list", {
+      method: "GET",
+      credentials: "same-origin",
+      headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) { return data.success ? (data.packages || []) : []; });
+  }
+
   function renderPackagesList() {
     var container = document.getElementById("packages-items-list");
     if (!container) return;
 
-    CMS.getItems("packages").then(function (items) {
-      // Sort by sortOrder
-      items.sort(function (a, b) {
-        return (a.sortOrder || 0) - (b.sortOrder || 0);
-      });
+    fetchAdminPackages().then(function (items) {
+      items.sort(function (a, b) { return (a.sortOrder || 0) - (b.sortOrder || 0); });
 
-      // Empty state
       if (items.length === 0) {
         container.innerHTML =
           '<div class="empty-state">' +
@@ -530,13 +536,17 @@
         return;
       }
 
-      // Build item rows
       var html = "";
       items.forEach(function (pkg) {
-        var statusBadge =
-          pkg.active === false
-            ? '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>'
-            : '<span class="badge bg-success-subtle text-success badge-category">Active</span>';
+        var isActive = pkg.active !== false;
+        var statusBadge;
+        if (pkg.isExpired) {
+          statusBadge = '<span class="badge bg-warning-subtle text-warning-emphasis badge-category">Expired</span>';
+        } else if (isActive) {
+          statusBadge = '<span class="badge bg-success-subtle text-success badge-category">Active</span>';
+        } else {
+          statusBadge = '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>';
+        }
 
         html +=
           '<div class="item-row">' +
@@ -548,18 +558,21 @@
           "    </div>" +
           "  </div>" +
           '  <div class="d-flex gap-1">' +
-          '    <button class="btn btn-sm btn-outline-primary btn-edit-package" data-id="' +
-          CMS.escapeHtml(pkg.id) +
-          '">' +
+          '    <button class="btn btn-sm btn-outline-primary btn-edit-package" data-id="' + pkg.id + '">' +
           '      <i class="bi bi-pencil"></i>' +
-          "    </button>" +
-          '    <button class="btn btn-sm btn-outline-danger btn-delete-package" data-id="' +
-          CMS.escapeHtml(pkg.id) +
-          '">' +
-          '      <i class="bi bi-trash"></i>' +
-          "    </button>" +
-          "  </div>" +
-          "</div>";
+          "    </button>";
+        if (isActive) {
+          html +=
+            '    <button class="btn btn-sm btn-outline-danger btn-deactivate-package" data-id="' + pkg.id + '">' +
+            '      <i class="bi bi-eye-slash"></i>' +
+            "    </button>";
+        } else {
+          html +=
+            '    <button class="btn btn-sm btn-outline-success btn-activate-package" data-id="' + pkg.id + '">' +
+            '      <i class="bi bi-eye"></i>' +
+            "    </button>";
+        }
+        html += "  </div></div>";
       });
 
       container.innerHTML = html;
@@ -661,7 +674,7 @@
           '    <button class="btn btn-sm btn-outline-danger btn-delete-job" data-id="' +
           CMS.escapeHtml(job.id) +
           '">' +
-          '      <i class="bi bi-trash"></i>' +
+          '      <i class="bi bi-eye-slash"></i>' +
           "    </button>" +
           "  </div>" +
           "</div>";
@@ -856,29 +869,60 @@
       });
   }
 
-  /**
-   * Bind edit/delete buttons for package items.
-   */
   function bindPackageActions() {
     document.querySelectorAll(".btn-edit-package").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var id = btn.getAttribute("data-id");
-        CMS.getItems("packages").then(function (items) {
-          var item = items.find(function (i) {
-            return i.id === id;
-          });
+        fetchAdminPackages().then(function (items) {
+          var item = items.find(function (i) { return String(i.id) === String(id); });
           if (item) openPackageModal(item);
         });
       });
     });
 
-    document.querySelectorAll(".btn-delete-package").forEach(function (btn) {
+    document.querySelectorAll(".btn-deactivate-package").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        deleteTarget = { collection: "packages", id: btn.getAttribute("data-id") };
-        var modal = new bootstrap.Modal(document.getElementById("delete-modal"));
-        modal.show();
+        var id = btn.getAttribute("data-id");
+        if (!confirm("Hide this package from the website? You can reactivate it anytime.")) return;
+        setPackageActive(id, 0);
       });
     });
+
+    document.querySelectorAll(".btn-activate-package").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-id");
+        setPackageActive(id, 1);
+      });
+    });
+  }
+
+  function setPackageActive(id, isActive) {
+    var params = new URLSearchParams();
+    params.append("active", isActive);
+
+    fetch("packages/set-active/" + id, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "X-CSRF-TOKEN": CSRF.tokenValue
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) {
+        if (data.success) {
+          toastr.success(data.message || "Package status updated.", "Success");
+          renderPackagesList();
+        } else {
+          toastr.error(data.message || "Failed to update package status.", "Error");
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error("Failed to update package status.", "Error");
+      });
   }
 
   /**
@@ -1127,12 +1171,16 @@
     document.getElementById("package-item-full").value = item
       ? item.fullDescription || ""
       : "";
-    document.getElementById("package-item-image").value = item ? item.image || "" : "";
+    document.getElementById("package-item-image").value = item 
+      ? item.image || "" : "";
     document.getElementById("package-item-badge").value = item
       ? item.promoBadge || ""
       : "";
     document.getElementById("package-item-promo").value = item
       ? item.promoDetails || ""
+      : "";
+    document.getElementById("package-item-expires").value = item
+      ? (item.promoExpiresAt || "")
       : "";
     document.getElementById("package-item-hours").value = item
       ? item.operatingHours || ""
@@ -1144,6 +1192,11 @@
     document.getElementById("package-item-active").checked = item
       ? item.active !== false
       : true;
+    var sortField = document.getElementById("package-item-sort");
+    var sortGroup = sortField.closest(".col-md-4");
+    if (sortGroup) {
+      sortGroup.style.display = item ? "" : "none";
+    }
 
     var modal = new bootstrap.Modal(modalEl);
     modal.show();
@@ -1156,80 +1209,69 @@
   function savePackageItem() {
     var id = document.getElementById("package-item-id").value;
     var name = document.getElementById("package-item-name").value.trim();
-    var sortOrder =
-      parseInt(document.getElementById("package-item-sort").value, 10) || 1;
-    var shortDescription = document
-      .getElementById("package-item-short")
-      .value.trim();
+    var shortDescription = document.getElementById("package-item-short").value.trim();
     var fullDescription = document.getElementById("package-item-full").value.trim();
     var image = document.getElementById("package-item-image").value.trim();
     var promoBadge = document.getElementById("package-item-badge").value.trim();
     var promoDetails = document.getElementById("package-item-promo").value.trim();
+    var promoExpires = document.getElementById("package-item-expires").value;
     var operatingHours = document.getElementById("package-item-hours").value.trim();
     var stepsText = document.getElementById("package-item-steps").value.trim();
     var paymentsText = document.getElementById("package-item-payments").value.trim();
-    var active = document.getElementById("package-item-active").checked;
+    var active = document.getElementById("package-item-active").checked ? 1 : 0;
 
-    // Validation
     if (!name || !shortDescription) {
       toastr.warning("Please fill in the package name and short description.", "Validation");
       return;
     }
 
-    // Parse line-separated lists
     var availmentSteps = stepsText
-      ? stepsText
-          .split("\n")
-          .map(function (s) {
-            return s.trim();
-          })
-          .filter(Boolean)
+      ? stepsText.split("\n").map(function (s) { return s.trim(); }).filter(Boolean)
       : [];
     var paymentOptions = paymentsText
-      ? paymentsText
-          .split("\n")
-          .map(function (s) {
-            return s.trim();
-          })
-          .filter(Boolean)
+      ? paymentsText.split("\n").map(function (s) { return s.trim(); }).filter(Boolean)
       : [];
 
-    // Auto-increment sortOrder: find the highest existing sortOrder + 1
-    var maxSort = 1;
-    CMS.getItems("packages").then(function (items) {
-      items.forEach(function (p) {
-        if (p.sortOrder && p.sortOrder > maxSort) {
-          maxSort = p.sortOrder;
-        }
-      });
-      // Build item object with auto-incremented sortOrder
-      var item = {
-        id: id || CMS.generateId("pkg"),
-        name: name,
-        shortDescription: shortDescription,
-        fullDescription: fullDescription,
-        image: image,
-        promoBadge: promoBadge,
-        promoDetails: promoDetails,
-        operatingHours: operatingHours,
-        availmentSteps: availmentSteps,
-        paymentOptions: paymentOptions,
-        active: active,
-        sortOrder: sortOrder || maxSort + 1
-      };
+    var params = new URLSearchParams();
+    params.append("name", name);
+    params.append("short_description", shortDescription);
+    params.append("full_description", fullDescription);
+    params.append("image", image);
+    params.append("promo_badge", promoBadge);
+    params.append("promo_details", promoDetails);
+    params.append("operating_hours", operatingHours);
+    params.append("availment_steps", JSON.stringify(availmentSteps));
+    params.append("payment_options", JSON.stringify(paymentOptions));
+    params.append("active", active);
 
-      // Save via CMS data layer
-      CMS.saveItem("packages", item).then(function () {
-        toastr.success("Package saved successfully!", "Success");
-        var modalEl = document.getElementById("package-item-modal");
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        if (modal) modal.hide();
-        renderPackagesList();
-      }).catch(function (err) {
+    var url = id ? "packages/update/" + id : "packages/create";
+
+    fetch(url, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "X-CSRF-TOKEN": CSRF.tokenValue
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
+      .then(function (result) {
+        if (result.ok && result.data.success) {
+          toastr.success(result.data.message || "Package saved successfully!", "Success");
+          var modalEl = document.getElementById("package-item-modal");
+          var modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) modal.hide();
+          renderPackagesList();
+        } else {
+          toastr.error(result.data.message || "Failed to save package.", "Error");
+        }
+      })
+      .catch(function (err) {
         console.error(err);
         toastr.error("Failed to save package.", "Error");
       });
-    });
   }
 
   // ==========================================================================
@@ -1403,106 +1445,28 @@
   /**
    * Confirm and execute the pending delete operation (localStorage-based).
    */
-  function confirmDelete() {
-    if (!deleteTarget) return;
+  // function confirmDelete() {
+  //   if (!deleteTarget) return;
 
-    CMS.deleteItem(deleteTarget.collection, deleteTarget.id).then(function () {
-      toastr.success("Item deleted successfully!", "Success");
-      var modalEl = document.getElementById("delete-modal");
-      var modal = bootstrap.Modal.getInstance(modalEl);
-      if (modal) modal.hide();
-      deleteTarget = null;
+  //   CMS.deleteItem(deleteTarget.collection, deleteTarget.id).then(function () {
+  //     toastr.success("Item deleted successfully!", "Success");
+  //     var modalEl = document.getElementById("delete-modal");
+  //     var modal = bootstrap.Modal.getInstance(modalEl);
+  //     if (modal) modal.hide();
+  //     deleteTarget = null;
 
-      // Re-render the appropriate list
-      if (currentTab === "packages") {
-        renderPackagesList();
-      } else if (currentTab === "doctors") {
-        renderDoctorsList();
-      }
-    }).catch(function (err) {
-      console.error(err);
-      toastr.error("Failed to delete item.", "Error");
-    });
-  }
+  //     // Re-render the appropriate list
+  //     if (currentTab === "packages") {
+  //       renderPackagesList();
+  //     } else if (currentTab === "doctors") {
+  //       renderDoctorsList();
+  //     }
+  //   }).catch(function (err) {
+  //     console.error(err);
+  //     toastr.error("Failed to delete item.", "Error");
+  //   });
+  // }
 
-  // ==========================================================================
-  // EXPORT / IMPORT / RESET
-  // ==========================================================================
-
-  /**
-   * Export the current collection as a downloadable JSON file.
-   */
-  function exportCurrent() {
-    CMS.exportData(currentTab, currentTab + ".json").then(function () {
-      toastr.success("Exported " + currentTab + ".json", "Export");
-    });
-  }
-
-  /**
-   * Open the import modal.
-   */
-  function openImportModal() {
-    document.getElementById("import-json-text").value = "";
-    var modal = new bootstrap.Modal(document.getElementById("import-modal"));
-    modal.show();
-  }
-
-  /**
-   * Confirm and execute the JSON import.
-   */
-  function confirmImport() {
-    var jsonText = document.getElementById("import-json-text").value.trim();
-    if (!jsonText) {
-      toastr.warning("Please paste JSON content to import.", "Validation");
-      return;
-    }
-
-    CMS.importData(currentTab, jsonText).then(function () {
-      toastr.success("Data imported successfully!", "Success");
-      var modalEl = document.getElementById("import-modal");
-      var modal = bootstrap.Modal.getInstance(modalEl);
-      if (modal) modal.hide();
-
-      // Re-render the appropriate list
-      if (currentTab === "news") {
-        renderNewsList();
-      } else if (currentTab === "packages") {
-        renderPackagesList();
-      } else if (currentTab === "jobs") {
-        renderJobsList();
-      } else if (currentTab === "doctors") {
-        renderDoctorsList();
-      }
-    }).catch(function (err) {
-      console.error(err);
-      toastr.error("Invalid JSON. Please check your content.", "Error");
-    });
-  }
-
-  /**
-   * Reset the current collection to its original file data.
-   */
-  function resetCurrent() {
-    if (
-      !confirm(
-        "Reset all " + currentTab + " data to the original file content? This will discard your local changes."
-      )
-    )
-      return;
-    CMS.resetData(currentTab);
-    toastr.success("Data reset to original file content.", "Reset");
-
-    // Re-render the appropriate list
-    if (currentTab === "news") {
-      renderNewsList();
-    } else if (currentTab === "packages") {
-      renderPackagesList();
-    } else if (currentTab === "jobs") {
-      renderJobsList();
-    } else if (currentTab === "doctors") {
-      renderDoctorsList();
-    }
-  }
 
   // ==========================================================================
   // USER ACCOUNT MANAGEMENT
@@ -1993,15 +1957,6 @@
     document.getElementById("btn-save-job").addEventListener("click", saveJobItem);
     document.getElementById("btn-save-doctor").addEventListener("click", saveDoctorItem);
     document.getElementById("btn-save-user").addEventListener("click", saveUserItem);
-
-    // --- DELETE CONFIRM ---
-    document.getElementById("btn-confirm-delete").addEventListener("click", confirmDelete);
-
-    // --- EXPORT / IMPORT / RESET ---
-    // document.getElementById("btn-export").addEventListener("click", exportCurrent);
-    // document.getElementById("btn-import").addEventListener("click", openImportModal);
-    // document.getElementById("btn-confirm-import").addEventListener("click", confirmImport);
-    // document.getElementById("btn-reset").addEventListener("click", resetCurrent);
 
     // --- SETTINGS ---
     document.getElementById("btn-save-settings").addEventListener("click", saveSettings);

@@ -49,7 +49,11 @@ $routes->post('jobs/set-active/(:num)', 'Jobs::setActive/$1');
 $routes->post('careers/apply', 'Careers::apply');
 $routes->post('contact/send', 'Contact::send');
 
-
+$routes->get('services/packages.json', 'Packages::publicList');
+$routes->get('packages/list', 'Packages::index');
+$routes->post('packages/create', 'Packages::create');
+$routes->post('packages/update/(:num)', 'Packages::update/$1');
+$routes->post('packages/set-active/(:num)', 'Packages::setActive/$1');
 
 $routes->get('rate-us', 'RateUs::index');
 $routes->group('api', static function (RouteCollection $routes) {

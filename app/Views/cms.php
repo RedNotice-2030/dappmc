@@ -133,9 +133,6 @@
               </div>
               <div class="d-flex gap-2 align-items-center">
                 <span class="text-muted small d-none d-md-inline" id="logged-in-user"><i class="bi bi-person-circle me-1"></i>admin</span>
-                <!-- <button class="btn btn-cms-gold btn-sm" id="btn-export"><i class="bi bi-download me-1"></i> Export JSON</button>
-                <button class="btn btn-outline-secondary btn-sm" id="btn-import"><i class="bi bi-upload me-1"></i> Import JSON</button>
-                <button class="btn btn-outline-danger btn-sm" id="btn-reset"><i class="bi bi-arrow-counterclockwise me-1"></i> Reset</button> -->
                 <button class="logout-btn" id="btn-logout" title="Logout"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
               </div>
             </div>
@@ -390,6 +387,10 @@
                   <label class="form-label">Promo Details <span class="help-text">(e.g. "Promo valid Aug 1–31, 2026")</span></label>
                   <input type="text" class="form-control" id="package-item-promo" placeholder="Promo valid Aug 1–31, 2026 · Cash transactions only" />
                 </div>
+                <div class="col-md-6">
+                  <label class="form-label">Promo Expiry Date <span class="help-text">(package auto-hides from the site after this date)</span></label>
+                  <input type="date" class="form-control" id="package-item-expires" />
+                </div>
                 <div class="col-12">
                   <label class="form-label">Operating Hours</label>
                   <input type="text" class="form-control" id="package-item-hours" placeholder="8:00am to 5:00pm, Mondays to Fridays." />
@@ -600,26 +601,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Import Modal -->
-    <!-- <div class="modal fade" id="import-modal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Import JSON</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p class="small text-muted">Paste the JSON content below to replace the current data. You can get this from the "Export JSON" button.</p>
-            <textarea class="form-control" id="import-json-text" rows="10" placeholder='{"news": [...]}'></textarea>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-cms-primary" id="btn-confirm-import">Import</button>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="delete-modal" tabindex="-1" aria-hidden="true">
