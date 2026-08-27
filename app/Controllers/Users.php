@@ -37,6 +37,13 @@ class Users extends BaseController
             ]);
         }
 
+        if ($this->session->get('role') !== 'admin') {
+            return $this->response->setStatusCode(403)->setJSON([
+                'success' => false,
+                'message' => 'Only administrator accounts can manage users.',
+            ]);
+        }
+
         return null;
     }
 

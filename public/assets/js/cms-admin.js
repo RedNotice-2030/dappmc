@@ -49,9 +49,6 @@
   /** Current news category filter */
   var newsFilter = "all";
 
-  /** Item pending deletion (collection + id) */
-  var deleteTarget = null;
-
   // ==========================================================================
   // CATEGORY DISPLAY CONFIGURATION
   // ==========================================================================
@@ -650,11 +647,10 @@
       // Build item rows
       var html = "";
       items.forEach(function (job) {
-        var statusBadge =
-          job.active === false ||
-          parseInt(job.active, 10) === 0
-            ? '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>'
-            : '<span class="badge bg-success-subtle text-success badge-category">Active</span>';
+        var isActive = job.active !== false && parseInt(job.active, 10) !== 0;
+        var statusBadge = isActive
+          ? '<span class="badge bg-success-subtle text-success badge-category">Active</span>'
+          : '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>';
 
         html +=
           '<div class="item-row">' +
@@ -671,10 +667,10 @@
           '">' +
           '      <i class="bi bi-pencil"></i>' +
           "    </button>" +
-          '    <button class="btn btn-sm btn-outline-danger btn-delete-job" data-id="' +
+          '    <button class="btn btn-sm ' + (isActive ? 'btn-outline-danger btn-deactivate-job' : 'btn-outline-success btn-activate-job') + '" data-id="' +
           CMS.escapeHtml(job.id) +
           '">' +
-          '      <i class="bi bi-eye-slash"></i>' +
+          '      <i class="bi ' + (isActive ? 'bi-eye-slash' : 'bi-eye') + '"></i>' +
           "    </button>" +
           "  </div>" +
           "</div>";
@@ -701,42 +697,76 @@
       });
     });
 
-    document.querySelectorAll(".btn-delete-job").forEach(function (btn) {
+    document.querySelectorAll(".btn-deactivate-job").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var id = btn.getAttribute("data-id");
-        if (!confirm("Delete this job opening? This cannot be undone.")) return;
-
-        fetch("jobs/delete/" + id, {
-          method: "POST",
-          credentials: "same-origin",
-          headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-            'X-CSRF-TOKEN': CSRF.tokenValue
-          }
-        })
-          .then(function (response) {
-            return response.json();
-          })
-          .then(function (data) {
-            if (data.success) {
-              toastr.success(data.message || "Job deleted.", "Success");
-              renderJobsList();
-            } else {
-              toastr.error(data.message || "Failed to delete job.", "Error");
-            }
-          })
-          .catch(function (err) {
-            console.error(err);
-            toastr.error("Failed to delete job.", "Error");
-          });
+        if (!confirm("Hide this job opening from the website? You can reactivate it anytime.")) return;
+        setJobActive(id, 0);
       });
     });
+
+    document.querySelectorAll(".btn-activate-job").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        setJobActive(btn.getAttribute("data-id"), 1);
+      });
+    });
+  }
+
+  function setJobActive(id, isActive) {
+    var params = new URLSearchParams();
+    params.append("active", isActive ? 1 : 0);
+
+    fetch("jobs/set-active/" + id, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "X-CSRF-TOKEN": CSRF.tokenValue
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) {
+        if (data.success) {
+          toastr.success(data.message || "Job status updated.", "Success");
+          renderJobsList();
+        } else {
+          toastr.error(data.message || "Failed to update job status.", "Error");
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error("Failed to update job status.", "Error");
+      });
   }
 
   // ==========================================================================
   // DOCTORS LIST RENDERING
   // ==========================================================================
+
+  /**
+   * Fetch all doctors for the admin.
+   * @returns {Promise<Array>}
+   */
+  function fetchAdminDoctors() {
+    return fetch("doctors/list", {
+      method: "GET",
+      credentials: "same-origin",
+      headers: { "X-Requested-With": "XMLHttpRequest" }
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        return data.success ? (data.doctors || []) : [];
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error("Failed to load doctors.", "Error");
+        return [];
+      });
+  }
 
   /**
    * Render the list of doctors in the admin panel.
@@ -745,7 +775,7 @@
     var container = document.getElementById("doctors-items-list");
     if (!container) return;
 
-    CMS.getItems("doctors").then(function (items) {
+    fetchAdminDoctors().then(function (items) {
       // Sort by sortOrder
       items.sort(function (a, b) {
         return (a.sortOrder || 0) - (b.sortOrder || 0);
@@ -765,8 +795,9 @@
       // Build item rows
       var html = "";
       items.forEach(function (doc) {
+        var isActive = doc.active !== false && parseInt(doc.active, 10) !== 0;
         var statusBadge =
-          doc.active === false
+          !isActive
             ? '<span class="badge bg-secondary-subtle text-secondary badge-category">Inactive</span>'
             : '<span class="badge bg-success-subtle text-success badge-category">Active</span>';
         var specLabel =
@@ -790,10 +821,10 @@
           '">' +
           '      <i class="bi bi-pencil"></i>' +
           "    </button>" +
-          '    <button class="btn btn-sm btn-outline-danger btn-delete-doctor" data-id="' +
+          '    <button class="btn btn-sm ' + (isActive ? 'btn-outline-danger btn-deactivate-doctor' : 'btn-outline-success btn-activate-doctor') + '" data-id="' +
           CMS.escapeHtml(doc.id) +
           '">' +
-          '      <i class="bi bi-trash"></i>' +
+          '      <i class="bi ' + (isActive ? 'bi-eye-slash' : 'bi-eye') + '"></i>' +
           "    </button>" +
           "  </div>" +
           "</div>";
@@ -932,22 +963,57 @@
     document.querySelectorAll(".btn-edit-doctor").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var id = btn.getAttribute("data-id");
-        CMS.getItems("doctors").then(function (items) {
+        fetchAdminDoctors().then(function (items) {
           var item = items.find(function (i) {
-            return i.id === id;
+            return String(i.id) === String(id);
           });
           if (item) openDoctorModal(item);
         });
       });
     });
 
-    document.querySelectorAll(".btn-delete-doctor").forEach(function (btn) {
+    document.querySelectorAll(".btn-deactivate-doctor").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        deleteTarget = { collection: "doctors", id: btn.getAttribute("data-id") };
-        var modal = new bootstrap.Modal(document.getElementById("delete-modal"));
-        modal.show();
+        var id = btn.getAttribute("data-id");
+        if (!confirm("Hide this doctor from the website? You can reactivate it anytime.")) return;
+        setDoctorActive(id, 0);
       });
     });
+
+    document.querySelectorAll(".btn-activate-doctor").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        setDoctorActive(btn.getAttribute("data-id"), 1);
+      });
+    });
+  }
+
+  function setDoctorActive(id, isActive) {
+    var params = new URLSearchParams();
+    params.append("active", isActive);
+
+    fetch("doctors/set-active/" + id, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "X-CSRF-TOKEN": CSRF.tokenValue
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) {
+        if (data.success) {
+          toastr.success(data.message || "Doctor status updated.", "Success");
+          renderDoctorsList();
+        } else {
+          toastr.error(data.message || "Failed to update doctor status.", "Error");
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error("Failed to update doctor status.", "Error");
+      });
   }
 
   function openDoctorModal(item) {
@@ -956,7 +1022,6 @@
     document.getElementById("doctor-item-id").value = item ? item.id : "";
     document.getElementById("doctor-item-name").value = item ? (item.name || "") : "";
     document.getElementById("doctor-item-specialization").value = item ? (item.specialization || "cardiology") : "cardiology";
-    document.getElementById("doctor-item-sort").value = item ? (item.sortOrder || 1) : 1;
     document.getElementById("doctor-item-location").value = item ? (item.location || "") : "";
     document.getElementById("doctor-item-image").value = item ? (item.image || "") : "";
     document.getElementById("doctor-item-schedule").value = item && item.schedule
@@ -972,7 +1037,6 @@
     var id = document.getElementById("doctor-item-id").value;
     var name = document.getElementById("doctor-item-name").value.trim();
     var specialization = document.getElementById("doctor-item-specialization").value;
-    var sortOrder = parseInt(document.getElementById("doctor-item-sort").value, 10) || 1;
     var location = document.getElementById("doctor-item-location").value.trim();
     var image = document.getElementById("doctor-item-image").value.trim();
     var scheduleText = document.getElementById("doctor-item-schedule").value.trim();
@@ -997,28 +1061,43 @@
       });
     }
 
-    var item = {
-      id: id || CMS.generateId("doc"),
-      name: name,
-      specialization: specialization,
-      specializationLabel: DOCTOR_SPECIALIZATIONS[specialization] || specialization,
-      location: location,
-      image: image,
-      schedule: schedule,
-      active: active,
-      sortOrder: sortOrder
-    };
+    var params = new URLSearchParams();
+    params.append("name", name);
+    params.append("specialization", specialization);
+    params.append("specialization_label", DOCTOR_SPECIALIZATIONS[specialization] || specialization);
+    params.append("location", location);
+    params.append("image", image);
+    params.append("schedule", JSON.stringify(schedule));
+    params.append("active", active ? 1 : 0);
 
-    CMS.saveItem("doctors", item).then(function () {
-      toastr.success("Doctor saved successfully!", "Success");
-      var modalEl = document.getElementById("doctor-item-modal");
-      var modal = bootstrap.Modal.getInstance(modalEl);
-      if (modal) modal.hide();
-      renderDoctorsList();
-    }).catch(function (err) {
-      console.error(err);
-      toastr.error("Failed to save doctor.", "Error");
-    });
+    var url = id ? "doctors/update/" + id : "doctors/create";
+
+    fetch(url, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "X-CSRF-TOKEN": CSRF.tokenValue
+      },
+      body: params.toString()
+    })
+      .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
+      .then(function (result) {
+        if (result.ok && result.data.success) {
+          toastr.success(result.data.message || "Doctor saved successfully!", "Success");
+          var modalEl = document.getElementById("doctor-item-modal");
+          var modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) modal.hide();
+          renderDoctorsList();
+        } else {
+          toastr.error(result.data.message || "Failed to save doctor.", "Error");
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+        toastr.error("Failed to save doctor.", "Error");
+      });
   }
 
   // ==========================================================================
@@ -1437,36 +1516,6 @@
         }
       });
   }
-
-  // ==========================================================================
-  // DELETE CONFIRMATION (legacy, for packages/doctors using localStorage)
-  // ==========================================================================
-
-  /**
-   * Confirm and execute the pending delete operation (localStorage-based).
-   */
-  // function confirmDelete() {
-  //   if (!deleteTarget) return;
-
-  //   CMS.deleteItem(deleteTarget.collection, deleteTarget.id).then(function () {
-  //     toastr.success("Item deleted successfully!", "Success");
-  //     var modalEl = document.getElementById("delete-modal");
-  //     var modal = bootstrap.Modal.getInstance(modalEl);
-  //     if (modal) modal.hide();
-  //     deleteTarget = null;
-
-  //     // Re-render the appropriate list
-  //     if (currentTab === "packages") {
-  //       renderPackagesList();
-  //     } else if (currentTab === "doctors") {
-  //       renderDoctorsList();
-  //     }
-  //   }).catch(function (err) {
-  //     console.error(err);
-  //     toastr.error("Failed to delete item.", "Error");
-  //   });
-  // }
-
 
   // ==========================================================================
   // USER ACCOUNT MANAGEMENT

@@ -42,7 +42,6 @@ $routes->get('careers/jobs.json', 'Jobs::publicList');       // public, for cont
 $routes->get('jobs/list', 'Jobs::index');                     // admin
 $routes->post('jobs/create', 'Jobs::create');
 $routes->post('jobs/update/(:num)', 'Jobs::update/$1');
-$routes->post('jobs/delete/(:num)', 'Jobs::delete/$1');
 $routes->get('jobs/benefits', 'Jobs::benefitsList');
 $routes->post('jobs/benefits/create', 'Jobs::createBenefit');
 $routes->post('jobs/set-active/(:num)', 'Jobs::setActive/$1');
@@ -54,6 +53,13 @@ $routes->get('packages/list', 'Packages::index');
 $routes->post('packages/create', 'Packages::create');
 $routes->post('packages/update/(:num)', 'Packages::update/$1');
 $routes->post('packages/set-active/(:num)', 'Packages::setActive/$1');
+
+$routes->get('doctors.json', 'Doctors::publicList');
+$routes->get('doctors/doctors.json', 'Doctors::publicList');
+$routes->get('doctors/list', 'Doctors::index');
+$routes->post('doctors/create', 'Doctors::create');
+$routes->post('doctors/update/(:num)', 'Doctors::update/$1');
+$routes->post('doctors/set-active/(:num)', 'Doctors::setActive/$1');
 
 $routes->get('rate-us', 'RateUs::index');
 $routes->group('api', static function (RouteCollection $routes) {

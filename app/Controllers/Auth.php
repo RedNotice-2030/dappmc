@@ -185,6 +185,7 @@ class Auth extends BaseController
             return $this->response->setJSON([
                 'logged_in' => true,
                 'user' => [
+                    'id'        => $this->session->get('user_id'),
                     'username'  => $this->session->get('username'),
                     'full_name' => $this->session->get('full_name'),
                     'role'      => $this->session->get('role'),

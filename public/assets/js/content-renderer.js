@@ -265,11 +265,25 @@
    * Render all active doctors into a container.
    * @param {string} containerSelector - CSS selector for the doctor grid container
    */
+  function fetchDoctorsItems() {
+    return fetch('doctors.json', {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+      .then(function (response) { return response.json(); })
+      .then(function (data) { return data.doctors || []; })
+      .catch(function (err) {
+        console.error('Failed to fetch doctors from API:', err);
+        return CMS.getItems('doctors');
+      });
+  }
+
   function renderDoctors(containerSelector) {
     var container = document.querySelector(containerSelector);
     if (!container) return;
 
-    CMS.getItems('doctors').then(function (items) {
+    fetchDoctorsItems().then(function (items) {
       // Sort by sortOrder, filter active
       var activeItems = items
         .filter(function (item) { return item.active !== false; })
