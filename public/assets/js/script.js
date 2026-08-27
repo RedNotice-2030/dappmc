@@ -28,25 +28,46 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-// Secret Key Combo (e.g., typing "admin" anywhere on the page)
+const targetHash = "feae893dca2c0ccbf0264b13a0135a0daeb67e8764509c1236474f3587d8efea"; // the hex string from step 1
 let secretCode = "";
-const targetCode = "dappmc";
+const targetLength = 6; // length of your secret code
 
-document.addEventListener("keydown", (e) => {
+async function sha256(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+document.addEventListener("keydown", async (e) => {
   secretCode += e.key.toLowerCase();
-  
+
   // Keep string length capped
-  if (secretCode.length > targetCode.length) {
-    secretCode = secretCode.slice(-targetCode.length);
+  if (secretCode.length > targetLength) {
+    secretCode = secretCode.slice(-targetLength);
   }
 
-  // If match found, trigger login redirect
-  if (secretCode === targetCode) {
-    // Resolve "cms" relative to the current page so it works no matter
-    // which folder the app is served from (e.g. /dappmc/cms or /cms).
-    window.location.href = new URL("staff-portal-2026", window.location.origin + window.location.pathname);
+  if (secretCode.length === targetLength) {
+    const hash = await sha256(secretCode);
+    if (hash === targetHash) {
+      window.location.href = new URL("staff-portal-2026", window.location.origin + window.location.pathname);
+    }
   }
 });
+// let secretCode = "";
+// const targetCode = "dappmc";
+
+// document.addEventListener("keydown", (e) => {
+//   secretCode += e.key.toLowerCase();
+  
+//   // Keep string length capped
+//   if (secretCode.length > targetCode.length) {
+//     secretCode = secretCode.slice(-targetCode.length);
+//   }
+
+//   // If match found, trigger login redirect
+//   if (secretCode === targetCode) {
+//     window.location.href = new URL("staff-portal-2026", window.location.origin + window.location.pathname);
+//   }
+// });
 
 (function () {
   'use strict';
