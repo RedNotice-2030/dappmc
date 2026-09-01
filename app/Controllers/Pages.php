@@ -14,6 +14,11 @@ class Pages extends BaseController
         return view('about', ['title' => 'DAPPMC - About Us']);
     }
 
+    public function guide(): string
+    {
+        return view('guide', ['title' => 'DAPPMC - Guide']);
+    }
+
     public function services(): string
     {
         return view('services', ['title' => 'DAPPMC - Services']);

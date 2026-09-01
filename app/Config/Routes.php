@@ -15,6 +15,7 @@ $routes->get('faqs', 'Pages::faqs');
 $routes->get('org', 'Pages::org');
 $routes->get('hmo', 'Pages::hmo');
 $routes->get('staff-portal-2026', 'Pages::cms');
+$routes->get('guide', 'Pages::guide');
 
 // --- CMS Authentication (AJAX) ---
 $routes->post('auth/login', 'Auth::login');

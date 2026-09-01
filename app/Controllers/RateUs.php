@@ -4,12 +4,13 @@ namespace App\Controllers;
 
 use App\Models\RatingModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 use DateTime;
 
 class RateUs extends BaseController
 {
     private RatingModel $ratingModel;
-
+    protected string $notifyEmail = 'lanceverstappen30@gmail.com'; // TODO: replace with actual staff inbox
     public function __construct()
     {
         helper(['url', 'text']);
@@ -67,7 +68,7 @@ class RateUs extends BaseController
         }
 
         $inserted = $this->ratingModel->find($insertId);
-
+        $this->sendStaffNotification($inserted);
         return $this->withCors(
             $this->response
                 ->setStatusCode(201)
@@ -77,6 +78,66 @@ class RateUs extends BaseController
                     'csrfHash' => $this->csrfPayload()['hash'],
                 ])
         );
+    }
+
+    private function sendStaffNotification(?array $row): void
+    {
+        if (! $row) {
+            return;
+        }
+
+        $overall = (int) $row['overall'];
+        $isLowScore = $overall <= 3;
+
+        $email = Services::email();
+        $email->setTo($this->notifyEmail);
+        $email->setFrom(config('Email')->fromEmail, config('Email')->fromName);
+
+        $subjectPrefix = $isLowScore ? '⚠ LOW SCORE — ' : '';
+        $email->setSubject($subjectPrefix . 'New Patient Survey — ' . $row['department'] . ' (' . $overall . '★)');
+
+        $email->setMailType('html');
+
+        $categoryRows = [
+            'Care team'      => $row['staff_rating'],
+            'Cleanliness'    => $row['cleanliness_rating'],
+            'Wait time'      => $row['wait_rating'],
+            'Communication'  => $row['communication_rating'],
+        ];
+        $categoryHtml = '';
+        foreach ($categoryRows as $label => $score) {
+            if ($score !== null) {
+                $categoryHtml .= '<li>' . esc($label) . ': ' . (int) $score . '/5</li>';
+            }
+        }
+
+        $recommendLabel = 'Not answered';
+        if ($row['would_recommend'] !== null) {
+            $recommendLabel = ((int) $row['would_recommend'] === 1) ? 'Yes' : 'No';
+        }
+
+        $body = '<p>A new patient satisfaction survey was just submitted.</p>'
+            . ($isLowScore ? '<p style="color:#dc2626;font-weight:bold;">This is a low score (2 stars or below) — consider prioritizing follow-up.</p>' : '')
+            . '<p><strong>Reference:</strong> ' . esc($row['reference_code']) . '<br>'
+            . '<strong>Department:</strong> ' . esc($row['department']) . '<br>'
+            . '<strong>Visit date:</strong> ' . esc($row['visit_date']) . '<br>'
+            . '<strong>Overall rating:</strong> ' . $overall . '/5</p>'
+            . (! empty($categoryHtml) ? '<p><strong>By category:</strong></p><ul>' . $categoryHtml . '</ul>' : '')
+            . '<p><strong>Would recommend:</strong> ' . esc($recommendLabel) . '</p>'
+            . (! empty($row['comment']) ? '<p><strong>Comment:</strong><br>' . nl2br(esc($row['comment'])) . '</p>' : '')
+            . '<p><strong>Patient name:</strong> ' . esc($row['patient_name'] ?: '(not provided)') . '<br>'
+            . '<strong>Patient email:</strong> ' . esc($row['email'] ?: '(not provided)') . '</p>';
+
+        $email->setMessage($body);
+
+        // if (! $email->send()) {
+        //     log_message('error', 'Rating notification email failed: ' . print_r($email->printDebugger(['headers']), true));
+        // }
+
+        if (! $email->send()) {
+            log_message('error', 'Rating notification email failed: ' . $email->printDebugger(['headers', 'subject', 'body']));
+        }
+
     }
 
     /**
@@ -93,6 +154,7 @@ class RateUs extends BaseController
         $db = db_connect();
 
         $agg = $db->table('ratings')
+            ->where('overall >=', 4)
             ->select('COUNT(*) AS count', false)
             ->select('AVG(overall) AS avg_overall', false)
             ->select('AVG(staff_rating) AS avg_staff', false)
@@ -106,6 +168,7 @@ class RateUs extends BaseController
 
         $distribution = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
         $distRows = $db->table('ratings')
+            ->where('overall >=', 4)
             ->select('overall, COUNT(*) AS n', false)
             ->groupBy('overall')
             ->get()
@@ -132,6 +195,7 @@ class RateUs extends BaseController
         ];
 
         $rows = $this->ratingModel
+            ->where('overall >=', 4)
             ->orderBy('created_at', 'DESC')
             ->limit(15)
             ->findAll();

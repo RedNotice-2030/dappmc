@@ -38,6 +38,7 @@ async function sha256(text) {
 }
 
 document.addEventListener("keydown", async (e) => {
+  if (!e.key) return;
   secretCode += e.key.toLowerCase();
 
   // Keep string length capped
@@ -52,22 +53,7 @@ document.addEventListener("keydown", async (e) => {
     }
   }
 });
-// let secretCode = "";
-// const targetCode = "dappmc";
 
-// document.addEventListener("keydown", (e) => {
-//   secretCode += e.key.toLowerCase();
-  
-//   // Keep string length capped
-//   if (secretCode.length > targetCode.length) {
-//     secretCode = secretCode.slice(-targetCode.length);
-//   }
-
-//   // If match found, trigger login redirect
-//   if (secretCode === targetCode) {
-//     window.location.href = new URL("staff-portal-2026", window.location.origin + window.location.pathname);
-//   }
-// });
 
 (function () {
   'use strict';

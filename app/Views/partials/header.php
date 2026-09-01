@@ -32,7 +32,7 @@
       <div class="text-white py-2 border-bottom border-secondary" style="background-color: #002c6d">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-1">
           <div class="small order-1">
-            <span class="me-3"><i class="bi bi-clock me-1" style="color: #c6b350"></i> 24/7 Emergency Care</span>
+            <span class="me-3 hidden md:inline-block"><i class="bi bi-clock me-1" style="color: #c6b350"></i> 24/7 Emergency Care</span>
             <span><i class="bi bi-geo-alt me-1" style="color: #c6b350"></i> <a href="<?= site_url('about') ?>#location" class="text-white text-decoration-none">Gensan Drive, Koronadal, 9506 South Cotabato</a></span>
           </div>
           <div class="small fw-bold order-2">
@@ -62,7 +62,6 @@
                 <li><a class="dropdown-item" href="<?= site_url('services') ?>#specialties">Medical Specialties</a></li>
                 <li><a class="dropdown-item" href="<?= site_url('services') ?>#lab">Diagnostic Services</a></li>
                 <li><a class="dropdown-item" href="<?= site_url('hmo') ?>">HMO Partners</a></li>
-                <li><a class="dropdown-item" href="<?= site_url('services') ?>#billing">Billing & Insurance</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -86,6 +85,7 @@
                 <li><a class="dropdown-item" href="<?= site_url('news') ?>#alerts">COVID Alerts</a></li>
               </ul>
             </li>
+            <li class="nav-item"><a class="nav-link" href="<?= site_url('guide') ?>">Patient & Visitor Guide</a></li>
             <li class="nav-item"><a class="nav-link" href="<?= site_url('careers') ?>">Careers</a></li>
             <li class="nav-item"><a class="nav-link" href="<?= site_url('faqs') ?>">FAQs</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#contact-us-modal">Contact Us</a></li>

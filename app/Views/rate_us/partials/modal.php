@@ -9,7 +9,7 @@ $categories = [
 ?>
 <div class="ru-modal-shell ru-hidden" data-rate-modal aria-hidden="true">
     <div class="ru-modal-backdrop" data-close-rate-modal></div>
-    <section class="ru-modal" role="dialog" aria-modal="true" aria-labelledby="rate-modal-title" tabindex="-1">
+    <section class="ru-modal" id="ru-modal" role="dialog" aria-modal="true" aria-labelledby="rate-modal-title" tabindex="-1">
         <header class="ru-modal-head">
             <div>
                 <p data-modal-kicker>Step 1 / 3 — Score</p>
@@ -117,7 +117,7 @@ $categories = [
             <button type="button" class="ru-btn ru-btn-ghost ru-hidden" data-modal-back>← Back</button>
             <span class="ru-foot-hint" data-modal-hint>Takes under a minute</span>
             <button type="button" class="ru-btn ru-btn-primary" data-modal-next>Continue →</button>
-            <button type="button" class="ru-btn ru-btn-primary ru-hidden" data-modal-submit>★ Submit my rating</button>
+            <button type="button" id="submit-rating" class="ru-btn ru-btn-primary ru-hidden" data-modal-submit>★ Submit my rating</button>
             <button type="button" class="ru-btn ru-btn-primary ru-hidden" data-modal-done data-close-rate-modal>Done</button>
         </footer>
     </section>
