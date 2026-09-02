@@ -1318,6 +1318,7 @@
     params.append("image", image);
     params.append("promo_badge", promoBadge);
     params.append("promo_details", promoDetails);
+    params.append("promo_expires_at", promoExpires);
     params.append("operating_hours", operatingHours);
     params.append("availment_steps", JSON.stringify(availmentSteps));
     params.append("payment_options", JSON.stringify(paymentOptions));

@@ -62,6 +62,7 @@
                 <li><a class="dropdown-item" href="<?= site_url('services') ?>#specialties">Medical Specialties</a></li>
                 <li><a class="dropdown-item" href="<?= site_url('services') ?>#lab">Diagnostic Services</a></li>
                 <li><a class="dropdown-item" href="<?= site_url('hmo') ?>">HMO Partners</a></li>
+                <li><a class="dropdown-item" href="<?= site_url('guide') ?>">Patient & Visitor Guide</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -85,7 +86,7 @@
                 <li><a class="dropdown-item" href="<?= site_url('news') ?>#alerts">COVID Alerts</a></li>
               </ul>
             </li>
-            <li class="nav-item"><a class="nav-link" href="<?= site_url('guide') ?>">Patient & Visitor Guide</a></li>
+            <!-- <li class="nav-item"><a class="nav-link" href="<?= site_url('guide') ?>">Patient & Visitor Guide</a></li> -->
             <li class="nav-item"><a class="nav-link" href="<?= site_url('careers') ?>">Careers</a></li>
             <li class="nav-item"><a class="nav-link" href="<?= site_url('faqs') ?>">FAQs</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#contact-us-modal">Contact Us</a></li>

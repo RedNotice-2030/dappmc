@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-const targetHash = "feae893dca2c0ccbf0264b13a0135a0daeb67e8764509c1236474f3587d8efea"; // the hex string from step 1
+const targetHash = "feae893dca2c0ccbf0264b13a0135a0daeb67e8764509c1236474f3587d8efea"; // the hex string from step 1 
 let secretCode = "";
 const targetLength = 6; // length of your secret code
 
