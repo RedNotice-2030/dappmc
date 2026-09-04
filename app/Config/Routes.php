@@ -17,6 +17,10 @@ $routes->get('hmo', 'Pages::hmo');
 $routes->get('staff-portal-2026', 'Pages::cms');
 $routes->get('guide', 'Pages::guide');
 
+$routes->post('login', 'Auth::login', ['filter' => 'throttle']);
+$routes->post('contact', 'Contact::submit', ['filter' => 'throttle']);
+$routes->post('apply', 'Apply::submit', ['filter' => 'throttle']);
+
 // --- CMS Authentication (AJAX) ---
 $routes->post('auth/login', 'Auth::login');
 $routes->post('auth/logout', 'Auth::logout');

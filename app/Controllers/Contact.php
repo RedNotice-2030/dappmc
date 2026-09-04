@@ -45,21 +45,13 @@ class Contact extends BaseController
             . '<p><strong>Message:</strong><br>' . nl2br(esc($message)) . '</p>';
         $email->setMessage($body);
 
-        // if (!$email->send()) {
-        //     log_message('error', 'Contact form email failed: ' . print_r($email->printDebugger(['headers']), true));
-        //     return $this->response->setStatusCode(500)->setJSON([
-        //         'success' => false,
-        //         'message' => 'Failed to send your message. Please try again later.',
-        //     ]);
-        // }
-
         if (!$email->send()) {
             $debugger = $email->printDebugger(['headers', 'subject', 'body']);
             log_message('error', 'Contact form email failed: ' . $debugger);
             
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
-                'message' => 'Failed to send your message. ' . $debugger, // Temporarily shows exact SMTP error in alert
+                'message' => 'Failed to send your message. Please try again later or contact support directly.',
             ]);
         }
         

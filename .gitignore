@@ -1,5 +1,31 @@
+# Environment & Sensitive Files
 .env
-writable/*
-!writable/index.html
+.env.local
+.env.*.local
+*.sql
+writable/*.log
+# Allow directory structures, ignore generated dynamic files
+writable/cache/*
+!writable/cache/index.html
+
+writable/debugbar/*
+!writable/debugbar/index.html
+
+writable/logs/*
+!writable/logs/index.html
+
+writable/session/*
+!writable/session/index.html
+
+writable/uploads/*
+!writable/uploads/index.html
+
+# Keep your Aiven SSL certificate tracked safely
 !writable/ssl/
 !writable/ssl/aiven-ca.pem
+
+# OS / Editor Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

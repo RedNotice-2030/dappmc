@@ -369,22 +369,22 @@ footer {
 }
 
 .hmo-logo {
-  width: 130px; /* Standard width container */
-  height: 80px; /* Standard height container */
-  object-fit: contain; /* Keeps logo proportions intact without stretching */
+  width: auto;
+  height: 100px; 
+  object-fit: contain;
   padding: 8px 12px;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); */
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
-.hmo-logo:hover {
+/* .hmo-logo:hover {
   transform: translateY(-3px) scale(1.03);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
-}
+} */
 
 /* Keyframe animation for continuous smooth infinite scrolling */
 @keyframes scrollMarquee {
