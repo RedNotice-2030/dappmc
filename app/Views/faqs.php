@@ -429,7 +429,7 @@
                   </h2>
                   <div id="faq-contact-2" class="accordion-collapse collapse" data-bs-parent="#faq-contact">
                     <div class="accordion-body faq-answer">
-                      We value your feedback. Please use the <a href="#" data-bs-toggle="modal" data-bs-target="#contact-us-modal">Contact Us</a> modal on this page to send us your comments, suggestions, or concerns. Our team will review and respond as soon as possible.
+                      We value your feedback. Please use the <a href="<?= site_url('rate-us') ?>">Rate Us</a> page to send us your comments, suggestions, or concerns. Our team will review and respond as soon as possible.
                     </div>
                   </div>
                 </div>

@@ -1,13 +1,3 @@
-/**
- * -------------------------------------------------------------
- * Zero dependencies. Zero API costs. Zero backend required.
- * Drop this file on your site and add ONE line of HTML:
- *
- * <script src="assets/js/chatbot-widget.js"></script>
- *
- * That's it — a chat bubble appears in the bottom-right corner.
- * -------------------------------------------------------------
- */
 
 (function () {
   "use strict";

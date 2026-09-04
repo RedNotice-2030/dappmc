@@ -1,7 +1,3 @@
-/**
- * DAPPMC Content Animations
- * Handles scroll-animate reveal for both static and dynamically rendered content.
- */
 (function (window) {
   'use strict';
 
@@ -22,9 +18,6 @@
     );
   }
 
-  /**
-   * Observe all .scroll-animate elements and reveal them on scroll.
-   */
   function reveal(root) {
     initObserver();
     var scope = root || document;

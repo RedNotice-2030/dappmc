@@ -4,6 +4,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
+        <img class="logo-nav img-fluid modal-logo" src="<?= base_url('assets/images/dappmc-logo.png') ?>" alt="" />
         <h1 class="modal-title fs-5" id="contactModalLabel">Contact Us</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -38,6 +39,7 @@
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
+        <img class="logo-nav img-fluid modal-logo" src="<?= base_url('assets/images/dappmc-logo.png') ?>" alt="" />
         <h5 class="modal-title" id="privacyModalLabel">Data Privacy Policy</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>

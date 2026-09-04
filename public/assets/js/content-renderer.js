@@ -1,7 +1,4 @@
-/**
- * DAPPMC Content Renderer
- * Dynamically renders news articles and health packages from the CMS data layer.
- */
+
 (function (window, CMS) {
   'use strict';
 
@@ -38,10 +35,6 @@
     }
   };
 
-  /**
-   * Render all news sections on the page.
-   * Each section (news, advisories, events, drives, alerts) renders its own card grid.
-   */
   function fetchNewsItems() {
     return fetch('api/news', { method: 'GET', credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
       .then(function (response) { return response.json(); })
@@ -102,9 +95,6 @@
     });
   }
 
-  /**
-   * Build a single news card HTML string.
-   */
   function buildNewsCard(item, meta) {
     var dateLabel = CMS.formatDate(item.date);
     var imageHtml = item.image
@@ -139,9 +129,6 @@
       '</div>';
   }
 
-  /**
-   * Bind the news "Read More" modal.
-   */
   function bindNewsModal() {
     var modalEl = document.getElementById('news-read-modal');
     if (!modalEl || !window.bootstrap) return;
@@ -170,7 +157,6 @@
   }
 
   /**
-   * Render all job openings on the page.
    * @param {string} containerSelector - CSS selector for the jobs container
    */
   function renderJobs(containerSelector) {
@@ -208,7 +194,6 @@
   }
 
   /**
-   * Build a single job card HTML string.
    * @param {Object} job - job data object
    * @returns {string} HTML string
    */
@@ -241,9 +226,6 @@
       '</div>';
   }
 
-  /**
-   * Bootstrap badge classes for each doctor specialization.
-   */
   var DOCTOR_BADGE_CLASSES = {
     cardiology: 'bg-danger-subtle text-danger',
     pediatrics: 'bg-success-subtle text-success',
@@ -262,7 +244,6 @@
   };
 
   /**
-   * Render all active doctors into a container.
    * @param {string} containerSelector - CSS selector for the doctor grid container
    */
   function fetchDoctorsItems() {
@@ -319,7 +300,6 @@
   }
 
   /**
-   * Build a single doctor card HTML string.
    * @param {Object} doc - doctor data object
    * @returns {string} HTML string
    */
@@ -375,10 +355,6 @@
       '</div>';
   }
 
-  /**
-   * Re-bind style.js doctor interactions (counts, filters, schedule toggle)
-   * after dynamic rendering replaces the DOM.
-   */
   function bindDoctorInteractions() {
     // Update the "All Doctors" and specialization counts.
     var doctorItems = document.querySelectorAll('.doctor-item');
@@ -419,8 +395,6 @@
     });
   }
 
-  
-
   function fetchPackageItems() {
     return fetch('services/packages.json', { method: 'GET', credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
       .then(function (response) { return response.json(); })
@@ -428,9 +402,6 @@
       .catch(function (err) { console.error('Failed to fetch packages from API:', err); return CMS.getItems('packages'); });
   }
 
-  /**
-   * Render all packages on the page.
-   */
   function renderPackages(containerSelector) {
     var container = document.querySelector(containerSelector);
     if (!container) return;
@@ -468,9 +439,6 @@
     });
   }
 
-  /**
-   * Build a single package flip-card HTML string.
-   */
   function buildPackageCard(pkg) {
     var promoBadge = pkg.promoBadge
       ? '<span class="badge bg-danger position-absolute top-0 end-0 m-2">' + CMS.escapeHtml(pkg.promoBadge) + '</span>'
@@ -548,8 +516,6 @@
     }
   });
 
-  // Hook for style.js to re-run doctor interactions after dynamic render.
-  // (style.js may override this with its own equivalent initializer.)
   window.DoctorRenderReady = window.DoctorRenderReady || bindDoctorInteractions;
 
   // Expose the renderer API for programmatic use

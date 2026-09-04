@@ -16,6 +16,7 @@
             <div class="list-group guide-toc">
               <a class="list-group-item list-group-item-action" href="#admission"><i class="bi bi-clipboard2-pulse me-2"></i>Admission Procedure</a>
               <a class="list-group-item list-group-item-action" href="#discharge"><i class="bi bi-box-arrow-right me-2"></i>Discharge Procedure</a>
+              <a class="list-group-item list-group-item-action" href="#yakap"><i class="bi bi-clipboard2-pulse me-2"></i>YAKAP Procedure</a>
               <a class="list-group-item list-group-item-action" href="#billing"><i class="bi bi-credit-card me-2"></i>Billing &amp; Payment</a>
               <a class="list-group-item list-group-item-action" href="#records"><i class="bi bi-folder2-open me-2"></i>Medical Records</a>
               <a class="list-group-item list-group-item-action" href="#rights"><i class="bi bi-shield-check me-2"></i>Patient Rights &amp; Responsibilities</a>
@@ -75,6 +76,38 @@
                 ['title' => 'Provide Copies', 'desc' => 'The Nurse-on-duty provides a copy of the Discharge Summary (NSG-FR-041) and Home Instruction (NSG-FR-021) form to the watcher along with the Clearance form.'],
               ];
               foreach ($dischargeSteps as $i => $step): ?>
+                <div class="col-md-6 col-lg-4 scroll-animate animate-bottom">
+                  <div class="card step-card h-100 shadow-sm">
+                    <div class="card-body p-4">
+                      <div class="step-number mb-3"><?= $i + 1 ?></div>
+                      <h5 class="fw-bold mb-2" style="color:#002c6d"><?= esc($step['title']) ?></h5>
+                      <p class="text-muted small mb-0"><?= esc($step['desc']) ?></p>
+                    </div>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </section>
+
+          <!-- ================= YAKAP PROCEDURE ================= -->
+          <section id="yakap" class="guide-section mb-5">
+            <h2 class="guide-section-title fw-bold mb-4 scroll-animate animate-bottom">
+              <i class="bi bi-clipboard2-pulse me-2" style="color:#c6b350"></i>YAKAP Procedure
+            </h2>
+            <div class="row g-4">
+              <?php
+              $yakapSteps = [
+                ['title' => 'Arrival at the YAKAP Center', 'desc' => 'The patient arrives at the YAKAP Center to begin the process.)'],
+                ['title' => 'Registration and Presentation of Documents', 'desc' => 'The patient proceeds to register and present their required documents.'],
+                ['title' => 'Initial Screening by YAKAP Personnel', 'desc' => 'YAKAP personnel conduct an initial screening for the patient.'],
+                ['title' => 'Medical Consultation with YAKAP Physician', 'desc' => 'The patient undergoes a medical consultation with a YAKAP physician.'],
+                ['title' => 'Referral to Diagnostic Centers (if needed)', 'desc' => 'If necessary, the physician refers the patient to external diagnostic centers for further evaluation.'],
+                ['title' => 'Return to YAKAP Physician', 'desc' => 'The patient returns to the YAKAP physician with their diagnostic results or follow-up status.'],
+                ['title' => 'Prescription and Treatment Plan', 'desc' => 'The physician provides the patient with a prescription and outlines their treatment plan.'],
+                ['title' => 'Processing and Signing of Documents', 'desc' => 'The necessary administrative documents are processed and signed.'],
+                ['title' => 'Discharge and Instructions', 'desc' => 'The patient receives final instructions prior to being officially discharged.'],
+              ];
+              foreach ($yakapSteps as $i => $step): ?>
                 <div class="col-md-6 col-lg-4 scroll-animate animate-bottom">
                   <div class="card step-card h-100 shadow-sm">
                     <div class="card-body p-4">

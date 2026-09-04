@@ -36,8 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  // --- DOCTOR INTERACTIONS (counts, filtering, schedule toggle) ---
-  // Exposed as window.DoctorRenderReady so content-renderer.js can re-run
   // these bindings after dynamically rendering doctor cards.
   function initDoctorInteractions() {
     // 1. AUTOMATIC DOCTOR COUNTER

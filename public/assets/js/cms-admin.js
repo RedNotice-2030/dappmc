@@ -1,59 +1,10 @@
-/**
- * ============================================================================
- * DAPPMC CMS Admin Panel Logic
- * ============================================================================
- * This file handles all the interactive functionality of the CMS admin panel
- * (cms.html). It provides:
- *
- *   1. LOGIN AUTHENTICATION
- *      - Validates username/password against the MySQL users table
- *      - Passwords are hashed with PHP's password_hash()
- *      - Session is managed server-side by CodeIgniter 4
- *      - Credentials can be changed in the Settings tab
- *
- *   2. CONTENT MANAGEMENT (CRUD operations)
- *      - News items (news, advisories, events, drives, alerts)
- *      - Health packages (flip cards on services.html)
- *      - Job openings (career cards on careers.html)
- *      - Doctors (doctor profiles on doctors.html)
- *
- *   3. USER ACCOUNT MANAGEMENT
- *      - List all CMS users from the MySQL database
- *      - Add, edit, and deactivate/reactivate user accounts
- *
- *   4. DATA UTILITIES
- *      - Export current collection as JSON file
- *      - Import JSON from clipboard
- *      - Reset to original file data
- *
- *   5. SETTINGS
- *      - Change login credentials
- *      - View CMS documentation
- *
- * DEPENDENCIES:
- *   - assets/js/cms.js (CMS data layer - must load first)
- *   - Bootstrap 5 (for modals)
- *   - Toastr (for notifications)
- * ============================================================================
- */
 (function (window, CMS) {
   "use strict";
 
-  // ==========================================================================
-  // CONFIGURATION
-  // ==========================================================================
-
-  /** Current active tab in the admin panel */
   var currentTab = "news";
 
-  /** Current news category filter */
   var newsFilter = "all";
 
-  // ==========================================================================
-  // CATEGORY DISPLAY CONFIGURATION
-  // ==========================================================================
-
-  /** Human-readable labels for news categories */
   var CATEGORY_LABELS = {
     news: "News",
     advisories: "Advisory",
@@ -62,7 +13,6 @@
     alerts: "Alert"
   };
 
-  /** Bootstrap badge classes for each news category */
   var CATEGORY_BADGES = {
     news: "bg-primary-subtle text-primary",
     advisories: "bg-warning-subtle text-warning-emphasis",
@@ -71,7 +21,6 @@
     alerts: "bg-danger-subtle text-danger"
   };
 
-  /** Available doctor specializations for the CMS dropdown */
   var DOCTOR_SPECIALIZATIONS = {
     cardiology: "Cardiology",
     pediatrics: "Pediatrics",
@@ -89,15 +38,9 @@
     neurology: "Neurology"
   };
 
-  // ==========================================================================
-  // AUTHENTICATION (server-side sessions via MySQL)
-  // ==========================================================================
-
-  /** Holds the currently authenticated user (from server) */
   var currentUser = null;
 
   /**
-   * Get the currently authenticated user.
    * @returns {Object|null}
    */
   function getCurrentUser() {
@@ -105,7 +48,6 @@
   }
 
   /**
-   * Check with the server if a session is active.
    * @returns {Promise<Object|null>} user object or null
    */
   function checkServerSession() {
@@ -133,7 +75,6 @@
   }
 
   /**
-   * Attempt to log in with the provided credentials via the server.
    * @param {string} username
    * @param {string} password
    * @returns {Promise<Object|null>} user object on success, null on failure
@@ -167,7 +108,6 @@
   }
 
   /**
-   * Log out the current user (destroys the server session).
    * @returns {Promise<boolean>}
    */
   function logout() {
@@ -193,9 +133,6 @@
       });
   }
 
-  /**
-   * Show the login screen and hide the CMS app.
-   */
   function showLoginScreen() {
     document.getElementById("login-screen").style.display = "flex";
     document.getElementById("cms-app").classList.remove("visible");
@@ -204,9 +141,6 @@
     document.getElementById("login-error").style.display = "none";
   }
 
-  /**
-   * Show the CMS app and hide the login screen.
-   */
   function showCmsApp() {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("cms-app").classList.add("visible");
@@ -218,9 +152,6 @@
     updateNavForRole();
   }
 
-  /**
-   * Show or hide the "User Accounts" nav link based on the current user's role.
-   */
   function updateNavForRole() {
     var role = currentUser ? currentUser.role : null;
     var isAdmin = role === "admin";
@@ -236,7 +167,6 @@
   }
 
   /**
-   * Show or hide a sidebar nav-link and its mobile <option> by tab name.
    * @param {string} tab
    * @param {boolean} visible
    */
@@ -253,10 +183,6 @@
     }
   }
 
-  /**
-   * Returns true if the given role is allowed to view the given tab.
-   * Mirrors the same rules used in updateNavForRole().
-   */
   function isTabAllowedForRole(tab, role) {
     var isAdmin = role === "admin";
     var isHrManager = role === "hr_manager";
@@ -281,10 +207,6 @@
     }
   }
 
-  /**
-   * Finds the first tab (in sidebar order) that the given role is allowed to view.
-   * Used to pick where to land a user after login.
-   */
   function getFirstAllowedTab(role) {
     var tabOrder = ["news", "packages", "jobs", "doctors", "users", "settings"];
     for (var i = 0; i < tabOrder.length; i++) {
@@ -295,12 +217,8 @@
     return "settings"; // fallback, should never actually hit this
   }
 
-  // ==========================================================================
-  // TAB SWITCHING
-  // ==========================================================================
 
   /**
-   * Switch the active panel/tab in the admin interface.
    * @param {string} tab - 'news', 'packages', 'jobs', 'doctors', 'users', 'settings'
    */
   function switchTab(tab) {
@@ -356,14 +274,6 @@
     }
   }
 
-  // ==========================================================================
-  // NEWS LIST RENDERING — DB-backed
-  // ==========================================================================
-
-  /**
-   * Render the list of news items in the admin panel.
-   * Fetches from the server DB via /api/news/admin.
-   */
   function renderNewsList() {
     var container = document.getElementById("news-items-list");
     if (!container) return;
@@ -482,7 +392,6 @@
   }
 
   /**
-   * Fetch all news items from the server (for modal editing).
    * @returns {Promise<Array>}
    */
   function fetchNewsItems() {
@@ -499,13 +408,8 @@
       });
   }
 
-  // ==========================================================================
   // PACKAGES LIST RENDERING
-  // ==========================================================================
 
-  /**
-   * Render the list of health packages in the admin panel.
-   */
   function fetchAdminPackages() {
     return fetch("packages/list", {
       method: "GET",
@@ -577,12 +481,8 @@
     });
   }
 
-  // ==========================================================================
-  // JOBS LIST RENDERING — DB-backed
-  // ==========================================================================
 
   /**
-   * Fetch all jobs for the admin.
    * @returns {Promise<Array>}
    */
   function fetchAdminJobs() {
@@ -600,7 +500,6 @@
   }
 
   /**
-   * Fetch all benefits for the admin.
    * @returns {Promise<Array>}
    */
   var cachedBenefits = [];
@@ -620,9 +519,6 @@
       });
   }
 
-  /**
-   * Render the list of job openings in the admin panel.
-   */
   function renderJobsList() {
     var container = document.getElementById("jobs-items-list");
     if (!container) return;
@@ -681,9 +577,6 @@
     });
   }
 
-  /**
-   * Bind edit/delete buttons for job items.
-   */
   function bindJobActions() {
     document.querySelectorAll(".btn-edit-job").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -741,12 +634,7 @@
       });
   }
 
-  // ==========================================================================
-  // DOCTORS LIST RENDERING
-  // ==========================================================================
-
   /**
-   * Fetch all doctors for the admin.
    * @returns {Promise<Array>}
    */
   function fetchAdminDoctors() {
@@ -768,9 +656,6 @@
       });
   }
 
-  /**
-   * Render the list of doctors in the admin panel.
-   */
   function renderDoctorsList() {
     var container = document.getElementById("doctors-items-list");
     if (!container) return;
@@ -835,13 +720,6 @@
     });
   }
 
-  // ==========================================================================
-  // ACTION BINDINGS
-  // ==========================================================================
-
-  /**
-   * Bind edit/delete buttons for news items (DB-backed).
-   */
   function bindNewsActions() {
     document.querySelectorAll(".btn-edit-news").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -956,9 +834,6 @@
       });
   }
 
-  /**
-   * Bind edit/delete buttons for doctor items.
-   */
   function bindDoctorActions() {
     document.querySelectorAll(".btn-edit-doctor").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -1100,12 +975,7 @@
       });
   }
 
-  // ==========================================================================
-  // NEWS MODAL (ADD/EDIT) — DB-backed
-  // ==========================================================================
-
   /**
-   * Open the news item modal for adding or editing.
    * @param {Object|null} item - existing item to edit, or null for new
    */
   function openNewsModal(item) {
@@ -1145,10 +1015,6 @@
     modal.show();
   }
 
-  /**
-   * Save the news item from the modal form (DB-backed).
-   * Creates a new item or updates an existing one.
-   */
   function saveNewsItem() {
     var id = document.getElementById("news-item-id").value;
     var category = document.getElementById("news-item-category").value;
@@ -1226,12 +1092,7 @@
       });
   }
 
-  // ==========================================================================
-  // PACKAGE MODAL (ADD/EDIT)
-  // ==========================================================================
-
   /**
-   * Open the package modal for adding or editing.
    * @param {Object|null} item - existing package to edit, or null for new
    */
   function openPackageModal(item) {
@@ -1281,10 +1142,6 @@
     modal.show();
   }
 
-  /**
-   * Save the package from the modal form.
-   * Creates a new package or updates an existing one.
-   */
   function savePackageItem() {
     var id = document.getElementById("package-item-id").value;
     var name = document.getElementById("package-item-name").value.trim();
@@ -1354,10 +1211,6 @@
       });
   }
 
-  // ==========================================================================
-  // JOB MODAL (ADD/EDIT) — DB-backed
-  // ==========================================================================
-
   function renderBenefitCheckboxes(checkedIds) {
     var container = document.getElementById("job-item-benefits-list");
     if (!container) return;
@@ -1390,7 +1243,6 @@
   }
 
   /**
-   * Open the job modal for adding or editing.
    * @param {Object|null} item - existing job to edit, or null for new
    */
   function openJobModal(item) {
@@ -1518,13 +1370,6 @@
       });
   }
 
-  // ==========================================================================
-  // USER ACCOUNT MANAGEMENT
-  // ==========================================================================
-
-  /**
-   * Render the list of users in the admin panel.
-   */
   function renderUsersList() {
     var container = document.getElementById("users-items-list");
     if (!container) return;
@@ -1640,9 +1485,6 @@
       });
   }
 
-  /**
-   * Bind edit/deactivate/activate buttons for user rows.
-   */
   function bindUserActions() {
     document.querySelectorAll(".btn-edit-user").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -1673,7 +1515,6 @@
   }
 
   /**
-   * Fetch all users from the server.
    * @returns {Promise<Array>}
    */
   function fetchUsers() {
@@ -1691,7 +1532,6 @@
   }
 
   /**
-   * Open the user modal for adding or editing.
    * @param {Object|null} user - existing user to edit, or null for new
    */
   function openUserModal(user) {
@@ -1715,9 +1555,6 @@
     modal.show();
   }
 
-  /**
-   * Save a user from the modal form (create or update via server).
-   */
   function saveUserItem() {
     var id = document.getElementById("user-item-id").value;
     var username = document.getElementById("user-item-username").value.trim();
@@ -1790,7 +1627,6 @@
   }
 
   /**
-   * Activate or deactivate a user.
    * @param {number} id
    * @param {number} isActive - 1 to activate, 0 to deactivate
    */
@@ -1827,13 +1663,6 @@
       });
   }
 
-  // ==========================================================================
-  // SETTINGS
-  // ==========================================================================
-
-  /**
-   * Load current settings into the settings form.
-   */
   function loadSettings() {
     var username = currentUser ? currentUser.username : "";
     document.getElementById("settings-username").value = username;
@@ -1901,14 +1730,6 @@
       });
   }
 
-  // ==========================================================================
-  // INITIALIZATION
-  // ==========================================================================
-
-  /**
-   * Initialize the admin panel on DOMContentLoaded.
-   * Sets up all event listeners and checks login state.
-   */
   document.addEventListener("DOMContentLoaded", function () {
     // Toastr configuration
     if (window.toastr) {

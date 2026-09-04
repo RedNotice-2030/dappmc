@@ -418,8 +418,6 @@
     },
 
     /**
-     * Load data from a JSON file (with localStorage override if present).
-     * Falls back to embedded data when fetch is unavailable (file:// protocol).
      * @param {string} collection - e.g. 'news', 'packages'
      * @returns {Promise<Object>}
      */
@@ -498,7 +496,6 @@
     },
 
     /**
-     * Get all items in a collection.
      * @param {string} collection
      * @returns {Promise<Array>}
      */
@@ -522,7 +519,6 @@
     },
 
     /**
-     * Get items filtered by category (for news collections).
      * @param {string} collection
      * @param {string} category
      * @returns {Promise<Array>}
@@ -536,7 +532,6 @@
     },
 
     /**
-     * Save (add or update) an item in a collection.
      * @param {string} collection
      * @param {Object} item - must have a unique 'id'
      * @returns {Promise<Object>} saved item
@@ -565,7 +560,6 @@
     },
 
     /**
-     * Delete an item from a collection.
      * @param {string} collection
      * @param {string} itemId
      * @returns {Promise<boolean>}
@@ -583,8 +577,7 @@
     },
 
     /**
-     * Generate a unique ID for new items.
-     * @param {string} prefix - e.g. 'news', 'pkg'
+     * @param {string} prefix
      * @returns {string}
      */
     generateId: function (prefix) {
@@ -594,7 +587,6 @@
     },
 
     /**
-     * Persist items to localStorage.
      * @private
      */
     _persist: function (collection, items) {
@@ -651,7 +643,6 @@
     },
 
     /**
-     * Export a collection as a downloadable JSON file.
      * @param {string} collection
      * @param {string} filename
      */
@@ -673,7 +664,6 @@
     },
 
     /**
-     * Import data from a JSON string into localStorage.
      * @param {string} collection
      * @param {string} jsonString
      * @returns {Promise<Object>}
@@ -694,7 +684,6 @@
     },
 
     /**
-     * Clear localStorage override for a collection (revert to file data).
      * @param {string} collection
      */
     resetData: function (collection) {
@@ -704,8 +693,7 @@
     },
 
     /**
-     * Format a date string for display.
-     * @param {string} dateStr - ISO date (YYYY-MM-DD)
+     * @param {string} dateStr 
      * @returns {string}
      */
     formatDate: function (dateStr) {
@@ -720,7 +708,6 @@
     },
 
     /**
-     * Escape HTML to prevent XSS from user content.
      * @param {string} str
      * @returns {string}
      */
