@@ -1,5 +1,11 @@
 <?php
 
+// Force PHP and CodeIgniter to show all errors on Render
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+$_SERVER['CI_ENVIRONMENT'] = 'development';
+
 use CodeIgniter\Boot;
 use Config\Paths;
 
@@ -47,9 +53,7 @@ if (getcwd() . DIRECTORY_SEPARATOR !== FCPATH) {
  */
 
 // LOAD OUR PATHS CONFIG FILE
-// This is the line that might need to be changed, depending on your folder structure.
 require FCPATH . '../app/Config/Paths.php';
-// ^^^ Change this line if you move your application folder
 
 $paths = new Paths();
 
