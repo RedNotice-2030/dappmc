@@ -33,9 +33,10 @@ RUN chown -R www-data:www-data /var/www/html/writable \
 # ---------------------------------------------------------------------------
 # Render expects the web server to listen on the $PORT env var (default 10000).
 # Apache's default is port 80, so re-point both the Listen line and the
-# VirtualHost at container start using the runtime value of $PORT
+# VirtualHost at container start. NOTE: the "${PORT:-80}" must be expanded by
+# the shell, so it is placed OUTSIDE the single-quoted sed expressions
 # (falls back to 80 when $PORT is not set, e.g. locally).
 # ---------------------------------------------------------------------------
-CMD ["sh", "-c", "sed -ri 's/^Listen 80$/Listen ${PORT:-80}/' /etc/apache2/ports.conf; sed -ri 's/^<VirtualHost \\*:80>$/<VirtualHost *:${PORT:-80}>/' /etc/apache2/sites-available/000-default.conf; exec apache2-foreground"]
+CMD ["sh", "-c", "sed -ri 's/^Listen 80$/Listen '\"${PORT:-80}\"'/' /etc/apache2/ports.conf; sed -ri 's/^<VirtualHost \\*:80>$/<VirtualHost *:'\"${PORT:-80}\"'>/' /etc/apache2/sites-available/000-default.conf; exec apache2-foreground"]
 
 WORKDIR /var/www/html
