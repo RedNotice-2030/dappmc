@@ -11,7 +11,149 @@
         <div class="container my-4">
           <h1 class="specialties-title fw-bold text-center mb-4 gold-outline-heading scroll-animate animate-bottom">Medical Specialties</h1>
         </div>
-        
+        <div class="container my-4">
+          <div class="row g-3">
+            <!-- Cardiology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/cardiology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-heart-pulse-fill fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Cardiology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Pediatrics -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/pediatrics') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="fa-solid fa-baby-carriage fa-xl custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Pediatrics</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Radiology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/radiology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="fa-solid fa-x-ray fa-xl custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Radiology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Internal Medicine -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/internal-medicine') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-clipboard2-pulse-fill fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Internal Medicine</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Physiology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/physiology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-activity fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Physiology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Anesthesiology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/anesthesiology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-virus fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Anesthesiology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Nephrology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/nephrology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-droplet-fill fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Nephrology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Urology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/urology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-funnel-fill fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Urology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Orthopedics -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/orthopedics') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="fa-solid fa-bone fa-xl custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Orthopedics</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Pulmonology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/pulmonology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-lungs-fill fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Pulmonology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- ENT -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/ent') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-ear-fill fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">ENT</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- General Surgery -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/general-surgery') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-scissors fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">General Surgery</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- OB-Gynecology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/ob-gynecology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-gender-female fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">OB-Gynecology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Neurology -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('departments/neurology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="bi bi-cpu-fill fs-3 custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Neurology</h6>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
       <section class="py-5 diagnostic-section bg-white" id="lab">
         <div class="container my-4">

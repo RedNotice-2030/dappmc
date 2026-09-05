@@ -11,12 +11,12 @@
 
       <div class="row g-4">
         <!-- Sticky TOC sidebar -->
-        <div class="col-lg-3 d-none d-lg-block">
+        <div class="col-lg-3 d-none d-lg-block guide-sidebar">
           <div class="sticky-sidebar">
             <div class="list-group guide-toc">
               <a class="list-group-item list-group-item-action" href="#admission"><i class="bi bi-clipboard2-pulse me-2"></i>Admission Procedure</a>
               <a class="list-group-item list-group-item-action" href="#discharge"><i class="bi bi-box-arrow-right me-2"></i>Discharge Procedure</a>
-              <a class="list-group-item list-group-item-action" href="#yakap"><i class="bi bi-clipboard2-pulse me-2"></i>YAKAP Procedure</a>
+              <a class="list-group-item list-group-item-action" href="#yakap"><i class="bi bi-heart-pulse me-2"></i>YAKAP Procedure</a>
               <a class="list-group-item list-group-item-action" href="#billing"><i class="bi bi-credit-card me-2"></i>Billing &amp; Payment</a>
               <a class="list-group-item list-group-item-action" href="#records"><i class="bi bi-folder2-open me-2"></i>Medical Records</a>
               <a class="list-group-item list-group-item-action" href="#rights"><i class="bi bi-shield-check me-2"></i>Patient Rights &amp; Responsibilities</a>
@@ -92,7 +92,7 @@
           <!-- ================= YAKAP PROCEDURE ================= -->
           <section id="yakap" class="guide-section mb-5">
             <h2 class="guide-section-title fw-bold mb-4 scroll-animate animate-bottom">
-              <i class="bi bi-clipboard2-pulse me-2" style="color:#c6b350"></i>YAKAP Procedure
+              <i class="bi bi-heart-pulse me-2" style="color:#c6b350"></i>YAKAP Procedure
             </h2>
             <div class="row g-4">
               <?php

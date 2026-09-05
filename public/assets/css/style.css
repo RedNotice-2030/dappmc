@@ -1151,3 +1151,42 @@ footer {
   border-left: 3px solid #c6b350;
   padding-left: 0.75rem;
 }
+
+/* Apply to all section blocks with an ID or specific content sections */
+section[id], 
+div[id], 
+.section-title {
+    scroll-margin-top: 150px; /* Adjust this value to match your header height */
+}
+
+.guide-sidebar,
+.doctor-filter-list{
+    position: -webkit-sticky; /* For Safari compatibility */
+    position: sticky;
+    top: 150px; /* Offset to clear your fixed navbar */
+    align-self: flex-start; /* Required if inside a Flexbox parent */
+    height: auto;
+    z-index: 10;
+}
+
+/* Gold Icon Color */
+.custom-icon {
+  color: #c6b350;
+  line-height: 1;
+}
+
+/* Custom Font Style */
+.custom-font {
+  font-family: "Copperplate Gothic", "Copperplate", sans-serif;
+  color: #212529; /* Dark text color */
+}
+
+/* Card Hover Effect */
+.specialty-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.specialty-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
