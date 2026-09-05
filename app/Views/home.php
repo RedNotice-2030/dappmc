@@ -173,7 +173,7 @@
       </section>
 
       <!-- Services Section -->
-      <section id="services bg-white" class="py-5 bg-white my-5">
+      <section id="services" class="py-5 bg-white my-5">
         <div class="container">
           <div
             class="info-text text-center mx-auto mb-5 scroll-animate animate-bottom"
