@@ -1,0 +1,35 @@
+# --- VCS ---
+.git
+.gitignore
+
+# --- Local environment / secrets (never bake into the image) ---
+.env
+.env.*
+.env.local
+.env.*.local
+
+# --- Local scratch files ---
+_tmp_*
+
+# --- Unused root-level artifacts (docs/backups only) ---
+DAPPMC - Dept 2026.png
+dappmc-org.png
+delete
+git
+index.html.bak
+CONTACT_MODAL_FIX.md
+CONTACT_MODAL_QUICK_FIX.md
+
+# --- Runtime data / caches (recreated by the app) ---
+writable/session/*
+writable/cache/*
+writable/debugbar/*
+writable/logs/*.log
+!writable/**/index.html
+
+# --- Dev/test tooling (production image doesn't need them) ---
+tests
+phpunit.dist.xml
+preload.php
+Dockerfile
+.dockerignore

@@ -30,4 +30,12 @@ RUN echo '<Directory /var/www/html/public>\n\
 RUN chown -R www-data:www-data /var/www/html/writable \
     && chmod -R 775 /var/www/html/writable
 
+# ---------------------------------------------------------------------------
+# Render expects the web server to listen on the $PORT env var (default 10000).
+# Apache's default is port 80, so re-point both the Listen line and the
+# VirtualHost at container start using the runtime value of $PORT
+# (falls back to 80 when $PORT is not set, e.g. locally).
+# ---------------------------------------------------------------------------
+CMD ["sh", "-c", "sed -ri 's/^Listen 80$/Listen ${PORT:-80}/' /etc/apache2/ports.conf; sed -ri 's/^<VirtualHost \\*:80>$/<VirtualHost *:${PORT:-80}>/' /etc/apache2/sites-available/000-default.conf; exec apache2-foreground"]
+
 WORKDIR /var/www/html

@@ -1,11 +1,5 @@
 <?php
 
-// Force PHP and CodeIgniter to show all errors on Render
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-$_SERVER['CI_ENVIRONMENT'] = 'development';
-
 use CodeIgniter\Boot;
 use Config\Paths;
 
