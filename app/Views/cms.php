@@ -401,14 +401,30 @@
                 </div>
                 <div class="cms-card-body">
                   <div class="mb-3">
-                    <div class="btn-group btn-group-sm" role="group" id="news-category-filter">
+                    <!-- <ul>
+                      <li data-filter="all">All</li>
+                      <li data-filter="news">News</li>
+                      <li data-filter="advisories">Advisories</li>
+                      <li data-filter="events">Events</li>
+                      <li data-filter="drives">Drives</li>
+                      <li data-filter="alerts">Alerts</li>
+                    </ul> -->
+                    <datalist id="news-category-filter">
+                      <option value="all">All</option>
+                      <option value="news">News</option>
+                      <option value="advisories">Advisories</option>
+                      <option value="events">Events</option>
+                      <option value="drives">Drives</option>
+                      <option value="alerts">Alerts</option>
+                    </datalist>
+                    <!-- <div class="btn-group btn-group-sm" role="group" id="news-category-filter">
                       <button class="btn btn-outline-primary active" data-filter="all">All</button>
                       <button class="btn btn-outline-primary" data-filter="news">News</button>
                       <button class="btn btn-outline-primary" data-filter="advisories">Advisories</button>
                       <button class="btn btn-outline-primary" data-filter="events">Events</button>
                       <button class="btn btn-outline-primary" data-filter="drives">Drives</button>
                       <button class="btn btn-outline-primary" data-filter="alerts">Alerts</button>
-                    </div>
+                    </div> -->
                   </div>
                   <div id="news-items-list"></div>
                 </div>

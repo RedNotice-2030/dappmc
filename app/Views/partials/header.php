@@ -33,7 +33,7 @@
       <div class="text-white py-2 border-bottom border-secondary" style="background-color: #002c6d">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-1">
           <div class="small order-1">
-            <span class="me-3 hidden md:inline-block"><i class="bi bi-clock me-1" style="color: #c6b350"></i> 24/7 Emergency Care</span>
+            <span class="me-3 d-none d-md-inline-block"><i class="bi bi-clock me-1" style="color: #c6b350"></i> 24/7 Emergency Care</span>
             <span><i class="bi bi-geo-alt me-1" style="color: #c6b350"></i> <a href="<?= site_url('about') ?>#location" class="text-white text-decoration-none">Gensan Drive, Koronadal, 9506 South Cotabato</a></span>
           </div>
           <div class="small fw-bold order-2">
