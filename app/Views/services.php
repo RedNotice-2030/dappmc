@@ -15,7 +15,7 @@
           <div class="row g-3">
             <!-- Cardiology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/cardiology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=cardiology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-heart-pulse-fill fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Cardiology</h6>
@@ -25,7 +25,7 @@
 
             <!-- Pediatrics -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/pediatrics') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=pediatrics' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="fa-solid fa-baby-carriage fa-xl custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Pediatrics</h6>
@@ -35,7 +35,7 @@
 
             <!-- Radiology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/radiology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=radiology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="fa-solid fa-x-ray fa-xl custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Radiology</h6>
@@ -45,7 +45,7 @@
 
             <!-- Internal Medicine -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/internal-medicine') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=internal-medicine' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-clipboard2-pulse-fill fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Internal Medicine</h6>
@@ -55,7 +55,7 @@
 
             <!-- Physiology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/physiology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=physiology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-activity fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Physiology</h6>
@@ -65,7 +65,7 @@
 
             <!-- Anesthesiology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/anesthesiology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=anesthesiology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-virus fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Anesthesiology</h6>
@@ -75,7 +75,7 @@
 
             <!-- Nephrology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/nephrology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=nephrology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-droplet-fill fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Nephrology</h6>
@@ -85,7 +85,7 @@
 
             <!-- Urology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/urology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=urology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-funnel-fill fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Urology</h6>
@@ -95,7 +95,7 @@
 
             <!-- Orthopedics -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/orthopedics') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=orthopedics' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="fa-solid fa-bone fa-xl custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Orthopedics</h6>
@@ -105,7 +105,7 @@
 
             <!-- Pulmonology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/pulmonology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=pulmonology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-lungs-fill fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Pulmonology</h6>
@@ -115,7 +115,7 @@
 
             <!-- ENT -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/ent') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=ent' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-ear-fill fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">ENT</h6>
@@ -125,7 +125,7 @@
 
             <!-- General Surgery -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/general-surgery') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=general-surgery' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-scissors fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">General Surgery</h6>
@@ -135,7 +135,7 @@
 
             <!-- OB-Gynecology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/ob-gynecology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=ob-gynecology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-gender-female fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">OB-Gynecology</h6>
@@ -145,10 +145,20 @@
 
             <!-- Neurology -->
             <div class="col-md-4 col-sm-6">
-              <a href="<?= base_url('departments/neurology') ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+              <a href="<?= base_url('doctors') . '?specialty=neurology' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
                 <div class="card-body d-flex align-items-center gap-3 p-2">
                   <i class="bi bi-cpu-fill fs-3 custom-icon"></i>
                   <h6 class="card-title mb-0 custom-font">Neurology</h6>
+                </div>
+              </a>
+            </div>
+
+            <!-- Physical Therapy -->
+            <div class="col-md-4 col-sm-6">
+              <a href="<?= base_url('doctors') . '?specialty=physical-therapy' ?>" class="card h-100 shadow-sm border-0 bg-light text-decoration-none p-2 specialty-card">
+                <div class="card-body d-flex align-items-center gap-3 p-2">
+                  <i class="fa-solid fa-person-running fa-xl custom-icon"></i>
+                  <h6 class="card-title mb-0 custom-font">Physical Therapy</h6>
                 </div>
               </a>
             </div>

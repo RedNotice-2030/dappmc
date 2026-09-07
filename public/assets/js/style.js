@@ -75,6 +75,23 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlSpecialty = urlParams.get("specialty");
+    if (urlSpecialty) {
+      const targetBtn = Array.from(filterButtons).find(
+        (b) => b.getAttribute("data-filter") === urlSpecialty
+      );
+      if (targetBtn) {
+        targetBtn.click();
+        // Scroll to the doctors section once, after the cards have rendered.
+        if (document.querySelectorAll(".doctor-item").length > 0 && !window.__specialtyScrolled) {
+          window.__specialtyScrolled = true;
+          const section = document.getElementById("doctors");
+          if (section) section.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+
     // 3. ACCORDION CARD CLICK TOGGLE
     const doctorCards = document.querySelectorAll(".doctor-card");
 

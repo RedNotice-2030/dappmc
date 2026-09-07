@@ -43,6 +43,7 @@
                     'general-surgery' => 'General Surgery',
                     'ob-gynecology' => 'OB-Gynecology',
                     'neurology' => 'Neurology',
+                    'physical-therapy' => 'Physical Therapy',
                   ]; ?>
                   <?php foreach ($specs as $key => $label): ?>
                   <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-filter="<?= esc($key) ?>">

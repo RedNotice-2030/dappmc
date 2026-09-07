@@ -339,17 +339,15 @@
 
           html +=
             '<div class="item-row">' +
-            '  <div class="d-flex align-items-center gap-3 flex-grow-1">' +
-            statusBadge +
-            '    <span class="badge ' + badgeClass + ' badge-category">' +
-            CMS.escapeHtml(catLabel) +
-            "</span>" +
-            '    <div class="flex-grow-1">' +
-            '      <div class="item-title">' + CMS.escapeHtml(item.title) + "</div>" +
-            '      <div class="item-meta"><i class="bi bi-calendar3 me-1"></i>' +
+            '  <div class="flex-grow-1">' +
+            '    <div class="item-title">' + CMS.escapeHtml(item.title) + "</div>" +
+            '    <div class="item-meta"><i class="bi bi-calendar3 me-1"></i>' +
             CMS.escapeHtml(dateLabel) +
             "</div>" +
-            "    </div>" +
+            '    <div class="mt-1">' + statusBadge +
+            ' <span class="badge ' + badgeClass + ' badge-category">' +
+            CMS.escapeHtml(catLabel) +
+            "</span></div>" +
             "  </div>" +
             '  <div class="d-flex gap-1">' +
             '    <button class="btn btn-sm btn-outline-primary btn-edit-news" data-id="' +
@@ -451,12 +449,10 @@
 
         html +=
           '<div class="item-row">' +
-          '  <div class="d-flex align-items-center gap-3 flex-grow-1">' +
-          statusBadge +
-          '    <div class="flex-grow-1">' +
-          '      <div class="item-title">' + CMS.escapeHtml(pkg.name) + "</div>" +
-          '      <div class="item-meta">Order: ' + (pkg.sortOrder || 0) + "</div>" +
-          "    </div>" +
+          '  <div class="flex-grow-1">' +
+          '    <div class="item-title">' + CMS.escapeHtml(pkg.name) + "</div>" +
+          '    <div class="item-meta">Order: ' + (pkg.sortOrder || 0) + "</div>" +
+          '    <div class="mt-1">' + statusBadge + "</div>" +
           "  </div>" +
           '  <div class="d-flex gap-1">' +
           '    <button class="btn btn-sm btn-outline-primary btn-edit-package" data-id="' + pkg.id + '">' +
@@ -550,12 +546,10 @@
 
         html +=
           '<div class="item-row">' +
-          '  <div class="d-flex align-items-center gap-3 flex-grow-1">' +
-          statusBadge +
-          '    <div class="flex-grow-1">' +
-          '      <div class="item-title">' + CMS.escapeHtml(job.title) + "</div>" +
-          '      <div class="item-meta">Order: ' + (job.sortOrder || 0) + "</div>" +
-          "    </div>" +
+          '  <div class="flex-grow-1">' +
+          '    <div class="item-title">' + CMS.escapeHtml(job.title) + "</div>" +
+          '    <div class="item-meta">Order: ' + (job.sortOrder || 0) + "</div>" +
+          '    <div class="mt-1">' + statusBadge + "</div>" +
           "  </div>" +
           '  <div class="d-flex gap-1">' +
           '    <button class="btn btn-sm btn-outline-primary btn-edit-job" data-id="' +
@@ -693,12 +687,10 @@
 
         html +=
           '<div class="item-row">' +
-          '  <div class="d-flex align-items-center gap-3 flex-grow-1">' +
-          statusBadge +
-          '    <div class="flex-grow-1">' +
-          '      <div class="item-title">' + CMS.escapeHtml(doc.name) + "</div>" +
-          '      <div class="item-meta">' + CMS.escapeHtml(specLabel) + " · Order: " + (doc.sortOrder || 0) + "</div>" +
-          "    </div>" +
+          '  <div class="flex-grow-1">' +
+          '    <div class="item-title">' + CMS.escapeHtml(doc.name) + "</div>" +
+          '    <div class="item-meta">' + CMS.escapeHtml(specLabel) + " · Order: " + (doc.sortOrder || 0) + "</div>" +
+          '    <div class="mt-1">' + statusBadge + "</div>" +
           "  </div>" +
           '  <div class="d-flex gap-1">' +
           '    <button class="btn btn-sm btn-outline-primary btn-edit-doctor" data-id="' +
@@ -1431,19 +1423,15 @@
 
           html +=
             '<div class="item-row">' +
-            '  <div class="d-flex align-items-center gap-3 flex-grow-1">' +
-            statusBadge +
-            roleBadge +
-            selfBadge +
-            '    <div class="flex-grow-1">' +
-            '      <div class="item-title">' + CMS.escapeHtml(user.username) + "</div>" +
-            '      <div class="item-meta">' +
-            '        <i class="bi bi-envelope me-1"></i>' + CMS.escapeHtml(user.email) +
-            '        <span class="ms-2"><i class="bi bi-clock-history me-1"></i>Last login: ' +
+            '  <div class="flex-grow-1">' +
+            '    <div class="item-title">' + CMS.escapeHtml(user.username) + "</div>" +
+            '    <div class="item-meta">' +
+            '      <i class="bi bi-envelope me-1"></i>' + CMS.escapeHtml(user.email) +
+            '      <span class="ms-2"><i class="bi bi-clock-history me-1"></i>Last login: ' +
             CMS.escapeHtml(lastLogin) +
             "</span>" +
-            "      </div>" +
             "    </div>" +
+            '    <div class="mt-1">' + statusBadge + roleBadge + selfBadge + "</div>" +
             "  </div>" +
             '  <div class="d-flex gap-1">' +
             '    <button class="btn btn-sm btn-outline-primary btn-edit-user" data-id="' +
