@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Config\Services;
+use Config\Email as EmailConfig;
 
 class Contact extends BaseController
 {
@@ -27,19 +28,25 @@ class Contact extends BaseController
         }
 
         // ------------------------------------------------------------------
-        // SMTP is configured at runtime from environment variables, so the
-        // credentials stay out of the repository. On Render, set:
-        //   SMTP_USER  -> the Gmail address
-        //   SMTP_PASS  -> the Gmail App Password
-        //   (optional) SMTP_HOST, SMTP_PORT, SMTP_FROM_EMAIL, CONTACT_RECIPIENT
+        // SMTP settings come from the .env file (email.SMTPHost, email.SMTPUser,
+        // email.SMTPPass, ...) via CI4's config system — the same mechanism that
+        // provides the database credentials. This keeps secrets out of the code.
         // ------------------------------------------------------------------
-        $smtpUser = (string) env('SMTP_USER', '');
-        $smtpPass = (string) env('SMTP_PASS', '');
-        $fromEmail = (string) env('SMTP_FROM_EMAIL', $smtpUser);
-        $recipient = (string) env('CONTACT_RECIPIENT', 'lanceverstappen30@gmail.com');
+        $emailConfig = config(EmailConfig::class);
+
+        $fromEmail = trim((string) $emailConfig->fromEmail);
+        $smtpUser  = trim((string) $emailConfig->SMTPUser);
+        $smtpPass  = (string) $emailConfig->SMTPPass;
+
+        // Where the message should be delivered (configurable, falls back to a default).
+        $defaultRecipient = trim((string) $emailConfig->recipients);
+        if ($defaultRecipient === '') {
+            $defaultRecipient = 'lanceverstappen30@gmail.com';
+        }
+        $recipient = trim((string) env('CONTACT_RECIPIENT', $defaultRecipient));
 
         if ($fromEmail === '' || $smtpUser === '' || $smtpPass === '') {
-            log_message('error', 'Contact form: SMTP not configured (set SMTP_USER and SMTP_PASS env vars).');
+            log_message('error', 'Contact form: SMTP not configured (set email.SMTPUser/email.SMTPPass/email.fromEmail in .env).');
 
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
@@ -47,20 +54,24 @@ class Contact extends BaseController
             ]);
         }
 
-        // Always build a fresh instance so we never mutate a shared singleton.
+        // Fresh instance (never mutate a shared singleton), applying config(Email)
+        // which is populated from the email.* keys in .env.
         $email = Services::email(null, false);
 
-        // SMTP transport (Gmail-compatible).
-        $email->protocol     = 'smtp';
-        $email->SMTPHost     = (string) env('SMTP_HOST', 'smtp.gmail.com');
-        $email->SMTPPort     = (int) env('SMTP_PORT', 587);
-        $email->SMTPCrypto   = (string) env('SMTP_CRYPTO', 'tls');
+        $email->protocol     = $emailConfig->protocol ?: 'smtp';
+        $email->SMTPHost     = $emailConfig->SMTPHost;
+        $email->SMTPPort     = $emailConfig->SMTPPort;
+        $email->SMTPCrypto   = $emailConfig->SMTPCrypto;
         $email->SMTPUser     = $smtpUser;
         $email->SMTPPass     = $smtpPass;
-        $email->SMTPTimeout  = (int) env('SMTP_TIMEOUT', 10);
+        $email->SMTPTimeout  = max($emailConfig->SMTPTimeout, 10);
         $email->userAgent    = 'DAPPMC';
 
-        $fromName = (string) env('SMTP_FROM_NAME', 'DAPPMC Cares');
+        $fromName = (string) $emailConfig->fromName;
+        if (trim($fromName) === '') {
+            $fromName = 'DAPPMC Cares';
+        }
+
         $email->setFrom($fromEmail, $fromName);
         $email->setTo($recipient);
         $email->setSubject('Website Contact Message — ' . $name);
