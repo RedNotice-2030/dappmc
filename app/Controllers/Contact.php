@@ -8,20 +8,27 @@ use Config\Email as EmailConfig;
 class Contact extends BaseController
 {
     /**
-     * Resolve a SMTP setting, preferring the value from `config(Email)`
-     * (populated from a local .env) and falling back to a plain environment
-     * variable (e.g. set in Render's dashboard). That way the same code works
-     * locally (where .env exists) and on Render (env vars only).
+     * Resolve a setting by checking, in order:
+     *   1. config(Email) — populated from a local .env (email.* keys)
+     *   2. a dotted CI4 env var  (e.g. email.SMTPUser)
+     *   3. a plain env var       (e.g. SMTP_USER)
+     * This makes the same code work locally (.env exists) and on Render
+     * (env vars only), regardless of which naming convention was used.
      */
-    protected function pick(string $configValue, string $envKey, string $default = '')
+    protected function resolve(string $configValue, string $dottedKey, string $plainKey, string $default = '')
     {
         $value = trim((string) $configValue);
         if ($value !== '') {
             return $value;
         }
 
-        $envValue = (string) env($envKey, '');
-        return $envValue !== '' ? $envValue : $default;
+        $dotted = trim((string) env($dottedKey, ''));
+        if ($dotted !== '') {
+            return $dotted;
+        }
+
+        $plain = trim((string) env($plainKey, ''));
+        return $plain !== '' ? $plain : $default;
     }
 
     public function send()
@@ -30,6 +37,24 @@ class Contact extends BaseController
             return $this->response->setStatusCode(403)->setJSON([
                 'success' => false,
                 'message' => 'Direct access is not allowed.',
+            ]);
+        }
+
+        // Temporary debug endpoint - remove after fixing
+        if ($this->request->getGet('debug') === 'env') {
+            $emailConfig = config(EmailConfig::class);
+            return $this->response->setJSON([
+                'smtp_host_config' => (string) $emailConfig->SMTPHost,
+                'smtp_user_config' => (string) $emailConfig->SMTPUser,
+                'smtp_pass_config' => ((string) $emailConfig->SMTPPass) !== '' ? 'SET' : 'EMPTY',
+                'env_smtp_host' => getenv('SMTP_HOST') ?: 'NOT_FOUND',
+                'env_smtp_user' => getenv('SMTP_USER') ?: 'NOT_FOUND',
+                'env_smtp_pass' => getenv('SMTP_PASS') ? 'SET' : 'NOT_FOUND',
+                'server_smtp_host' => $_SERVER['SMTP_HOST'] ?? 'NOT_FOUND',
+                'server_smtp_user' => $_SERVER['SMTP_USER'] ?? 'NOT_FOUND',
+                'env_superglobal' => $_ENV['SMTP_USER'] ?? 'NOT_FOUND',
+                'variables_order' => ini_get('variables_order'),
+                'has_getenv' => function_exists('getenv'),
             ]);
         }
 
@@ -44,21 +69,25 @@ class Contact extends BaseController
             ]);
         }
 
-        // SMTP comes from .env (email.* keys) on localhost, or from plain env
-        // vars on Render. We accept both so the app works in either place.
         $emailConfig = config(EmailConfig::class);
 
-        $smtpHost  = $this->pick((string) $emailConfig->SMTPHost, 'SMTP_HOST', 'smtp.gmail.com');
-        $smtpPort  = trim((string) $emailConfig->SMTPPort);
-        if ($smtpPort === '') {
-            $smtpPort = (string) env('SMTP_PORT', '587');
-        }
-        $smtpCrypto = $this->pick((string) $emailConfig->SMTPCrypto, 'SMTP_CRYPTO', 'tls');
-        $smtpUser  = $this->pick((string) $emailConfig->SMTPUser, 'SMTP_USER');
-        $smtpPass  = $this->pick((string) $emailConfig->SMTPPass, 'SMTP_PASS');
+        $smtpHost  = $this->resolve((string) $emailConfig->SMTPHost,   'email.SMTPHost',   'SMTP_HOST',   'smtp.gmail.com');
+        $smtpCrypto = $this->resolve((string) $emailConfig->SMTPCrypto, 'email.SMTPCrypto', 'SMTP_CRYPTO', 'tls');
+        $smtpUser  = $this->resolve((string) $emailConfig->SMTPUser,   'email.SMTPUser',   'SMTP_USER');
+        $smtpPass  = $this->resolve((string) $emailConfig->SMTPPass,   'email.SMTPPass',   'SMTP_PASS');
+        $fromEmail = $this->resolve((string) $emailConfig->fromEmail,  'email.fromEmail',  'SMTP_FROM_EMAIL', $smtpUser);
+        $fromName  = $this->resolve((string) $emailConfig->fromName,   'email.fromName',   'SMTP_FROM_NAME',  'DAPPMC Cares');
 
-        $fromEmail = $this->pick((string) $emailConfig->fromEmail, 'SMTP_FROM_EMAIL', $smtpUser);
-        $fromName  = $this->pick((string) $emailConfig->fromName, 'SMTP_FROM_NAME', 'DAPPMC Cares');
+        $smtpPort = trim((string) $emailConfig->SMTPPort);
+        if ($smtpPort === '') {
+            $smtpPort = trim((string) env('email.SMTPPort', ''));
+        }
+        if ($smtpPort === '') {
+            $smtpPort = trim((string) env('SMTP_PORT', ''));
+        }
+        if ($smtpPort === '') {
+            $smtpPort = '587';
+        }
 
         $defaultRecipient = trim((string) $emailConfig->recipients);
         if ($defaultRecipient === '') {
@@ -101,13 +130,27 @@ class Contact extends BaseController
             . '<p><strong>Message:</strong><br>' . nl2br(esc($message)) . '</p>';
         $email->setMessage($body);
 
-        // send() returns false on any SMTP failure and captures the reason
-        // internally; printDebugger() surfaces it so we can log and show it.
-        if (!$email->send()) {
+        try {
+            $sendOk = $email->send();
+        } catch (\Throwable $e) {
+            log_message('error', 'Contact form SMTP exception: ' . $e::class . ' ' . $e->getMessage());
+
+            return $this->response->setStatusCode(500)->setJSON([
+                'success' => false,
+                'message' => 'Failed to send your message. Please try again later or contact support directly.',
+                'detail'  => $e->getMessage(),
+            ]);
+        }
+
+        if (!$sendOk) {
             $debugger = $email->printDebugger();
             log_message('error', 'Contact form email failed: ' . $debugger);
 
-            $detail = is_string($debugger) ? preg_replace('/<[^>]+>/', '', $debugger) : '';
+            $detail = (string) preg_replace('/<[^>]+>/', '', $debugger);
+            $detail = str_replace(["\r\n", "\n"], ' ', trim($detail));
+            if (strlen($detail) > 400) {
+                $detail = substr($detail, 0, 400) . '…';
+            }
 
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,

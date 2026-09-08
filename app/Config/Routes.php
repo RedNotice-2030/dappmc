@@ -48,6 +48,7 @@ $routes->post('jobs/benefits/create', 'Jobs::createBenefit');
 $routes->post('jobs/set-active/(:num)', 'Jobs::setActive/$1');
 $routes->post('careers/apply', 'Careers::apply');
 $routes->post('contact/send', 'Contact::send');
+$routes->get('contact/send', 'Contact::send'); // Temporary debug route - remove after fixing
 
 $routes->get('services/packages.json', 'Packages::publicList');
 $routes->get('packages/list', 'Packages::index');
