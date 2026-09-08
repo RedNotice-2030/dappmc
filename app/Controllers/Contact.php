@@ -7,6 +7,23 @@ use Config\Email as EmailConfig;
 
 class Contact extends BaseController
 {
+    /**
+     * Resolve a SMTP setting, preferring the value from `config(Email)`
+     * (populated from a local .env) and falling back to a plain environment
+     * variable (e.g. set in Render's dashboard). That way the same code works
+     * locally (where .env exists) and on Render (env vars only).
+     */
+    protected function pick(string $configValue, string $envKey, string $default = '')
+    {
+        $value = trim((string) $configValue);
+        if ($value !== '') {
+            return $value;
+        }
+
+        $envValue = (string) env($envKey, '');
+        return $envValue !== '' ? $envValue : $default;
+    }
+
     public function send()
     {
         if (!$this->request->isAJAX()) {
@@ -27,18 +44,22 @@ class Contact extends BaseController
             ]);
         }
 
-        // ------------------------------------------------------------------
-        // SMTP settings come from the .env file (email.SMTPHost, email.SMTPUser,
-        // email.SMTPPass, ...) via CI4's config system — the same mechanism that
-        // provides the database credentials. This keeps secrets out of the code.
-        // ------------------------------------------------------------------
+        // SMTP comes from .env (email.* keys) on localhost, or from plain env
+        // vars on Render. We accept both so the app works in either place.
         $emailConfig = config(EmailConfig::class);
 
-        $fromEmail = trim((string) $emailConfig->fromEmail);
-        $smtpUser  = trim((string) $emailConfig->SMTPUser);
-        $smtpPass  = (string) $emailConfig->SMTPPass;
+        $smtpHost  = $this->pick((string) $emailConfig->SMTPHost, 'SMTP_HOST', 'smtp.gmail.com');
+        $smtpPort  = trim((string) $emailConfig->SMTPPort);
+        if ($smtpPort === '') {
+            $smtpPort = (string) env('SMTP_PORT', '587');
+        }
+        $smtpCrypto = $this->pick((string) $emailConfig->SMTPCrypto, 'SMTP_CRYPTO', 'tls');
+        $smtpUser  = $this->pick((string) $emailConfig->SMTPUser, 'SMTP_USER');
+        $smtpPass  = $this->pick((string) $emailConfig->SMTPPass, 'SMTP_PASS');
 
-        // Where the message should be delivered (configurable, falls back to a default).
+        $fromEmail = $this->pick((string) $emailConfig->fromEmail, 'SMTP_FROM_EMAIL', $smtpUser);
+        $fromName  = $this->pick((string) $emailConfig->fromName, 'SMTP_FROM_NAME', 'DAPPMC Cares');
+
         $defaultRecipient = trim((string) $emailConfig->recipients);
         if ($defaultRecipient === '') {
             $defaultRecipient = 'lanceverstappen30@gmail.com';
@@ -46,7 +67,7 @@ class Contact extends BaseController
         $recipient = trim((string) env('CONTACT_RECIPIENT', $defaultRecipient));
 
         if ($fromEmail === '' || $smtpUser === '' || $smtpPass === '') {
-            log_message('error', 'Contact form: SMTP not configured (set email.SMTPUser/email.SMTPPass/email.fromEmail in .env).');
+            log_message('error', 'Contact form: SMTP not configured. Need SMTP_USER/SMTP_PASS (or email.* in .env).');
 
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
@@ -54,23 +75,16 @@ class Contact extends BaseController
             ]);
         }
 
-        // Fresh instance (never mutate a shared singleton), applying config(Email)
-        // which is populated from the email.* keys in .env.
         $email = Services::email(null, false);
 
-        $email->protocol     = $emailConfig->protocol ?: 'smtp';
-        $email->SMTPHost     = $emailConfig->SMTPHost;
-        $email->SMTPPort     = $emailConfig->SMTPPort;
-        $email->SMTPCrypto   = $emailConfig->SMTPCrypto;
-        $email->SMTPUser     = $smtpUser;
-        $email->SMTPPass     = $smtpPass;
-        $email->SMTPTimeout  = max($emailConfig->SMTPTimeout, 10);
-        $email->userAgent    = 'DAPPMC';
-
-        $fromName = (string) $emailConfig->fromName;
-        if (trim($fromName) === '') {
-            $fromName = 'DAPPMC Cares';
-        }
+        $email->protocol    = 'smtp';
+        $email->SMTPHost    = $smtpHost;
+        $email->SMTPPort    = (int) $smtpPort;
+        $email->SMTPCrypto  = $smtpCrypto;
+        $email->SMTPUser    = $smtpUser;
+        $email->SMTPPass    = $smtpPass;
+        $email->SMTPTimeout = 15;
+        $email->userAgent   = 'DAPPMC';
 
         $email->setFrom($fromEmail, $fromName);
         $email->setTo($recipient);
@@ -87,13 +101,22 @@ class Contact extends BaseController
             . '<p><strong>Message:</strong><br>' . nl2br(esc($message)) . '</p>';
         $email->setMessage($body);
 
-        if (!$email->send()) {
-            $debugger = $email->printDebugger(['headers', 'subject', 'body']);
-            log_message('error', 'Contact form email failed: ' . $debugger);
+        try {
+            if (!$email->send()) {
+                $debugger = $email->printDebugger(['responsecode', 'errstr', 'status']);
+                log_message('error', 'Contact form email failed: ' . $debugger);
+
+                return $this->response->setStatusCode(500)->setJSON([
+                    'success' => false,
+                    'message' => 'Failed to send your message. Please try again later or contact support directly.',
+                ]);
+            }
+        } catch (\ErrorException $e) {
+            log_message('error', 'Contact form SMTP exception: ' . $e->getMessage());
 
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
-                'message' => 'Failed to send your message. Please try again later or contact support directly.',
+                'message' => 'Failed to send your message. Please try again later or contact support directly. (' . $e->getMessage() . ')',
             ]);
         }
 
