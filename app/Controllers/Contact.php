@@ -101,22 +101,18 @@ class Contact extends BaseController
             . '<p><strong>Message:</strong><br>' . nl2br(esc($message)) . '</p>';
         $email->setMessage($body);
 
-        try {
-            if (!$email->send()) {
-                $debugger = $email->printDebugger(['responsecode', 'errstr', 'status']);
-                log_message('error', 'Contact form email failed: ' . $debugger);
+        // send() returns false on any SMTP failure and captures the reason
+        // internally; printDebugger() surfaces it so we can log and show it.
+        if (!$email->send()) {
+            $debugger = $email->printDebugger();
+            log_message('error', 'Contact form email failed: ' . $debugger);
 
-                return $this->response->setStatusCode(500)->setJSON([
-                    'success' => false,
-                    'message' => 'Failed to send your message. Please try again later or contact support directly.',
-                ]);
-            }
-        } catch (\ErrorException $e) {
-            log_message('error', 'Contact form SMTP exception: ' . $e->getMessage());
+            $detail = is_string($debugger) ? preg_replace('/<[^>]+>/', '', $debugger) : '';
 
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
-                'message' => 'Failed to send your message. Please try again later or contact support directly. (' . $e->getMessage() . ')',
+                'message' => 'Failed to send your message. Please try again later or contact support directly.',
+                'detail'  => $detail,
             ]);
         }
 
