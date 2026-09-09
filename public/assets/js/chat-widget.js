@@ -362,16 +362,18 @@
   .cbw-close:hover { opacity: 1; }
   
   .cbw-messages {
-    flex: 1; overflow-y: auto; padding: 14px; background: #F7F7F5;
+    flex: 1; overflow-y: auto; padding: 14px;
+    /* The background is painted on the scroll container ITSELF, so it stays
+       fixed while messages scroll (background-attachment: scroll default).
+       NOTE: do NOT move this pattern back to a ::before/absolute child — it
+       becomes part of the scrollable content and slides away on long chats. */
+    background-color: #F7F7F5;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, ${1 - CONFIG.bgPatternOpacity}), rgba(255, 255, 255, ${1 - CONFIG.bgPatternOpacity})),
+      url(${CONFIG.bgPatternSrc});
+    background-repeat: repeat, repeat;
+    background-size: auto, ${CONFIG.bgPatternTileSize} ${CONFIG.bgPatternTileSize};
     position: relative;
-  }
-  .cbw-messages::before {
-    content: ""; position: absolute; inset: 0; z-index: 0;
-    background-image: url(${CONFIG.bgPatternSrc});
-    background-repeat: repeat;
-    background-size: ${CONFIG.bgPatternTileSize} ${CONFIG.bgPatternTileSize};
-    opacity: ${CONFIG.bgPatternOpacity};
-    pointer-events: none;
   }
   
   .cbw-msg { margin-bottom: 10px; display: flex; position: relative; z-index: 1; }
