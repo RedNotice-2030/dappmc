@@ -34,7 +34,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="<?= base_url('assets/js/chatbot-widget.js') ?>?v=3"></script>
+    <script src="<?= base_url('assets/js/chat-widget.js') ?>?v=4"></script>
     <?php if (isset($extraScripts)): ?>
       <?= $extraScripts ?>
     <?php endif; ?>

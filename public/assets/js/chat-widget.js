@@ -2,18 +2,19 @@
 (function () {
   "use strict";
 
-  // =========================================================
-  // 1. CONFIG — customize freely
-  // =========================================================
+  // Display name used throughout the chat widget (kept as a plain local so the
+  // greeting below doesn't reference CONFIG before it is initialized).
+  const AGENT_NAME = "DAPPMC Chat";
+
   const CONFIG = {
-    botName: "DAPPMC Chatbot",
+    AgentName: AGENT_NAME,
     logoSrc: "assets/images/dappmc-logo.png", 
-    bubbleIconSrc: "assets/images/chatbot3.png", 
+    bubbleIconSrc: "assets/images/img3.png", 
     bgPatternSrc: "assets/images/dappmc-logo-raw.png", 
     bgPatternTileSize: "48px", 
     bgPatternOpacity: 0.05,    // Reduced opacity for better readability
     greeting:
-      "Hi! 👋 I'm the DAPPMC Chatbot. I can answer questions based on our website — " +
+      "Hi! 👋 Welcome to " + AGENT_NAME + ". I can answer questions based on our website — " +
       "services, doctors & specialists, health packages, lab, HMO/insurance, " +
       "visiting hours & location, news, and careers. How can I help you?",
     quickReplies: [
@@ -41,12 +42,6 @@
     position: "left"         // "right" or "left"
   };
 
-  // =========================================================
-  // 2. KNOWLEDGE BASE
-  //    Static answers mirror the FAQ/About/HMO page content,
-  //    and dynamic answers use the site's own JSON APIs so
-  //    doctors, packages, news, and jobs stay live.
-  // =========================================================
   const KNOWLEDGE_BASE = [
     {
       keywords: ["emergency", "er", "urgent", "24/7", "24 hour", "ambulance"],
@@ -170,10 +165,6 @@
     }
   ];
 
-  // =========================================================
-  // 2b. DYNAMIC DATA — loaded from the site's own JSON APIs so
-  //     the bot always answers from live project content.
-  // =========================================================
   const API_ENDPOINTS = {
     doctors: "doctors.json",           // Doctors::publicList      -> { doctors: [...] }
     packages: "services/packages.json", // Packages::publicList     -> { packages: [...] }
@@ -207,9 +198,6 @@
     return dynamicPromise;
   }
 
-  // =========================================================
-  // 3. MATCHING LOGIC
-  // =========================================================
   function scoreMessage(message) {
     const lower = message.toLowerCase();
     let best = null;
@@ -251,10 +239,6 @@
     return out;
   }
 
-  /**
-   * Build a dynamic answer from live content for known intents,
-   * otherwise fall back to the static/FAQ answer.
-   */
   function buildDynamicAnswer(message, lower, fallback) {
     // --- Doctors & Specialists ---
     if (/(doctor|physician|specialist|consult|dr\.? )/.test(message)) {
@@ -324,10 +308,6 @@
     return fallback;
   }
 
-  /**
-   * Answer a message. Returns a Promise so live content
-   * (doctors/packages/news/jobs) can be loaded on demand.
-   */
   function findAnswer(message) {
     const { entry, score, lower } = scoreMessage(message);
     const fallback = entry && score > 0 ? entry.answer : CONFIG.fallback;
@@ -335,9 +315,6 @@
     return loadDynamicData().then(() => buildDynamicAnswer(message, lower, fallback));
   }
 
-  // =========================================================
-  // 4. STYLES
-  // =========================================================
   const side = CONFIG.position === "left" ? "left" : "right";
   const css = `
   .cbw-bubble {
@@ -398,13 +375,13 @@
   }
   
   .cbw-msg { margin-bottom: 10px; display: flex; position: relative; z-index: 1; }
-  .cbw-msg.bot { justify-content: flex-start; }
+  .cbw-msg.reply { justify-content: flex-start; }
   .cbw-msg.user { justify-content: flex-end; }
   .cbw-bubble-text {
     max-width: 82%; padding: 10px 14px; border-radius: 14px;
     font-size: 13.5px; line-height: 1.45; color: ${CONFIG.text};
   }
-  .cbw-msg.bot .cbw-bubble-text { background: #fff; border: 1px solid #E5E5E0; border-bottom-left-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+  .cbw-msg.reply .cbw-bubble-text { background: #fff; border: 1px solid #E5E5E0; border-bottom-left-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
   .cbw-msg.user .cbw-bubble-text { background: ${CONFIG.accent}; color: #fff; border-bottom-right-radius: 4px; }
   
   .cbw-chips { 
@@ -457,9 +434,6 @@
   styleTag.textContent = css;
   document.head.appendChild(styleTag);
 
-  // =========================================================
-  // 5. MARKUP
-  // =========================================================
   const bubble = document.createElement("button");
   bubble.className = "cbw-bubble";
   bubble.setAttribute("aria-label", "Open chat");
@@ -471,7 +445,7 @@
     <div class="cbw-header">
       <div class="cbw-header-left">
         <img class="cbw-header-logo" src="${CONFIG.logoSrc}" alt="" />
-        <span>${CONFIG.botName}</span>
+        <span>${CONFIG.AgentName}</span>
       </div>
       <div class="cbw-header-actions">
         <button class="cbw-handoff-btn" type="button">${CONFIG.handoffText}</button>
@@ -510,7 +484,7 @@
 
       if (typeof window.bootstrap === "undefined") {
         console.warn(
-          "[chatbot-widget] Bootstrap's JS doesn't seem to be loaded yet."
+          "[chat-widget] Bootstrap's JS doesn't seem to be loaded yet."
         );
       }
     } else {
@@ -533,9 +507,9 @@
    * Show a temporary "typing…" bubble that is replaced by the
    * real answer once the Promise resolves (dynamic fetch delay).
    */
-  function addBotAnswer(answerPromise) {
+  function addAnswer(answerPromise) {
     const row = document.createElement("div");
-    row.className = "cbw-msg bot";
+    row.className = "cbw-msg reply";
     const bub = document.createElement("div");
     bub.className = "cbw-bubble-text";
     bub.textContent = "Typing…";
@@ -568,9 +542,9 @@
         // 2. Add the user's selected reply as a message
         addMessage(reply.label, "user");
         
-        // 3. Trigger the bot answer & suggest follow-up chips
+        // 3. Trigger the answer & suggest follow-up chips
         setTimeout(() => {
-          addBotAnswer(findAnswer(reply.query));
+          addAnswer(findAnswer(reply.query));
 
           // 4. Offer relevant follow-up options based on what they clicked
           let followUps = [
@@ -622,7 +596,7 @@
     addMessage(val, "user");
     inputEl.value = "";
     setTimeout(() => {
-      addBotAnswer(findAnswer(val));
+      addAnswer(findAnswer(val));
     }, 250);
   }
 
@@ -636,7 +610,7 @@
     win.classList.add("cbw-open");
     bubble.classList.add("cbw-hidden");
     if (!greeted) {
-      addMessage(CONFIG.greeting, "bot");
+      addMessage(CONFIG.greeting, "reply");
       renderQuickReplies(CONFIG.quickReplies); // Renders initial chips
       greeted = true;
     }
@@ -647,7 +621,5 @@
     bubble.classList.remove("cbw-hidden"); // Show floating bubble when chat closes
   });
 
-  // Expose the answer engine for console testing/debugging:
-  //   window.DappmcChatbot.ask("what packages do you have?")
-  window.DappmcChatbot = { ask: (msg) => findAnswer(msg).then((t) => { console.log("[chatbot] ", t); return t; }) };
+  window.DappmcChat = { ask: (msg) => findAnswer(msg).then((t) => { console.log("[chat] ", t); return t; }) };
 })();
