@@ -7,14 +7,6 @@ use Config\Email as EmailConfig;
 
 class Contact extends BaseController
 {
-    /**
-     * Resolve a setting by checking, in order:
-     *   1. config(Email) — populated from a local .env (email.* keys)
-     *   2. a dotted CI4 env var  (e.g. email.SMTPUser)
-     *   3. a plain env var       (e.g. SMTP_USER)
-     * This makes the same code work locally (.env exists) and on Render
-     * (env vars only), regardless of which naming convention was used.
-     */
     protected function resolve(string $configValue, string $dottedKey, string $plainKey, string $default = '')
     {
         $value = trim((string) $configValue);
@@ -91,7 +83,7 @@ class Contact extends BaseController
 
         $defaultRecipient = trim((string) $emailConfig->recipients);
         if ($defaultRecipient === '') {
-            $defaultRecipient = 'lanceverstappen30@gmail.com';
+            $defaultRecipient = 'lanceverstappen30@gmail.com'; // TODO: replace with your actual HR inbox
         }
         $recipient = trim((string) env('CONTACT_RECIPIENT', $defaultRecipient));
 
