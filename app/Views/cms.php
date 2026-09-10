@@ -401,30 +401,19 @@
                 </div>
                 <div class="cms-card-body">
                   <div class="mb-3">
-                    <!-- <ul>
-                      <li data-filter="all">All</li>
-                      <li data-filter="news">News</li>
-                      <li data-filter="advisories">Advisories</li>
-                      <li data-filter="events">Events</li>
-                      <li data-filter="drives">Drives</li>
-                      <li data-filter="alerts">Alerts</li>
-                    </ul> -->
-                    <datalist id="news-category-filter">
-                      <option value="all">All</option>
-                      <option value="news">News</option>
-                      <option value="advisories">Advisories</option>
-                      <option value="events">Events</option>
-                      <option value="drives">Drives</option>
-                      <option value="alerts">Alerts</option>
-                    </datalist>
-                    <!-- <div class="btn-group btn-group-sm" role="group" id="news-category-filter">
-                      <button class="btn btn-outline-primary active" data-filter="all">All</button>
-                      <button class="btn btn-outline-primary" data-filter="news">News</button>
-                      <button class="btn btn-outline-primary" data-filter="advisories">Advisories</button>
-                      <button class="btn btn-outline-primary" data-filter="events">Events</button>
-                      <button class="btn btn-outline-primary" data-filter="drives">Drives</button>
-                      <button class="btn btn-outline-primary" data-filter="alerts">Alerts</button>
-                    </div> -->
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary dropdown-toggle" id="news-filter-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filter by Category
+                      </button>
+                      <div class="dropdown-menu" id="news-category-filter">
+                        <a class="dropdown-item active" href="#" data-filter="all">All</a>
+                        <a class="dropdown-item" href="#" data-filter="news">News</a>
+                        <a class="dropdown-item" href="#" data-filter="advisories">Advisories</a>
+                        <a class="dropdown-item" href="#" data-filter="events">Events</a>
+                        <a class="dropdown-item" href="#" data-filter="drives">Drives</a>
+                        <a class="dropdown-item" href="#" data-filter="alerts">Alerts</a>
+                      </div>
+                    </div>
                   </div>
                   <div id="news-items-list"></div>
                 </div>
@@ -619,7 +608,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="package-item-form">
+          <form id="package-item-form" enctype="multipart/form-data">
             <input type="hidden" id="package-item-id" />
             <div class="row g-3">
               <div class="col-md-8">
@@ -638,11 +627,15 @@
                 <label class="form-label">Full Description <span class="help-text">(shown on the back of the card)</span></label>
                 <textarea class="form-control" id="package-item-full" rows="2" placeholder="Detailed description..."></textarea>
               </div>
-              <div class="col-md-6">
-                <label class="form-label">Image Path</label>
-                <input type="text" class="form-control" id="package-item-image" placeholder="assets/images/packages/whp1.jpg" />
+              <div class="col-12">
+                <label class="form-label">Image <span class="help-text">(optional — shown on the package card. Upload a new image or leave blank to keep the current one.)</span></label>
+                <input type="file" class="form-control" id="package-item-image-file" accept="image/jpeg,image/png,image/webp" />
+                <input type="hidden" id="package-item-image" />
+                <div class="mt-2" id="package-item-image-preview" style="display:none;">
+                  <img src="" alt="Current image" style="max-width:200px; max-height:120px; border-radius:8px; border:1px solid #e2e8f0;" id="package-item-image-preview-img">
+                </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-12">
                 <label class="form-label">Promo Badge <span class="help-text">(e.g. "20% OFF" — leave blank for none)</span></label>
                 <input type="text" class="form-control" id="package-item-badge" placeholder="20% OFF" />
               </div>
@@ -748,7 +741,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="doctor-item-form">
+          <form id="doctor-item-form" enctype="multipart/form-data">
             <input type="hidden" id="doctor-item-id" />
             <div class="row g-3">
               <div class="col-12">
@@ -779,8 +772,12 @@
                 <input type="text" class="form-control" id="doctor-item-location" placeholder="e.g. Room 204, Heart Station" />
               </div>
               <div class="col-12">
-                <label class="form-label">Image Path <span class="help-text">(leave blank for default)</span></label>
-                <input type="text" class="form-control" id="doctor-item-image" placeholder="assets/images/doctors/DAPPMC FINAL LOGO_1.png" />
+                <label class="form-label">Photo <span class="help-text">(optional — leave blank for default avatar)</span></label>
+                <input type="file" class="form-control" id="doctor-item-image-file" accept="image/jpeg,image/png,image/webp" />
+                <input type="hidden" id="doctor-item-image" />
+                <div class="mt-2" id="doctor-item-image-preview" style="display:none;">
+                  <img src="" alt="Current image" style="max-width:200px; max-height:120px; border-radius:8px; border:1px solid #e2e8f0;" id="doctor-item-image-preview-img">
+                </div>
               </div>
               <div class="col-12">
                 <label class="form-label">Clinic Schedule <span class="help-text">(one per line, format: "Days | Time")</span></label>

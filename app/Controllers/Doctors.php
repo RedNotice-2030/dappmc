@@ -59,6 +59,8 @@ class Doctors extends BaseController
             return $this->response->setStatusCode(400)->setJSON(['success' => false, 'message' => 'Doctor name is required.']);
         }
 
+        $data['image'] = $this->handleImageUpload('');
+
         // Sort order is assigned automatically (last order + 1)
         $maxSort = $this->doctorModel->selectMax('sort_order')->first()['sort_order'] ?? 0;
         $data['sort_order'] = $maxSort + 1;
@@ -87,6 +89,8 @@ class Doctors extends BaseController
         if ($data['sort_order'] <= 0) {
             $data['sort_order'] = (int) ($existing['sort_order'] ?? 0);
         }
+
+        $data['image'] = $this->handleImageUpload((string) ($existing['image'] ?? ''));
 
         $this->doctorModel->update($id, $data);
 
@@ -129,5 +133,25 @@ class Doctors extends BaseController
             'active'               => (int) $this->request->getPost('active') ? 1 : 0,
             'sort_order'           => (int) $this->request->getPost('sort_order'),
         ];
+    }
+
+    private function handleImageUpload(?string $existingImage): string
+    {
+        $file = $this->request->getFile('image_file');
+
+        if ($file !== null && $file->isValid() && $file->getSize() > 0) {
+            if (!in_array($file->getExtension(), ['jpg', 'jpeg', 'png', 'webp'], true)) {
+                return $existingImage ?? '';
+            }
+            if ($file->getSizeByUnit('mb') > 5) {
+                return $existingImage ?? '';
+            }
+
+            $newName = $file->getRandomName();
+            $file->move(FCPATH . 'assets/images/doctors', $newName);
+            return 'assets/images/doctors/' . $newName;
+        }
+
+        return $existingImage ?? '';
     }
 }

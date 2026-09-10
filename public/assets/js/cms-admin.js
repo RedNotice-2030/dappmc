@@ -891,6 +891,15 @@
     document.getElementById("doctor-item-specialization").value = item ? (item.specialization || "cardiology") : "cardiology";
     document.getElementById("doctor-item-location").value = item ? (item.location || "") : "";
     document.getElementById("doctor-item-image").value = item ? (item.image || "") : "";
+    document.getElementById("doctor-item-image-file").value = "";
+    var docPreviewWrap = document.getElementById("doctor-item-image-preview");
+    var docPreviewImg = document.getElementById("doctor-item-image-preview-img");
+    if (item && item.image) {
+      docPreviewImg.src = item.image;
+      docPreviewWrap.style.display = "block";
+    } else {
+      docPreviewWrap.style.display = "none";
+    }
     document.getElementById("doctor-item-schedule").value = item && item.schedule
       ? item.schedule.map(function (s) { return s.days + " | " + s.time; }).join("\n")
       : "";
@@ -928,14 +937,19 @@
       });
     }
 
-    var params = new URLSearchParams();
-    params.append("name", name);
-    params.append("specialization", specialization);
-    params.append("specialization_label", DOCTOR_SPECIALIZATIONS[specialization] || specialization);
-    params.append("location", location);
-    params.append("image", image);
-    params.append("schedule", JSON.stringify(schedule));
-    params.append("active", active ? 1 : 0);
+    var imageFile = document.getElementById("doctor-item-image-file").files[0];
+
+    var formData = new FormData();
+    formData.append("name", name);
+    formData.append("specialization", specialization);
+    formData.append("specialization_label", DOCTOR_SPECIALIZATIONS[specialization] || specialization);
+    formData.append("location", location);
+    formData.append("existing_image", image);
+    formData.append("schedule", JSON.stringify(schedule));
+    formData.append("active", active ? 1 : 0);
+    if (imageFile) {
+      formData.append("image_file", imageFile);
+    }
 
     var url = id ? "doctors/update/" + id : "doctors/create";
 
@@ -944,10 +958,10 @@
       credentials: "same-origin",
       headers: {
         "X-Requested-With": "XMLHttpRequest",
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         "X-CSRF-TOKEN": CSRF.tokenValue
+        // No Content-Type here — the browser sets the multipart boundary automatically for FormData
       },
-      body: params.toString()
+      body: formData
     })
       .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
       .then(function (result) {
@@ -1105,6 +1119,15 @@
       : "";
     document.getElementById("package-item-image").value = item 
       ? item.image || "" : "";
+    document.getElementById("package-item-image-file").value = "";
+    var pkgPreviewWrap = document.getElementById("package-item-image-preview");
+    var pkgPreviewImg = document.getElementById("package-item-image-preview-img");
+    if (item && item.image) {
+      pkgPreviewImg.src = item.image;
+      pkgPreviewWrap.style.display = "block";
+    } else {
+      pkgPreviewWrap.style.display = "none";
+    }
     document.getElementById("package-item-badge").value = item
       ? item.promoBadge || ""
       : "";
@@ -1160,18 +1183,23 @@
       ? paymentsText.split("\n").map(function (s) { return s.trim(); }).filter(Boolean)
       : [];
 
-    var params = new URLSearchParams();
-    params.append("name", name);
-    params.append("short_description", shortDescription);
-    params.append("full_description", fullDescription);
-    params.append("image", image);
-    params.append("promo_badge", promoBadge);
-    params.append("promo_details", promoDetails);
-    params.append("promo_expires_at", promoExpires);
-    params.append("operating_hours", operatingHours);
-    params.append("availment_steps", JSON.stringify(availmentSteps));
-    params.append("payment_options", JSON.stringify(paymentOptions));
-    params.append("active", active);
+    var imageFile = document.getElementById("package-item-image-file").files[0];
+
+    var formData = new FormData();
+    formData.append("name", name);
+    formData.append("short_description", shortDescription);
+    formData.append("full_description", fullDescription);
+    formData.append("existing_image", image);
+    formData.append("promo_badge", promoBadge);
+    formData.append("promo_details", promoDetails);
+    formData.append("promo_expires_at", promoExpires);
+    formData.append("operating_hours", operatingHours);
+    formData.append("availment_steps", JSON.stringify(availmentSteps));
+    formData.append("payment_options", JSON.stringify(paymentOptions));
+    formData.append("active", active);
+    if (imageFile) {
+      formData.append("image_file", imageFile);
+    }
 
     var url = id ? "packages/update/" + id : "packages/create";
 
@@ -1180,10 +1208,10 @@
       credentials: "same-origin",
       headers: {
         "X-Requested-With": "XMLHttpRequest",
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         "X-CSRF-TOKEN": CSRF.tokenValue
+        // No Content-Type here — the browser sets the multipart boundary automatically for FormData
       },
-      body: params.toString()
+      body: formData
     })
       .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
       .then(function (result) {
@@ -1777,17 +1805,56 @@
       });
     }
 
-    // --- NEWS CATEGORY FILTER ---
-    document.querySelectorAll("#news-category-filter [data-filter]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        document.querySelectorAll("#news-category-filter [data-filter]").forEach(function (b) {
-          b.classList.remove("active");
+    // --- NEWS CATEGORY FILTER (bootstrap dropdown) ---
+    var newsCategoryFilter = document.getElementById("news-category-filter");
+    var newsFilterToggle = document.getElementById("news-filter-toggle");
+    if (newsCategoryFilter) {
+      newsCategoryFilter.querySelectorAll(".dropdown-item").forEach(function (item) {
+        item.addEventListener("click", function (e) {
+          e.preventDefault();
+          var filter = this.getAttribute("data-filter") || "all";
+          newsFilter = filter;
+
+          // Mark the active item + update the toggle label
+          newsCategoryFilter.querySelectorAll(".dropdown-item").forEach(function (i) {
+            i.classList.toggle("active", i === item);
+          });
+          if (newsFilterToggle) {
+            var label = {
+              all: "All",
+              news: "News",
+              advisories: "Advisories",
+              events: "Events",
+              drives: "Drives",
+              alerts: "Alerts"
+            }[filter] || "All";
+            newsFilterToggle.textContent = "Filter: " + label;
+          }
+
+          renderNewsList();
         });
-        btn.classList.add("active");
-        newsFilter = btn.getAttribute("data-filter");
-        renderNewsList();
       });
-    });
+    }
+
+    // --- IMAGE FILE LIVE PREVIEW (packages + doctors) ---
+    function bindImagePreview(fileId, previewId, imgId) {
+      var fileInput = document.getElementById(fileId);
+      if (!fileInput) return;
+      fileInput.addEventListener("change", function () {
+        var file = this.files && this.files[0];
+        var img = document.getElementById(imgId);
+        var wrap = document.getElementById(previewId);
+        if (!img || !wrap) return;
+        if (file) {
+          img.src = URL.createObjectURL(file);
+          wrap.style.display = "block";
+        } else {
+          wrap.style.display = "none";
+        }
+      });
+    }
+    bindImagePreview("package-item-image-file", "package-item-image-preview", "package-item-image-preview-img");
+    bindImagePreview("doctor-item-image-file", "doctor-item-image-preview", "doctor-item-image-preview-img");
 
     // --- ADD BUTTONS ---
     document.getElementById("btn-add-news").addEventListener("click", function () {
