@@ -32,24 +32,6 @@ class Contact extends BaseController
             ]);
         }
 
-        // Temporary debug endpoint - remove after fixing
-        if ($this->request->getGet('debug') === 'env') {
-            $emailConfig = config(EmailConfig::class);
-            return $this->response->setJSON([
-                'smtp_host_config' => (string) $emailConfig->SMTPHost,
-                'smtp_user_config' => (string) $emailConfig->SMTPUser,
-                'smtp_pass_config' => ((string) $emailConfig->SMTPPass) !== '' ? 'SET' : 'EMPTY',
-                'env_smtp_host' => getenv('SMTP_HOST') ?: 'NOT_FOUND',
-                'env_smtp_user' => getenv('SMTP_USER') ?: 'NOT_FOUND',
-                'env_smtp_pass' => getenv('SMTP_PASS') ? 'SET' : 'NOT_FOUND',
-                'server_smtp_host' => $_SERVER['SMTP_HOST'] ?? 'NOT_FOUND',
-                'server_smtp_user' => $_SERVER['SMTP_USER'] ?? 'NOT_FOUND',
-                'env_superglobal' => $_ENV['SMTP_USER'] ?? 'NOT_FOUND',
-                'variables_order' => ini_get('variables_order'),
-                'has_getenv' => function_exists('getenv'),
-            ]);
-        }
-
         $name    = trim((string) $this->request->getPost('name'));
         $contact = trim((string) $this->request->getPost('contact'));
         $message = trim((string) $this->request->getPost('message'));
@@ -130,7 +112,6 @@ class Contact extends BaseController
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
                 'message' => 'Failed to send your message. Please try again later or contact support directly.',
-                'detail'  => $e->getMessage(),
             ]);
         }
 
@@ -138,16 +119,9 @@ class Contact extends BaseController
             $debugger = $email->printDebugger();
             log_message('error', 'Contact form email failed: ' . $debugger);
 
-            $detail = (string) preg_replace('/<[^>]+>/', '', $debugger);
-            $detail = str_replace(["\r\n", "\n"], ' ', trim($detail));
-            if (strlen($detail) > 400) {
-                $detail = substr($detail, 0, 400) . '…';
-            }
-
             return $this->response->setStatusCode(500)->setJSON([
                 'success' => false,
                 'message' => 'Failed to send your message. Please try again later or contact support directly.',
-                'detail'  => $detail,
             ]);
         }
 

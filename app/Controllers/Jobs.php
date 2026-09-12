@@ -33,18 +33,11 @@ class Jobs extends BaseController
         return null;
     }
 
-    /**
-     * Public endpoint — active jobs only, shaped like the old jobs.json.
-     * Used by content-renderer.js on careers.html.
-     */
     public function publicList()
     {
         return $this->response->setJSON(['jobs' => $this->jobModel->getAssembled(true)]);
     }
 
-    /**
-     * Admin list — all jobs (active + inactive), for the CMS panel.
-     */
     public function index()
     {
         $guard = $this->requireHrOrAdmin();
@@ -107,7 +100,7 @@ class Jobs extends BaseController
 
         $title = trim((string) $this->request->getPost('title'));
         $type  = trim((string) $this->request->getPost('employment_type')) ?: $job['employment_type'];
-        $sort  = (int) $this->request->getPost('sort_order') ?: $job['sort_order'];
+        $sort = (int) ($job['sort_order'] ?? 0);
         $active = (int) $this->request->getPost('active') ? 1 : 0;
         $qualifications = json_decode($this->request->getPost('qualifications') ?? '[]', true) ?: [];
         $benefitIds     = json_decode($this->request->getPost('benefit_ids') ?? '[]', true) ?: [];
@@ -157,9 +150,6 @@ class Jobs extends BaseController
         return $this->response->setJSON(['success' => true, 'message' => 'Job ' . $verb . ' successfully.']);
     }
 
-    /**
-     * List all benefits (for the CMS checkbox picker).
-     */
     public function benefitsList()
     {
         $guard = $this->requireHrOrAdmin();

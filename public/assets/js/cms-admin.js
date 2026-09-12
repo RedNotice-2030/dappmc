@@ -451,7 +451,6 @@
           '<div class="item-row">' +
           '  <div class="flex-grow-1">' +
           '    <div class="item-title">' + CMS.escapeHtml(pkg.name) + "</div>" +
-          '    <div class="item-meta">Order: ' + (pkg.sortOrder || 0) + "</div>" +
           '    <div class="mt-1">' + statusBadge + "</div>" +
           "  </div>" +
           '  <div class="d-flex gap-1">' +
@@ -548,7 +547,6 @@
           '<div class="item-row">' +
           '  <div class="flex-grow-1">' +
           '    <div class="item-title">' + CMS.escapeHtml(job.title) + "</div>" +
-          '    <div class="item-meta">Order: ' + (job.sortOrder || 0) + "</div>" +
           '    <div class="mt-1">' + statusBadge + "</div>" +
           "  </div>" +
           '  <div class="d-flex gap-1">' +
@@ -689,7 +687,7 @@
           '<div class="item-row">' +
           '  <div class="flex-grow-1">' +
           '    <div class="item-title">' + CMS.escapeHtml(doc.name) + "</div>" +
-          '    <div class="item-meta">' + CMS.escapeHtml(specLabel) + " · Order: " + (doc.sortOrder || 0) + "</div>" +
+          '    <div class="item-meta">' + CMS.escapeHtml(specLabel) + "</div>" +
           '    <div class="mt-1">' + statusBadge + "</div>" +
           "  </div>" +
           '  <div class="d-flex gap-1">' +
@@ -1108,9 +1106,6 @@
       : "Add Health Package";
     document.getElementById("package-item-id").value = item ? item.id : "";
     document.getElementById("package-item-name").value = item ? item.name || "" : "";
-    document.getElementById("package-item-sort").value = item
-      ? item.sortOrder || 1
-      : 1;
     document.getElementById("package-item-short").value = item
       ? item.shortDescription || ""
       : "";
@@ -1147,11 +1142,6 @@
     document.getElementById("package-item-active").checked = item
       ? item.active !== false
       : true;
-    var sortField = document.getElementById("package-item-sort");
-    var sortGroup = sortField.closest(".col-md-4");
-    if (sortGroup) {
-      sortGroup.style.display = item ? "" : "none";
-    }
 
     var modal = new bootstrap.Modal(modalEl);
     modal.show();
@@ -1275,23 +1265,12 @@
     document.getElementById("job-item-type").value = item
       ? item.employment_type || "full-time"
       : "full-time";
-    document.getElementById("job-item-sort").value = item
-      ? item.sortOrder || 1
-      : 1;
     document.getElementById("job-item-qualifications").value = item
       ? (item.qualifications || []).join("\n")
       : "";
     document.getElementById("job-item-active").checked = item
       ? item.active !== false
       : true;
-
-    // Sort order is only manually editable when editing an existing job —
-    // new jobs get auto-assigned the next available position.
-    var sortField = document.getElementById("job-item-sort");
-    var sortGroup = sortField.closest(".col-md-4");
-    if (sortGroup) {
-      sortGroup.style.display = item ? "" : "none";
-    }
 
     fetchBenefits().then(function () {
       renderBenefitCheckboxes(item ? item.benefit_ids : []);
@@ -1305,7 +1284,6 @@
     var id = document.getElementById("job-item-id").value;
     var title = document.getElementById("job-item-title").value.trim();
     var employmentType = document.getElementById("job-item-type").value;
-    var sortOrder = parseInt(document.getElementById("job-item-sort").value, 10) || 1;
     var qualificationsText = document.getElementById("job-item-qualifications").value.trim();
     var active = document.getElementById("job-item-active").checked ? 1 : 0;
 
@@ -1325,7 +1303,6 @@
     var params = new URLSearchParams();
     params.append("title", title);
     params.append("employment_type", employmentType);
-    params.append("sort_order", sortOrder);
     params.append("active", active);
     params.append("qualifications", JSON.stringify(qualifications));
     params.append("benefit_ids", JSON.stringify(benefitIds));
@@ -1454,7 +1431,7 @@
             '  <div class="flex-grow-1">' +
             '    <div class="item-title">' + CMS.escapeHtml(user.username) + "</div>" +
             '    <div class="item-meta">' +
-            '      <i class="bi bi-envelope me-1"></i>' + CMS.escapeHtml(user.email) +
+            // '      <i class="bi bi-envelope me-1"></i>' + CMS.escapeHtml(user.email) +
             '      <span class="ms-2"><i class="bi bi-clock-history me-1"></i>Last login: ' +
             CMS.escapeHtml(lastLogin) +
             "</span>" +

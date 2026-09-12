@@ -23,8 +23,8 @@
             ],
             [
               'icon' => 'bi-clipboard2-pulse-fill',
-              'name' => 'Moses B. Billanes, PTRP, RPT, MSHSM, DIPHLM',
-              'title' => 'Hospital Administrator',
+              'name' => 'Moses B. Billanes, PTRP, RPT, MSHSM, DIPhlm',
+              'title' => 'Hospital Administrator/QA Officer',
               'image' => 'assets/images/heads/ADMIN.png',
               'badge' => 'bg-primary-subtle text-primary',
               'badgeText' => 'Administration',
@@ -41,7 +41,7 @@
             ],
             [
               'icon' => 'bi-cash-coin',
-              'name' => 'John Yrick C. Era, CPA, MBA',
+              'name' => 'John Yrick C. Era, CPA, DBA',
               'title' => 'Finance Manager',
               'image' => 'assets/images/heads/FINANCE MANAGER.png',
               'badge' => 'bg-success-subtle text-success',
@@ -67,7 +67,7 @@
               'image' => 'assets/images/heads/NS.png',
               'badge' => 'bg-teal-subtle text-teal',
               'badgeText' => 'Nursing Service',
-              'dept' => 'Nursing Administration'
+              'dept' => 'Nursing Service'
             ],
             [
               'icon' => 'bi-eyedropper',
@@ -76,7 +76,7 @@
               'image' => 'assets/images/heads/LAB.png',
               'badge' => 'bg-purple-subtle text-purple',
               'badgeText' => 'Laboratory Services',
-              'dept' => 'Clinical Laboratory'
+              'dept' => 'Laboratory Department'
             ],
             [
               'icon' => 'bi-x-ray',
@@ -85,7 +85,7 @@
               'image' => 'assets/images/heads/RADTECH.png',
               'badge' => 'bg-cyan-subtle text-cyan',
               'badgeText' => 'Radiology Services',
-              'dept' => 'Radiology & Imaging'
+              'dept' => 'Radiology Department'
             ],
             [
               'icon' => 'bi-capsule',
@@ -94,7 +94,7 @@
               'image' => 'assets/images/heads/PHARMA.png',
               'badge' => 'bg-orange-subtle text-orange',
               'badgeText' => 'Pharmacy Services',
-              'dept' => 'Hospital Pharmacy'
+              'dept' => 'Pharmacy Department'
             ],
             [
               'icon' => 'bi-person-wheelchair',
@@ -103,7 +103,7 @@
               'image' => 'assets/images/heads/REHAB.png',
               'badge' => 'bg-blue-subtle text-blue',
               'badgeText' => 'Rehabilitative Services',
-              'dept' => 'Physical Medicine & Rehab'
+              'dept' => 'Physical and Rehabilitation Medicine Department'
             ],
             [
               'icon' => 'bi-egg-fried',
@@ -112,7 +112,7 @@
               'image' => 'assets/images/heads/NUTRI.png',
               'badge' => 'bg-pink-subtle text-pink',
               'badgeText' => 'Nutrition Services',
-              'dept' => 'Nutrition & Dietetics Dept.'
+              'dept' => 'Nutrition & Dietetics Department'
             ],
             [
               'icon' => 'bi-shield-check',
@@ -139,7 +139,7 @@
               'image' => 'assets/images/heads/MIS.png',
               'badge' => 'bg-violet-subtle text-violet',
               'badgeText' => 'Information Technology',
-              'dept' => 'HIS / MIS Department'
+              'dept' => 'HIS Department'
             ]
           ];
           ?>

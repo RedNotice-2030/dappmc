@@ -611,13 +611,9 @@
           <form id="package-item-form" enctype="multipart/form-data">
             <input type="hidden" id="package-item-id" />
             <div class="row g-3">
-              <div class="col-md-8">
+              <div class="col-12">
                 <label class="form-label">Package Name</label>
                 <input type="text" class="form-control" id="package-item-name" required placeholder="e.g. Women's Health Package" />
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Sort Order</label>
-                <input type="number" class="form-control" id="package-item-sort" />
               </div>
               <div class="col-12">
                 <label class="form-label">Short Description <span class="help-text">(shown on the front of the card)</span></label>
@@ -699,10 +695,6 @@
                   <option value="part-time">Part-time</option>
                   <option value="project-based">Project-based</option>
                 </select>
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Sort Order</label>
-                <input type="number" class="form-control" id="job-item-sort" value="1" min="1" />
               </div>
               <div class="col-12">
                 <label class="form-label">Qualifications <span class="help-text">(one per line)</span></label>

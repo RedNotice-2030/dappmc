@@ -207,8 +207,6 @@
       let score = 0;
       entry.keywords.forEach((kw) => {
         const k = kw.toLowerCase();
-        // Match 1-2 letter keywords only as whole words (e.g. "er" should not
-        // match "where"), but allow substring matching for longer phrases.
         if (k.trim().split(/\s+/).length <= 2) {
           const escaped = k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
           if (new RegExp("\\b" + escaped + "\\b").test(lower)) {

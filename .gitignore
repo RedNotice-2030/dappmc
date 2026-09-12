@@ -26,3 +26,5 @@ writable/uploads/*
 Thumbs.db
 .vscode/
 .idea/
+
+app/Database/Seeds/*

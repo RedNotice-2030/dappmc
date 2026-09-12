@@ -32,7 +32,6 @@ class Packages extends BaseController
         return null;
     }
 
-    /** Public — active packages only, shaped like the old packages.json */
     public function publicList()
     {
         return $this->response->setJSON(['packages' => $this->packageModel->getActive()]);

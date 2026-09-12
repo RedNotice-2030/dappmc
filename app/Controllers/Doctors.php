@@ -61,7 +61,6 @@ class Doctors extends BaseController
 
         $data['image'] = $this->handleImageUpload('');
 
-        // Sort order is assigned automatically (last order + 1)
         $maxSort = $this->doctorModel->selectMax('sort_order')->first()['sort_order'] ?? 0;
         $data['sort_order'] = $maxSort + 1;
 

@@ -18,9 +18,6 @@ class Users extends BaseController
         $this->session   = service('session');
     }
 
-    /**
-     * Guard: only allow AJAX requests from logged-in admins.
-     */
     protected function requireAdmin()
     {
         if (!$this->request->isAJAX()) {
@@ -47,9 +44,6 @@ class Users extends BaseController
         return null;
     }
 
-    /**
-     * List all users.
-     */
     public function index()
     {
         $guard = $this->requireAdmin();
@@ -71,9 +65,6 @@ class Users extends BaseController
         ]);
     }
 
-    /**
-     * Create a new user.
-     */
     public function create()
     {
         $guard = $this->requireAdmin();
@@ -159,9 +150,6 @@ class Users extends BaseController
         ]);
     }
 
-    /**
-     * Update an existing user (username, email, full name, role, password).
-     */
     public function update(int $id)
     {
         $guard = $this->requireAdmin();
@@ -204,7 +192,6 @@ class Users extends BaseController
             ]);
         }
 
-        // Uniqueness checks (exclude current user)
         $dupUser = $this->userModel->where('username', $username)->where('id !=', $id)->first();
         if ($dupUser !== null) {
             return $this->response->setStatusCode(409)->setJSON([
@@ -254,9 +241,6 @@ class Users extends BaseController
         ]);
     }
 
-    /**
-     * Set a user active/inactive (deactivate/reactivate).
-     */
     public function setActive(int $id)
     {
         $guard = $this->requireAdmin();

@@ -3,7 +3,7 @@
         <div class="row g-4 border-bottom border-secondary pb-4">
           <div class="col-md-4">
             <h5 class="foot-font fw-bold mb-3" style="color: #c6b350">DAPPMC</h5>
-            <p class="small" style="color: #c6b350">Delivering world-class healthcare with empathy, modern tech, and expert clinical teams.</p>
+            <p class="small foot-font fw-bold" style="color: #c6b350">Integrity, Compassion, Accountability, Reliability, and Excellence</p>
           </div>
           <div class="col-md-4">
             <h5 class="foot-font fw-bold mb-3">Quick Links</h5>

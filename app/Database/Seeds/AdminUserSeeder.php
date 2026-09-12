@@ -8,13 +8,20 @@ class AdminUserSeeder extends Seeder
 {
     public function run()
     {
-        // Default admin credentials:
-        //   Username: admin
-        //   Password: dappmc2026  (matches the original CMS default)
+        $username  = trim((string) env('ADMIN_INITIAL_USERNAME', 'admin'));
+        $email     = trim((string) env('ADMIN_INITIAL_EMAIL', 'admin@dappmc.ph'));
+        $password  = trim((string) (env('ADMIN_INITIAL_PASSWORD') ?? ''));
+        $generated = false;
+
+        if ($password === '') {
+            $password  = bin2hex(random_bytes(9)); // 18-char random password
+            $generated = true;
+        }
+
         $data = [
-            'username'      => 'admin',
-            'email'         => 'admin@dappmc.ph',
-            'password'      => 'dappmc2026',
+            'username'      => $username,
+            'email'         => $email,
+            'password'      => $password,
             'full_name'     => 'DAPPMC Administrator',
             'role'          => 'admin',
             'is_active'     => 1,
@@ -26,10 +33,17 @@ class AdminUserSeeder extends Seeder
         $userModel = model('App\Models\UserModel');
 
         // Avoid duplicates: skip if the username already exists
-        $existing = $userModel->where('username', 'admin')->first();
+        $existing = $userModel->where('username', $username)->first();
         if ($existing === null) {
             $userModel->insert($data);
-            echo "Admin user created successfully.\n";
+            echo "Admin user '{$username}' created successfully.\n";
+            if ($generated) {
+                echo "IMPORTANT: No ADMIN_INITIAL_PASSWORD env var was set, so a\n";
+                echo "random one-time password was generated:\n";
+                echo "  Username: {$username}\n";
+                echo "  Password: {$password}\n";
+                echo "Please change it after your first login.\n";
+            }
         } else {
             echo "Admin user already exists — skipping.\n";
         }

@@ -33,7 +33,7 @@ class Database extends Config
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
-        'DBDebug'      => true,
+        'DBDebug'      => false, 
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
         'swapPre'      => '',
@@ -217,9 +217,11 @@ class Database extends Config
     {
         parent::__construct();
 
-        // Ensure that we always set the database group to 'tests' if
-        // we are currently running an automated test suite, so that
-        // we don't overwrite live data on accident.
+        $this->default['DBDebug'] = filter_var(
+            env('database.default.DBDebug', ENVIRONMENT !== 'production'),
+            FILTER_VALIDATE_BOOLEAN
+        );
+
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
         }

@@ -9,10 +9,10 @@
             <!-- Text Column -->
             <div class="col-lg-8 order-2 order-lg-1">
               <h1 class="company display-4 fw-bold mb-0 hero-animate">
-                DR. ARTURO P. PINGOY
+                <strong>DR. ARTURO P. PINGOY</strong>
               </h1>
               <h1 class="company display-4 fw-bold mb-3 hero-animate delay-1">
-                MEDICAL CENTER
+                <strong>MEDICAL CENTER</strong>
               </h1>
               <p class="motto lead mb-4 fw-bold hero-animate delay-2">
                 INTEGRITY - COMPASSION - ACCOUNTABILITY - RELIABILITY - EXCELLENCE 

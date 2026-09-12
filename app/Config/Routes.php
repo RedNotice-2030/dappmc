@@ -38,9 +38,8 @@ $routes->post('api/news/create', 'News::create');
 $routes->post('api/news/update/(:num)', 'News::update/$1');
 $routes->post('api/news/set-active/(:num)', 'News::setActive/$1');
 
-// $routes->post('api/news/delete/(:num)', 'News::delete/$1');
-$routes->get('careers/jobs.json', 'Jobs::publicList');       // public, for content-renderer.js
-$routes->get('jobs/list', 'Jobs::index');                     // admin
+$routes->get('careers/jobs.json', 'Jobs::publicList');       
+$routes->get('jobs/list', 'Jobs::index');                    
 $routes->post('jobs/create', 'Jobs::create');
 $routes->post('jobs/update/(:num)', 'Jobs::update/$1');
 $routes->get('jobs/benefits', 'Jobs::benefitsList');
@@ -48,7 +47,6 @@ $routes->post('jobs/benefits/create', 'Jobs::createBenefit');
 $routes->post('jobs/set-active/(:num)', 'Jobs::setActive/$1');
 $routes->post('careers/apply', 'Careers::apply');
 $routes->post('contact/send', 'Contact::send');
-$routes->get('contact/send', 'Contact::send'); // Temporary debug route - remove after fixing
 
 $routes->get('services/packages.json', 'Packages::publicList');
 $routes->get('packages/list', 'Packages::index');
@@ -69,19 +67,3 @@ $routes->group('api', static function (RouteCollection $routes) {
     $routes->post('ratings', 'RateUs::create');
     $routes->options('ratings', 'RateUs::options');
 });
-
-// $routes->get('debug-ssl-check', function() {
-//     $path = WRITEPATH . 'ssl/aiven-ca.pem';
-//     echo 'Path: ' . $path . '<br>';
-//     echo 'Exists: ' . (file_exists($path) ? 'YES' : 'NO') . '<br>';
-//     echo 'Readable: ' . (is_readable($path) ? 'YES' : 'NO');
-// });
-// $routes->get('debug-db-config', function() {
-//     $db = config('Database')->default;
-//     echo 'Hostname: ' . ($db['hostname'] ?: '(empty)') . '<br>';
-//     echo 'Username: ' . ($db['username'] ?: '(empty)') . '<br>';
-//     echo 'Database: ' . ($db['database'] ?: '(empty)') . '<br>';
-//     echo 'Port: ' . ($db['port'] ?: '(empty)') . '<br>';
-//     echo 'DBDriver: ' . ($db['DBDriver'] ?: '(empty)') . '<br>';
-//     echo 'SSL CA: ' . (is_array($db['encrypt']) ? ($db['encrypt']['ssl_ca'] ?? '(not set)') : 'encrypt is not an array: ' . var_export($db['encrypt'], true));
-// });

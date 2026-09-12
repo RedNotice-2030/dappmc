@@ -19,13 +19,8 @@ class Auth extends BaseController
         $this->session   = service('session');
     }
 
-    /**
-     * Handle AJAX login request.
-     * Expects JSON: { "username": "...", "password": "..." }
-     */
     public function login()
     {
-        // Only accept POST requests
         if (!$this->request->isAJAX()) {
             return $this->response->setStatusCode(403)->setJSON([
                 'success' => false,
@@ -43,7 +38,6 @@ class Auth extends BaseController
             ]);
         }
 
-        // Check if the user exists (even if inactive) to give specific messages
         $existingUser = $this->userModel->where('username', $username)->first();
 
         if ($existingUser !== null && (int) $existingUser['is_active'] === 0) {
@@ -62,10 +56,8 @@ class Auth extends BaseController
             ]);
         }
 
-        // Regenerate session ID to prevent session fixation
         $this->session->regenerate(true);
 
-        // Store user info in the session
         $this->session->set([
             'is_logged_in' => true,
             'user_id'      => $user['id'],
@@ -87,9 +79,6 @@ class Auth extends BaseController
         ]);
     }
 
-    /**
-     * Change the logged-in user's password (and optionally username).
-     */
     public function changePassword()
     {
         if (!$this->request->isAJAX()) {
@@ -133,7 +122,6 @@ class Auth extends BaseController
             ]);
         }
 
-        // Check if the new username is taken by another user
         $existing = $this->userModel->where('username', $username)
                                     ->where('id !=', $userId)
                                     ->first();
@@ -144,10 +132,6 @@ class Auth extends BaseController
             ]);
         }
 
-        // Update the user record (the model hashes the password automatically)
-        // Skip validation here — username uniqueness & password length were already
-        // checked above, and a full model validation would incorrectly require
-        // the email field on partial updates.
         $this->userModel->skipValidation(true);
         $this->userModel->update($userId, [
             'username' => $username,
@@ -155,7 +139,6 @@ class Auth extends BaseController
         ]);
         $this->userModel->skipValidation(false);
 
-        // Update the session with the new username
         $this->session->set('username', $username);
 
         return $this->response->setJSON([
@@ -164,9 +147,6 @@ class Auth extends BaseController
         ]);
     }
 
-    /**
-     * Handle logout — destroys the server session.
-     */
     public function logout()
     {
         $this->session->destroy();
@@ -176,9 +156,6 @@ class Auth extends BaseController
         ]);
     }
 
-    /**
-     * Check the current server session state.
-     */
     public function check()
     {
         if ($this->session->get('is_logged_in') === true) {

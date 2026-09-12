@@ -355,10 +355,20 @@ class RateUs extends BaseController
 
     private function withCors(ResponseInterface $response): ResponseInterface
     {
-        $origin = env('RATE_US_ALLOWED_ORIGIN', '*');
+        // Restrict CORS to explicitly allowed origins only. Set
+        // RATE_US_ALLOWED_ORIGIN in .env as a comma-separated list, e.g.
+        //   RATE_US_ALLOWED_ORIGIN = 'https://app.dappmc.ph,https://dappmc.ph'
+        // When empty/unset, only same-origin requests are allowed.
+        $allowed = array_values(array_filter(array_map('trim', explode(',', (string) env('RATE_US_ALLOWED_ORIGIN', '')))));
+        $origin  = $this->request->getHeaderLine('Origin');
+
+        if ($origin === '' || $allowed === [] || ! in_array($origin, $allowed, true)) {
+            return $response;
+        }
 
         return $response
             ->setHeader('Access-Control-Allow-Origin', $origin)
+            ->setHeader('Vary', 'Origin')
             ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
             ->setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, X-CSRF-TOKEN');
     }

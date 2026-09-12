@@ -18,9 +18,6 @@ class News extends BaseController
         $this->session   = service('session');
     }
 
-    /**
-     * Guard: only allow AJAX requests from logged-in users.
-     */
     protected function requireAuth()
     {
         if (!$this->request->isAJAX()) {
@@ -44,7 +41,6 @@ class News extends BaseController
     {
         $items = $this->newsModel->getNews();
 
-        // Decode tags for each item
         $result = [];
         foreach ($items as $item) {
             $result[] = $this->newsModel->decodeTags($item);
@@ -56,9 +52,6 @@ class News extends BaseController
         ]);
     }
 
-    /**
-     * Public: Get active news items filtered by category.
-     */
     public function byCategory(string $category)
     {
         $items = $this->newsModel->getNews($category);
@@ -74,9 +67,6 @@ class News extends BaseController
         ]);
     }
 
-    /**
-     * Admin: Get all news items (including inactive) for the CMS.
-     */
     public function adminList()
     {
         $guard = $this->requireAuth();
@@ -114,7 +104,6 @@ class News extends BaseController
             $isActive = 1;
         }
 
-        // Validate
         if ($title === '' || $excerpt === '' || $date === '') {
             return $this->response->setStatusCode(400)->setJSON([
                 'success' => false,
@@ -122,7 +111,6 @@ class News extends BaseController
             ]);
         }
 
-        // Parse tags (comma-separated string or JSON array)
         $tags = [];
         if (is_string($tagsRaw) && $tagsRaw !== '') {
             $tags = array_map('trim', explode(',', $tagsRaw));
@@ -168,9 +156,6 @@ class News extends BaseController
         ]);
     }
 
-    /**
-     * Admin: Update an existing news item.
-     */
     public function update(int $id)
     {
         $guard = $this->requireAuth();
@@ -204,7 +189,6 @@ class News extends BaseController
             ]);
         }
 
-        // Parse tags
         $tags = [];
         if (is_string($tagsRaw) && $tagsRaw !== '') {
             $tags = array_map('trim', explode(',', $tagsRaw));
@@ -295,24 +279,4 @@ class News extends BaseController
         return $existingImage ?? '';
     }
 
-    // public function delete(int $id)
-    // {
-    //     $guard = $this->requireAuth();
-    //     if ($guard !== null) return $guard;
-
-    //     $item = $this->newsModel->find($id);
-    //     if ($item === null) {
-    //         return $this->response->setStatusCode(404)->setJSON([
-    //             'success' => false,
-    //             'message' => 'News item not found.',
-    //         ]);
-    //     }
-
-    //     $this->newsModel->delete($id);
-
-    //     return $this->response->setJSON([
-    //         'success' => true,
-    //         'message' => 'News item deleted successfully.',
-    //     ]);
-    // }
 }
