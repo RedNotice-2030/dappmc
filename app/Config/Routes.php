@@ -67,3 +67,5 @@ $routes->group('api', static function (RouteCollection $routes) {
     $routes->post('ratings', 'RateUs::create');
     $routes->options('ratings', 'RateUs::options');
 });
+
+$routes->post('chatbot/ask', 'Chatbot::ask');

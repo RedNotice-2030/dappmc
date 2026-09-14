@@ -1,3 +1,4 @@
+
 (function () {
   "use strict";
 
@@ -34,7 +35,6 @@
     handoffModalTarget: "#contact-us-modal", 
     handoffModalWhatever: "user@example.com", 
     handoffHref: "mailto:hello@example.com", 
-    chatEndpoint: "/chatbot/ask", // backend route that calls the AI (see Chatbot.php)
     accent: "#002c6d",        // primary color
     accentDark: "#001c47",    // added dark accent for hover states
     bg: "#FFFFFF",
@@ -306,70 +306,11 @@
     return fallback;
   }
 
-  // --- AI backend (replaces static keyword matching for open-ended questions) ---
-
-  // Keep a short rolling window of the conversation so the backend can answer
-  // follow-up questions ("what about weekends?") with context.
-  let conversationHistory = [];
-  function pushHistory(role, content) {
-    conversationHistory.push({ role: role, content: content });
-    if (conversationHistory.length > 8) conversationHistory.shift();
-  }
-
-  // If the AI backend is unreachable (network issue, server down, etc.) fall
-  // back to the old local keyword match instead of failing silently.
-  function localFallback(message) {
-    const { entry, score } = scoreMessage(message);
-    return entry && score > 0 ? entry.answer : CONFIG.fallback;
-  }
-
-  function askAI(message) {
-    return fetch(CONFIG.chatEndpoint, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: message,
-        history: conversationHistory.slice(0, -1) // exclude the message we just pushed
-      })
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("chat endpoint returned " + res.status);
-        return res.json();
-      })
-      .then((data) => (data && data.reply) ? data.reply : localFallback(message))
-      .catch(() => localFallback(message));
-  }
-
   function findAnswer(message) {
-    pushHistory("user", message);
+    const { entry, score, lower } = scoreMessage(message);
+    const fallback = entry && score > 0 ? entry.answer : CONFIG.fallback;
 
-    return loadDynamicData().then(() => {
-      const lower = message.toLowerCase();
-
-      // Doctors / packages / news / jobs are backed by live JSON — keep using
-      // the fast, structured path for those instead of round-tripping to the AI.
-      const isDynamicIntent =
-        /(doctor|physician|specialist|consult|dr\.? )/.test(message) ||
-        /(package|promo|promotion|avail)/.test(message) ||
-        /(news|update|advis|announcement|event)/.test(message) ||
-        /(job|career|hiring|vacancy|position|apply)/.test(message);
-
-      if (isDynamicIntent) {
-        const dynamicResult = buildDynamicAnswer(message, lower, null);
-        if (dynamicResult) {
-          pushHistory("assistant", dynamicResult);
-          return dynamicResult;
-        }
-      }
-
-      // Everything else goes to the AI backend, which has the full knowledge
-      // base as context and can handle questions we didn't hardcode for.
-      return askAI(message).then((answer) => {
-        pushHistory("assistant", answer);
-        return answer;
-      });
-    });
+    return loadDynamicData().then(() => buildDynamicAnswer(message, lower, fallback));
   }
 
   const side = CONFIG.position === "left" ? "left" : "right";

@@ -199,9 +199,10 @@
                   <div class="card-body p-4">
                     <h5 class="fw-bold mb-3" style="color:#002c6d"><i class="bi bi-clock-history me-2"></i>Processing Time</h5>
                     <ul class="text-muted small mb-0">
-                      <li><strong>Outpatient records:</strong> 2–3 business days</li>
-                      <li><strong>Inpatient records:</strong> 5–7 business days</li>
-                      <li><strong>Emergency records:</strong> Available within 24 hours</li>
+                      <li><strong>Outpatient records:</strong> 3 business days</li>
+                      <li><strong>Inpatient records:</strong> 3 business days</li>
+                      <li><strong>Medical Abstract:</strong> 3 business days</li>
+                      <li><strong>Confinement Certificate:</strong> Within the request date</li>
                     </ul>
                   </div>
                 </div>
@@ -213,9 +214,10 @@
                     <h5 class="fw-bold mb-3" style="color:#002c6d"><i class="bi bi-cash-stack me-2"></i>Fees and Charges</h5>
                     <p class="text-muted small mb-2">Depending on the type of medical record requested, there may be minimal charges. Please contact the Medical Records Department for detailed pricing.</p>
                     <ul class="text-muted small mb-0">
-                      <li><strong>Standard record request:</strong> ₱50 per page</li>
-                      <li><strong>Electronic copies:</strong> ₱100 per file</li>
-                      <li><strong>Certified copies:</strong> Additional charges apply</li>
+                      <li><strong>Inpatient Medical Certificate (2nd Copy Only):</strong> ₱100 for 2 Copies</li>
+                      <li><strong>Outpatient Medical Certificate (2nd Copy Only):</strong> ₱100</li>
+                      <li><strong>Laboratory Results (Photocopy):</strong> ₱1.50 per page</li>
+                      <li><strong>Confinement Certificate:</strong> ₱50</li>
                     </ul>
                   </div>
                 </div>

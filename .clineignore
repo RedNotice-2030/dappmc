@@ -1,0 +1,19 @@
+# Environmental & Sensitive Configuration Files
+.env
+.env.*
+app/Config/Database.php
+app/Config/Encryption.php
+
+# Core Application Logic (Protecting app folder completely)
+app/
+
+# Writable / Data directories (Database backups, uploads, logs)
+writable/
+writable/logs/
+writable/uploads/
+
+# Vendor & Dependencies
+vendor/
+
+# Public uploads or public sensitive assets
+public/uploads/

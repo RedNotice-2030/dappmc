@@ -1,0 +1,545 @@
+================================================================================
+DAPPMC — CLEAN PUBLIC KNOWLEDGE BASE (Customer-Facing)
+================================================================================
+SOURCE PROJECT : CodeIgniter 4 hospital website (views, public data)
+HOSPITAL NAME  : Dr. Arturo P. Pingoy Medical Center (DAPPMC)
+TAGLINE        : Integrity, Compassion, Accountability, Reliability, and Excellence
+PURPOSE        : Answer-only reference for patients, visitors, job applicants,
+                 and doctors. Contains no backend/admin/internal information.
+================================================================================
+
+--------------------------------------------------------------------------------
+1. HOSPITAL OVERVIEW & HISTORY
+--------------------------------------------------------------------------------
+**Hospital Name:** Dr. Arturo P. Pingoy Medical Center (DAPPMC)
+**Hospital Type:** 100-bed tertiary hospital
+**Established:** May 12, 1961, by spouses Arturo P. Pingoy, MD and Amparo Y. Pingoy, MD
+**Current Address:** Gensan Drive, Koronadal, 9506 South Cotabato, Philippines
+
+**History Timeline:**
+- 1961: Hospital established by spouses Arturo P. Pingoy, MD and Amparo Y. Pingoy, MD.
+- 1971: Four private air-conditioned rooms were put up.
+- 1974: A two-storey building was constructed housing 8 private rooms and 4 suite rooms.
+- 1998: Bed capacity expanded to 50 with the construction of 40 private rooms financed by the Land Bank of the Philippines.
+- 2005: Upgraded to a tertiary hospital with the construction of the Administrative building; became a 100-bed hospital.
+- May 2012: Construction of a new building began; expansion toward becoming the premier and largest hospital with a 3-storey building (to house patient rooms, doctors' clinics, commercial spaces, and a medical arts area).
+- Accreditation: PhilHealth — Center of Safety and Center of Quality.
+- Certification: ISO 9001:2015 for quality management systems.
+
+**Vision:** Delivering Exceptional Care with Compassion.
+**Mission:** Advancing Life and the Environment through Innovation and Responsible Healthcare.
+**Core Values:** Integrity, Compassion, Accountability, Reliability, and Excellence.
+**IMS Policy:** Committed to quality healthcare, compliance with regulatory requirements, continual improvement of the Integrated Management System (IMS), and protecting the environment through responsible resource use and pollution prevention.
+
+**Executive / Leadership Team (public "Meet the Team" page):**
+- Chief Executive Officer: Nanette P. Franco, MD, FPARM, MSHSM
+- Hospital Administrator / QA Officer: Moses B. Billanes, PTRP, RPT, MSHSM, DIPhlm
+- Chief of Clinics: Virginia M. Sulit, MD, FPCCP
+- Finance Manager: John Yrick C. Era, CPA, DBA
+- Human Resource Officer: Nelia C. Baldostamon, RN
+
+**Medical & Clinical Leadership (public):**
+- Head Nursing Service: Maria Laarni A. Venegas, RN, MAN
+- Head Laboratory: Rubelyn C. Munar, RMT, MSMT
+- Head Radiology: Anthony Jay T. Frio, RRT
+- Head Pharmacy: Eileen L. Flores, RPH, MSHSM
+- Head Physical Medicine & Rehabilitation: Rosane Dawn A. Quimba, PTRP
+- Head Nutrition & Dietetics: Rhea B. Guindang, RND
+- Head CSSG (Central Sterile Supply): Jeffry I. Libona
+- Medical Social Worker: Blady C. Ramos, RSW
+- Head Hospital Information System: Mizhelle D. Dela Cruz, MIT, DBMIS
+
+--------------------------------------------------------------------------------
+2. EMERGENCY & CONTACT
+--------------------------------------------------------------------------------
+**Emergency Hotline:** 911 or (083) 228-2202
+**Emergency Department:** Open 24 hours a day, 7 days a week (24/7)
+**Helpline / Information Desk:** (083) 228-2202
+**Mobile / Information Line (health packages):** 0949-994-6474
+**Data Protection Officer Email:** tdchi.1961@gmail.com
+**Data Protection Officer Phone:** (083) 228-2202
+**Accounting Department Email (payment proofs for packages):** tdchi.accounting@yahoo.com
+**Address:** Gensan Drive, Koronadal, 9506 South Cotabato, Philippines
+
+**Contact Form:** Available on the website ("Contact Us" button/modal) — provide your name and email/contact number and a message; the team will respond.
+
+**How to reach the hospital in an emergency:**
+- Call 911 or (083) 228-2202 immediately.
+- The Emergency Room is open 24/7 and is staffed to handle all types of medical emergencies.
+- Ambulance services are available 24 hours a day.
+
+
+
+--------------------------------------------------------------------------------
+3. OUTPATIENT HOURS & OPERATING SCHEDULES
+--------------------------------------------------------------------------------
+**Emergency Room:** Open 24/7 (24 hours, every day)
+**Outpatient Clinic (OPD):** Monday to Saturday, 8:00 AM – 6:00 PM
+**Health Package Services:** Monday to Friday, 8:00 AM – 5:00 PM
+**Hospital Website Footer Quick Hours:**
+- Emergency: 24/7 — (083) 228-2202
+- Outpatient Clinic: Mon–Sat (8:00 AM – 6:00 PM)
+
+**Appointments:** Walk-ins are accepted for certain services, but scheduling an appointment is highly recommended to ensure availability and minimize waiting time. Book a consultation by calling the information desk at (083) 228-2202.
+
+**Medical Records Processing Time:**
+- Outpatient records: 3 business days
+- Inpatient records: 3 business days
+- Medical Abstract: 3 business days
+- Confinement Certificate: Within the request date
+
+**Laboratory Results:** Most lab results are ready within 12–24 hours after examination.
+
+--------------------------------------------------------------------------------
+4. LOCATION & DIRECTIONS
+--------------------------------------------------------------------------------
+**Address:** Gensan Drive, Koronadal, 9506 South Cotabato, Philippines
+**Google Maps:** Search "Dr. Arturo P. Pingoy Medical Center" — embed available on the About page.
+**Getting There:** Use the "Get Directions" link on the About page or any navigation app to Gensan Drive, Koronadal, 9506 South Cotabato.
+
+--------------------------------------------------------------------------------
+5. DOCTORS & MEDICAL SPECIALTIES
+--------------------------------------------------------------------------------
+**How to find a doctor:** Visit the "Doctors & Specialists" page on the website, filter by specialization, and click a doctor's card to view clinic hours and availability.
+
+**Medical Specialties Offered:**
+- Cardiology
+- Pediatrics
+- Radiology
+- Internal Medicine
+- Physiology
+- Anesthesiology
+- Nephrology
+- Urology
+- Orthopedics
+- Pulmonology
+- ENT (Otolaryngology)
+- General Surgery
+- OB-Gynecology
+- Neurology
+- Physical Therapy
+
+**Physicians / Consultants on Staff (public roster):**
+- To be discussed with the doctors and physicians
+
+**Note for patients:** Exact per-doctor clinic schedules are published on the Doctors & Specialists page. To confirm a specific doctor's clinic schedule or to book, call the information desk at (083) 228-2202.
+
+--------------------------------------------------------------------------------
+6. SERVICES & FACILITIES
+--------------------------------------------------------------------------------
+**24-Hour Emergency Department:** Open 24/7 for all medical emergencies.
+**Outpatient Department (OPD):** Mon–Sat, 8:00 AM – 6:00 PM; includes:
+- Animal Bite Treatment
+- TB DOTS
+- HIV Treatment Hub
+- Laboratory at Home
+**Acute Stroke Unit**
+**Operating Room & Delivery Room**
+**Intensive Care Unit (ICU)**
+**Neonatal Intensive Care (NICU)**
+**Pediatric Intensive Care Unit (PICU)**
+**Peritoneal & Hemodialysis**
+**24-Hour Ambulance Services**
+**Nutrition and Dietary Counseling**
+**Medical Social Services**
+**Merexpress Drugstore (on-site pharmacy retail)**
+
+**Additional PhilHealth Benefit Packages Offered:**
+- Z-Package for Premature or Small Babies
+- PhilHealth Physical Medicine, Rehabilitation and Assistive Mobility Devices Benefit Package
+- PhilHealth Outpatient Emergency Care Benefit Package
+- PhilHealth YAKAP Center
+
+**Accommodations:**
+- Suite Rooms
+- Private Rooms
+- Ward
+
+--------------------------------------------------------------------------------
+7. DIAGNOSTIC SERVICES
+--------------------------------------------------------------------------------
+**Heart Station:**
+- 2D-Echography (Transthoracic with Doppler Studies) — Adult and Pedia
+- 24-Hour Holter Monitoring
+- Treadmill Stress Testing
+- 24-Hour Ambulatory Blood Pressure Monitoring
+- Vascular Studies: Carotid Duplex Scan, Venous Duplex Scan, Arterial Duplex Scan
+
+**Laboratory Department:**
+- Hematology
+- Clinical Chemistry
+- Blood Bank
+- Immunology & Serology
+- Clinical Microscopy
+- Microbiology
+- Surgical Pathology
+- TB Culture Laboratory
+- Drug Testing
+
+**Pulmonary Services:**
+- Arterial Blood Gas
+- Pulmonary Function Test
+- Oxygen Therapy
+- Aerosol Therapy (Nebulization)
+- Peak Expiratory Flow Rate (PEFR) Determination
+- Mechanical Ventilation
+- Cardiac Monitoring
+- Pulse Oximeter Monitoring
+- Chest Physiotherapy (CPT)
+- Incentive Spirometry
+- Continuous Positive Airway Pressure (CPAP/BiPAP)
+- Spontaneous Breathing Parameter (SBP) Determination
+- Weaning
+
+**Radiology Department:**
+- Diagnostic X-Ray (Filmless)
+- Ultrasound
+- CT Scan (modern 128-slice CT scan for fast, detailed imaging)
+
+**Physical Medicine and Rehabilitation:**
+- Physical Therapy
+- Occupational Therapy
+- Behavioral Management
+- Speech Therapy (By Appointment)
+
+**Ambulatory Care Unit:**
+- Endoscopy
+- Colonoscopy
+- Laparoscopy
+- Colposcopy
+- Bronchoscopy
+
+--------------------------------------------------------------------------------
+8. HEALTH PACKAGES & PROMOS
+--------------------------------------------------------------------------------
+All package promos below: **20% OFF**, promo valid **August 1–31, 2026**, cash transactions only.
+Operating hours for packages: **Monday to Friday, 8:00 AM – 5:00 PM**.
+
+**1) Women's Health Package**
+- Includes: Lipid Profile, Urinalysis, Pap Smear, 12-Lead ECG, and Breast Ultrasound
+- Promo: 20% OFF (valid Aug 1–31, 2026; cash only)
+
+**2) Thyroid Health Package**
+- Includes: Neck Ultrasound, TSH, T3, and T4
+- Promo: 20% OFF (valid Aug 1–31, 2026; cash only)
+
+**3) Prostate Cancer Awareness Month Package**
+- Package A: Prostate Specific Antigen (PSA), Ultrasound of Prostate
+- Package B: Prostate Specific Antigen (PSA), Ultrasound of KUB & Prostate
+- Promo: 20% OFF (valid Aug 1–31, 2026; cash only)
+
+**How to avail a health package:**
+1. Contact DAPPMC Information at landline (083) 228-2202 or mobile 0949-994-6474.
+2. The information staff will assist with scheduling and booking.
+3. Preparation guidelines will be provided. Present a PWD or Senior Citizen ID number if you are a PWD or senior citizen.
+
+**Payment options for packages:**
+- Cash
+- Online banking
+- GCash or PayMaya
+- Email the proof of payment to tdchi.accounting@yahoo.com
+
+
+--------------------------------------------------------------------------------
+9. HMO & INSURANCE
+--------------------------------------------------------------------------------
+**Status:** DAPPMC is accredited with over 20 HMO and insurance providers.
+
+**How to use HMO benefits:** Present your HMO card or membership ID during admission or consultation. The billing department will coordinate with your provider. Ensure your HMO coverage is active and that the needed service is within your plan's benefits.
+
+**Accredited HMO & Insurance Providers (full public list):**
+- Advance Medical Access (AMAPHIL)
+- Asalus Corporation / Intellicare
+- Avega Managed Care, Inc.
+- Beneficial Life Insurance Company, Inc. (BenLife)
+- Carewell Health System, Inc.
+- COCOLIFE
+- Cooperative Health Management Federation (1Coop Health)
+- Etiqa Life and General Assurance Philippines, Inc.
+- Foreticare Health System International, Inc.
+- Health Delivery System, Inc. (Flexicare)
+- Health Plan Philippines, Inc. (HPPI) / Hive Health
+- IMS WELLTH CARE, INC.
+- InLife Benefits Insurance Company, Inc.
+- InLife Care Insular Health Care
+- LACSON & LACSON
+- LIFE AND HEALTH HMP, INC
+- MAXICARE
+- Medasia Philippines, Inc.
+- MEDICARD Philippines
+- Medilink Network, Inc.
+- Medocare Health System
+- Mi Healthcare Inc. (MHI)
+- Pacific Cross
+- Philhealthcare, Inc. (PhilCare)
+- Sunlife Grepa Financial, Inc. (SunLife GREPA)
+- Trade Union Workers Health Organization, Inc.
+- Value Care Health System, Inc. (ValuCare)
+- Welcare Health Maintenance Inc. (WellCare)
+
+--------------------------------------------------------------------------------
+10. BILLING & PAYMENT
+--------------------------------------------------------------------------------
+**Accepted Payment Methods (general):**
+- Cash
+- Online banking
+- GCash / PayMaya
+- HMO / Insurance
+
+**Digital Payment Methods (accepted):**
+- VISA
+- MASTERCARD
+- GCash
+- PayMaya
+- Jazzy Pay
+
+**Bank Deposit Details (Account Name: "The Doctor's Clinic and Hospital Inc."):**
+- BDO: Account No. 33300418767
+- BPI: Account No. 1833120375
+- DBP: Account No. 0935031175030
+- PBCOM: Account No. 289101001946
+
+**Billing support:** For billing or account concerns, contact the team directly (use the website "Email us" option or call the information desk at (083) 228-2202).
+
+**Senior Citizen / PWD Discounts:** DAPPMC honors senior citizen and PWD discounts as required by law. Present your official ID during billing or when availing of packages.
+
+
+--------------------------------------------------------------------------------
+11. ADMISSION PROCEDURE
+--------------------------------------------------------------------------------
+**Admission Steps:**
+1. Enter the Emergency Room. (Only two watchers are allowed in the emergency room to avoid overcrowding.)
+2. Initial Assessment: The Emergency Room Nurse performs an initial assessment of the patient and instructs the watcher to proceed to the admitting section.
+3. Proceed to Admitting Section: The watcher proceeds to the admitting section for encoding of the patient's personal information and presents the pertinent documents.
+4. Gather Admission Data: The Admitting Section gathers admission data.
+5. Document and Register: The Admitting Section documents and registers the patient.
+6. Forward Admission Data: The Admitting Section forwards and presents the admission data to the Emergency Room.
+
+**Documents to bring for admission:**
+- Valid ID
+- HMO card / insurance details (if applicable)
+- Doctor's referral or request (if applicable)
+- Any previous medical records or test results
+
+--------------------------------------------------------------------------------
+12. YAKAP PROCEDURE
+--------------------------------------------------------------------------------
+YAKAP is a PhilHealth benefit program for newborns/children at the YAKAP Center.
+**Steps:**
+1. Arrival at the YAKAP Center to begin the process.
+2. Registration and presentation of required documents.
+3. Initial screening by YAKAP personnel.
+4. Medical consultation with a YAKAP physician.
+5. Referral to diagnostic centers (if needed).
+6. Return to the YAKAP physician with diagnostic results or follow-up status.
+7. Prescription and treatment plan from the physician.
+8. Processing and signing of administrative documents.
+9. Discharge and final instructions.
+
+--------------------------------------------------------------------------------
+13. MEDICAL RECORDS
+--------------------------------------------------------------------------------
+**How to request medical records:** Visit the Medical Records Department in person or request through email.
+**Requirements:**
+- Bring a valid ID for verification.
+- If requesting on behalf of the patient, provide authorization and proof of relationship.
+- Submit a written request including patient details and specific records needed.
+
+**Processing time:**
+- Outpatient records: 3 business days
+- Inpatient records: 3 business days
+- Medical Abstract: 3 business days
+- Confinement Certificate: Within the request date
+
+**Fees and charges:**
+- Inpatient Medical Certificate (2nd Copy Only): ₱100 for 2 Copies
+- Outpatient Medical Certificate (2nd Copy Only): ₱100
+- Laboratory Results (Photocopy): ₱1.50 per page
+- Confinement Certificate: ₱50
+
+**Confidentiality:** Medical records are confidential and processed in accordance with the hospital privacy policy and the Data Privacy Act of 2012 (Republic Act No. 10173). Records are released only to authorized persons.
+
+
+--------------------------------------------------------------------------------
+14. PATIENT RIGHTS & RESPONSIBILITIES
+--------------------------------------------------------------------------------
+**Patient Rights:**
+- Access to Care, Transfer, and Continuity of Care: access to available medical treatment and services; if necessary care cannot be provided, referral to another facility with the reason explained.
+- Respect and Dignity: compassionate and respectful care recognizing dignity, with protection from abuse, neglect, and exploitation.
+- Privacy and Confidentiality: privacy and confidentiality protected during treatment; medical records cannot be released without consent.
+- Medical Record: medical records are confidential and not released without written consent or a court order.
+- Information: the right to know the attending physician and receive complete, up-to-date information on diagnosis, treatment, and prognosis.
+- Communication: the right to visitors and to communicate with people outside the hospital, verbally or in writing.
+- Acceptance and Refusal of Treatment: the right to accept or refuse medical or surgical treatment, including resuscitative services.
+- Access to Protective Services: entitled to a safe, clean, and secure hospital environment.
+
+**Patient Responsibilities:**
+- Following Rules and Regulations: including the No Smoking Policy and the policy for children under nine (9) years old.
+- Providing Information: provide complete and accurate information that may affect care; report perceived risks or unexpected changes in condition.
+- Complying with Treatment Plans and Instructions: follow the treatment plan and ask questions if instructions are unclear; bear responsibility for consequences of not following the prescribed plan.
+- Showing Respect and Consideration: respect hospital staff, property, and other patients; do not bring alcoholic beverages, drugs, firearms, or deadly weapons into the premises.
+- Meeting Financial Commitments: meet financial obligations promptly as agreed with the hospital.
+
+--------------------------------------------------------------------------------
+15. VISITOR INFORMATION
+--------------------------------------------------------------------------------
+**Visitor rules:**
+- Emergency Room: only two (2) watchers are allowed in the emergency room to avoid overcrowding.
+- Children under nine (9) years old are subject to hospital policy.
+- No Smoking Policy is enforced inside the hospital premises.
+- Alcoholic beverages, drugs, firearms, or deadly weapons must not be brought into the hospital premises.
+
+
+--------------------------------------------------------------------------------
+16. CAREERS & JOB APPLICANTS
+--------------------------------------------------------------------------------
+**How to apply:** Visit the "Careers" page, view current openings, and click "Apply" on the position of interest to submit the online application. Applications may also be emailed to the HR department.
+
+**Application form requirements:**
+- Full name
+- Email / Contact number
+- Resume (PDF only, max 10 MB, required)
+- Application letter (Word .doc/.docx only, max 10 MB, optional)
+- Cover message (optional)
+
+**Required documents to prepare:**
+- Updated resume / CV
+- Copy of valid ID
+- Transcript of records / diplomas
+- Professional licenses / certificates (if applicable)
+- Medical certificate
+
+**Employee benefits:** Competitive salary and comprehensive benefits package, a supportive and people-friendly work environment, and opportunities for professional development and continuous learning.
+
+--------------------------------------------------------------------------------
+17. RATE US / FEEDBACK
+--------------------------------------------------------------------------------
+**How to send feedback:** Use the "Rate Us" page on the website to send comments, suggestions, or concerns. The team reviews and responds as soon as possible.
+
+**Departments you can rate:**
+- Cardiology
+- Pediatrics
+- Emergency
+- Orthopedics
+- Oncology
+- Maternity & Newborn
+- Neurology
+- General Medicine
+- Radiology & Imaging
+- Physical Therapy
+
+**Rating categories:** Care team, Cleanliness, Wait time, Communication
+**Rating scale:** 1 = Poor, 2 = Fair, 3 = Good, 4 = Very good, 5 = Excellent
+
+--------------------------------------------------------------------------------
+18. NEWS & ANNOUNCEMENTS
+--------------------------------------------------------------------------------
+**News:**
+- DAPPMC Opens New Outpatient Department (announced July 15, 2026): newly renovated OPD with modern examination rooms, improved waiting areas, and enhanced patient flow to reduce wait times.
+- DAPPMC Receives ISO Certification (June 20, 2026): awarded ISO 9001:2015 certification for quality management systems.
+
+**Health Advisory:**
+- Dengue Prevention (July 1, 2026): practice the 4S strategy — Search and destroy (mosquito breeding sites), Self-protection measures, Seek early consultation, and Say no to self-medication.
+
+**Hospital Event:**
+- Medical Mission 2026 (December 5, 2026): annual free medical mission with free consultations, blood pressure screening, blood sugar testing, and free medicines for indigent patients.
+
+**Health Drive:**
+- Blood Donation Drive (in partnership with the Philippine Red Cross): walk-ins welcome 8 AM – 4 PM; donors receive free health screening and refreshments.
+
+**COVID-19 Alert:**
+- Following DOH guidelines, mask-wearing is encouraged for high-risk individuals, symptomatic patients, and visitors entering patient care areas.
+
+--------------------------------------------------------------------------------
+19. FREQUENTLY ASKED QUESTIONS (FAQ)
+--------------------------------------------------------------------------------
+**About DAPPMC**
+Q: When was DAPPMC established?
+A: DAPPMC was established on May 12, 1961 by spouses Arturo P. Pingoy, MD and Amparo Y. Pingoy, MD. It has grown from a small clinic into a 100-bed tertiary hospital.
+
+Q: What are DAPPMC's core values?
+A: Integrity, Compassion, Accountability, Reliability, and Excellence.
+
+Q: Is DAPPMC accredited?
+A: Yes. DAPPMC is accredited by PhilHealth as a Center of Safety and Center of Quality, and has been awarded ISO 9001:2015 certification.
+
+Q: What is DAPPMC's vision and mission?
+A: Vision: Delivering Exceptional Care with Compassion. Mission: Advancing Life and the Environment through Innovation and Responsible Healthcare.
+
+**Visiting Hours & Location**
+Q: What are the hospital's operating hours?
+A: Emergency Room: open 24/7. Outpatient Clinic: Monday to Saturday, 8:00 AM to 6:00 PM.
+
+Q: Where is DAPPMC located?
+A: Gensan Drive, Koronadal, 9506 South Cotabato.
+
+Q: What is the contact number?
+A: Emergency: 911 or (083) 228-2202. Helpline: (083) 228-2202.
+
+**Doctors & Specialties**
+Q: How can I find a doctor at DAPPMC?
+A: Visit the Doctors & Specialists page to browse the medical team, filter by specialization, and view clinic schedules.
+
+Q: What specialties are available?
+A: Cardiology, Pediatrics, Radiology, Internal Medicine, Physiology, Anesthesiology, Nephrology, Urology, Orthopedics, Pulmonology, ENT (Otolaryngology), General Surgery, OB-Gynecology, and Neurology.
+
+Q: Do I need an appointment to see a doctor?
+A: Walk-ins are accepted for certain services, but scheduling an appointment is highly recommended. Contact the information desk at (083) 228-2202 to book a consultation.
+**Services & Facilities**
+Q: What diagnostic services are available?
+A: Laboratory (blood tests, urinalysis, and more), Heart Station (ECG, echocardiograms), Pulmonary Services (respiratory care and testing), Radiology (X-ray, CT scan, ultrasound), and Physical Medicine & Rehabilitation (physical therapy).
+
+Q: Does DAPPMC have emergency services?
+A: Yes. The Emergency Room is open 24/7 and is staffed to handle all types of medical emergencies. For emergencies, call 911 or (083) 228-2202 immediately.
+
+Q: What health packages are available?
+A: Women's Health Package (Lipid Profile, Urinalysis, Pap Smear, ECG, Breast Ultrasound), Thyroid Health Package (Neck Ultrasound, TSH, T3, T4), and Prostate Cancer Awareness Package (PSA, Ultrasound of Prostate). Visit the Health Packages page for current promos.
+
+**HMO & Insurance**
+Q: Is DAPPMC accredited with HMOs?
+A: Yes. DAPPMC is accredited with over 20 HMO and insurance providers, including PhilCare, Intellicare, Maxicare, Medilink, Pacific Cross, SunLife GREPA, InLife, ValuCare, WellCare, Cocolife, BenLife, and many more. View the full list on the HMO Partners page.
+
+Q: How do I use my HMO benefits at DAPPMC?
+A: Present your HMO card or membership ID during admission or consultation. The billing department will coordinate with your provider. Ensure your HMO coverage is active and that the service you need is within your plan's benefits.
+
+Q: What payment options are available?
+A: Cash, Online banking, GCash / PayMaya, and HMO / Insurance.
+
+**Admissions & Billing**
+Q: How do I avail of health packages?
+A: (1) Contact DAPPMC Information at (083) 228-2202 or 0949-994-6474. (2) Staff will assist with scheduling and booking. (3) Preparation guidelines will be provided; bring a PWD or Senior Citizen ID if applicable.
+
+Q: What should I bring for admission?
+A: Valid ID, HMO card / insurance details (if applicable), doctor's referral or request (if applicable), and any previous medical records or test results.
+
+Q: Are senior citizens and PWDs accommodated?
+A: Yes. DAPPMC honors senior citizen and PWD discounts as required by law. Present your official ID during billing or when availing of packages.
+
+**Careers**
+Q: How can I apply for a job at DAPPMC?
+A: Visit the Careers page to view current openings, click "Apply," and submit the online application. You can also email your resume to the HR department.
+
+Q: What documents do I need to submit?
+A: Updated resume/CV, copy of valid ID, transcript of records / diplomas, professional licenses / certificates (if applicable), and a medical certificate.
+
+Q: Does DAPPMC offer benefits to employees?
+A: Yes — a competitive salary and comprehensive benefits package, a supportive work environment, and opportunities for professional development and continuous learning.
+
+**Contact**
+Q: How can I send feedback or suggestions?
+A: Use the "Rate Us" page to send comments, suggestions, or concerns. The team will review and respond as soon as possible.
+
+--------------------------------------------------------------------------------
+20. DATA PRIVACY (VISITOR/PATIENT SUMMARY)
+--------------------------------------------------------------------------------
+**Privacy compliance:** DAPPMC complies with the Data Privacy Act of 2012 (RA 10173).
+**What we collect:** Personal information (name, contact details, medical records) and sensitive personal information (health status, treatment history) needed to provide medical care.
+**Why it is collected:** To provide medical care and treatment, process appointments and billing, respond to inquiries, coordinate with HMOs/insurance providers, and comply with legal requirements.
+**How it is protected:** Restricted access, secure storage, and confidentiality protocols.
+**Sharing:** Shared with accredited HMOs, insurance providers, or regulatory bodies only as necessary.
+**Your rights:** Be informed, access personal data, request correction, object to / withdraw consent, and request erasure or blocking (subject to legal and medical record-keeping requirements).
+**Contact for privacy concerns:** Data Protection Officer at tdchi.1961@gmail.com or (083) 228-2202.
+
+================================================================================
+END OF KNOWLEDGE BASE
+================================================================================

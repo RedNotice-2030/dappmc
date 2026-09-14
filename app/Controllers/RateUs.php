@@ -151,59 +151,84 @@ class RateUs extends BaseController
 
     private function ratingsPayload(): array
     {
-        $db = db_connect();
-
-        $agg = $db->table('ratings')
-            ->where('overall >=', 4)
-            ->select('COUNT(*) AS count', false)
-            ->select('AVG(overall) AS avg_overall', false)
-            ->select('AVG(staff_rating) AS avg_staff', false)
-            ->select('AVG(cleanliness_rating) AS avg_clean', false)
-            ->select('AVG(wait_rating) AS avg_wait', false)
-            ->select('AVG(communication_rating) AS avg_comm', false)
-            ->select('COUNT(CASE WHEN would_recommend = 1 THEN 1 END) AS rec_yes', false)
-            ->select('COUNT(CASE WHEN would_recommend IS NOT NULL THEN 1 END) AS rec_total', false)
-            ->get()
-            ->getRowArray();
-
-        $distribution = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
-        $distRows = $db->table('ratings')
-            ->where('overall >=', 4)
-            ->select('overall, COUNT(*) AS n', false)
-            ->groupBy('overall')
-            ->get()
-            ->getResultArray();
-
-        foreach ($distRows as $row) {
-            $distribution[(int) $row['overall']] = (int) $row['n'];
-        }
-
-        $total    = (int) ($agg['count'] ?? 0);
-        $recTotal = (int) ($agg['rec_total'] ?? 0);
-
-        $stats = [
-            'count'         => $total,
-            'average'       => $agg['avg_overall'] !== null ? round((float) $agg['avg_overall'], 1) : null,
-            'distribution'  => $distribution,
-            'categories'    => [
-                'staffRating'         => $agg['avg_staff'] !== null ? round((float) $agg['avg_staff'], 1) : null,
-                'cleanlinessRating'   => $agg['avg_clean'] !== null ? round((float) $agg['avg_clean'], 1) : null,
-                'waitRating'          => $agg['avg_wait'] !== null ? round((float) $agg['avg_wait'], 1) : null,
-                'communicationRating' => $agg['avg_comm'] !== null ? round((float) $agg['avg_comm'], 1) : null,
+        $empty = static fn (): array => [
+            'stats'   => [
+                'count'         => 0,
+                'average'       => null,
+                'distribution'  => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0],
+                'categories'    => [
+                    'staffRating'         => null,
+                    'cleanlinessRating'   => null,
+                    'waitRating'          => null,
+                    'communicationRating' => null,
+                ],
+                'recommendRate' => null,
             ],
-            'recommendRate' => $recTotal > 0 ? (int) round(((int) $agg['rec_yes'] / $recTotal) * 100) : null,
+            'reviews' => [],
         ];
 
-        $rows = $this->ratingModel
-            ->where('overall >=', 4)
-            ->orderBy('created_at', 'DESC')
-            ->limit(15)
-            ->findAll();
+        try {
+            $db = db_connect();
 
-        return [
-            'stats'   => $stats,
-            'reviews' => array_map([$this, 'reviewPayload'], $rows),
-        ];
+            $agg = $db->table('ratings')
+                ->where('overall >=', 4)
+                ->select('COUNT(*) AS count', false)
+                ->select('AVG(overall) AS avg_overall', false)
+                ->select('AVG(staff_rating) AS avg_staff', false)
+                ->select('AVG(cleanliness_rating) AS avg_clean', false)
+                ->select('AVG(wait_rating) AS avg_wait', false)
+                ->select('AVG(communication_rating) AS avg_comm', false)
+                ->select('COUNT(CASE WHEN would_recommend = 1 THEN 1 END) AS rec_yes', false)
+                ->select('COUNT(CASE WHEN would_recommend IS NOT NULL THEN 1 END) AS rec_total', false)
+                ->get()
+                ->getRowArray();
+
+            $distribution = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+            $distRows = $db->table('ratings')
+                ->where('overall >=', 4)
+                ->select('overall, COUNT(*) AS n', false)
+                ->groupBy('overall')
+                ->get()
+                ->getResultArray();
+
+            foreach ($distRows as $row) {
+                $distribution[(int) $row['overall']] = (int) $row['n'];
+            }
+
+            $total    = (int) ($agg['count'] ?? 0);
+            $recTotal = (int) ($agg['rec_total'] ?? 0);
+
+            $stats = [
+                'count'         => $total,
+                'average'       => $agg['avg_overall'] !== null ? round((float) $agg['avg_overall'], 1) : null,
+                'distribution'  => $distribution,
+                'categories'    => [
+                    'staffRating'         => $agg['avg_staff'] !== null ? round((float) $agg['avg_staff'], 1) : null,
+                    'cleanlinessRating'   => $agg['avg_clean'] !== null ? round((float) $agg['avg_clean'], 1) : null,
+                    'waitRating'          => $agg['avg_wait'] !== null ? round((float) $agg['avg_wait'], 1) : null,
+                    'communicationRating' => $agg['avg_comm'] !== null ? round((float) $agg['avg_comm'], 1) : null,
+                ],
+                'recommendRate' => $recTotal > 0 ? (int) round(((int) $agg['rec_yes'] / $recTotal) * 100) : null,
+            ];
+
+            $rows = $this->ratingModel
+                ->where('overall >=', 4)
+                ->orderBy('created_at', 'DESC')
+                ->limit(15)
+                ->findAll();
+
+            return [
+                'stats'   => $stats,
+                'reviews' => array_map([$this, 'reviewPayload'], $rows),
+            ];
+        } catch (\Throwable $e) {
+            // Database temporarily unreachable (e.g. a transient DNS/connection
+            // blip to the managed DB host). Degrade gracefully — return an
+            // empty payload so the public page renders instead of a 500.
+            log_message('error', 'Rate Us: could not load ratings. ' . $e->getMessage());
+
+            return $empty();
+        }
     }
 
     private function normaliseIncomingPayload(array $payload): array
@@ -355,10 +380,7 @@ class RateUs extends BaseController
 
     private function withCors(ResponseInterface $response): ResponseInterface
     {
-        // Restrict CORS to explicitly allowed origins only. Set
-        // RATE_US_ALLOWED_ORIGIN in .env as a comma-separated list, e.g.
-        //   RATE_US_ALLOWED_ORIGIN = 'https://app.dappmc.ph,https://dappmc.ph'
-        // When empty/unset, only same-origin requests are allowed.
+
         $allowed = array_values(array_filter(array_map('trim', explode(',', (string) env('RATE_US_ALLOWED_ORIGIN', '')))));
         $origin  = $this->request->getHeaderLine('Origin');
 
