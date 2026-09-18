@@ -30,45 +30,11 @@
     <script src="<?= base_url('assets/js/csrf.js') ?>"></script>
     <script src="<?= base_url('assets/js/careers.js') ?>"></script>
     <script src="<?= base_url('assets/js/style.js') ?>"></script>
-    <script>
-    window.difyChatbotConfig = {
-      token: 'x3aKkUmDhLLqYUkw',
-      baseUrl: 'https://udify.app',
-      inputs: {
-        // You can define the inputs from the Start node here
-        // key is the variable name
-        // e.g.
-        // name: "NAME"
-      },
-      systemVariables: {
-        // user_id: 'YOU CAN DEFINE USER ID HERE',
-        // conversation_id: 'YOU CAN DEFINE CONVERSATION ID HERE, IT MUST BE A VALID UUID',
-      },
-      userVariables: {
-        // avatar_url: 'YOU CAN DEFINE USER AVATAR URL HERE',
-        // name: 'YOU CAN DEFINE USER NAME HERE',
-      },
-    }
-    </script>
-    <script
-    src="https://udify.app/embed.min.js"
-    id="x3aKkUmDhLLqYUkw"
-    defer>
-    </script>
-    <style>
-      #dify-chatbot-bubble-button {
-        background-color: #1C64F2 !important;
-      }
-      #dify-chatbot-bubble-window {
-        width: 24rem !important;
-        height: 40rem !important;
-      }
-    </style>
     <!-- jQuery (Required by Toastr) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="<?= base_url('assets/js/chat-widget.js') ?>?v=5"></script>
+    <script src="<?= base_url('assets/js/site-app.js') ?>?v=1"></script>
     <?php if (isset($extraScripts)): ?>
       <?= $extraScripts ?>
     <?php endif; ?>

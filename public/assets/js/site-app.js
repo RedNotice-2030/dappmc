@@ -34,7 +34,7 @@
     handoffModalTarget: "#contact-us-modal", 
     handoffModalWhatever: "user@example.com", 
     handoffHref: "mailto:hello@example.com", 
-    chatEndpoint: "chatbot/ask", // backend route that calls the AI (see Chatbot.php). Relative, so it resolves against the app base URL (e.g. /dappmc/public/chatbot/ask) instead of the domain root.
+    chatEndpoint: "siteapp/ask", 
     accent: "#002c6d",        // primary color
     accentDark: "#001c47",    // added dark accent for hover states
     bg: "#FFFFFF",

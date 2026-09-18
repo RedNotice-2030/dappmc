@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
-class Chatbot extends BaseController
+class Siteapp extends BaseController
 {
-    private const KNOWLEDGE_BASE_PATH = APPPATH . 'Knowledge/dappmc_clean_knowledge.txt';
+    private const KNOWLEDGE_BASE_PATH = APPPATH . 'Knowledge/dappmc_clean_knowledge.txt'; //app/Knowledge/dappmc_clean_knowledge.txt
 
-    private const MODEL = 'claude-haiku-4-5-20251001';
+    private const MODEL = 'deepseek-chat';
 
     private const MAX_MESSAGE_LENGTH = 800;
     private const MAX_HISTORY_TURNS  = 8;
@@ -28,22 +28,22 @@ class Chatbot extends BaseController
             $message = mb_substr($message, 0, self::MAX_MESSAGE_LENGTH);
         }
 
-        $apiKey = getenv('ANTHROPIC_API_KEY');
+        $apiKey = getenv('DEEPSEEK_API_KEY');
         if (! $apiKey) {
-            log_message('error', 'Chatbot: ANTHROPIC_API_KEY is not set');
+            log_message('error', 'Siteapp: DEEPSEEK_API_KEY is not set');
             return $this->response->setJSON(['reply' => null, 'error' => 'not_configured']);
         }
 
         $knowledgeBase = $this->loadKnowledgeBase();
         if ($knowledgeBase === null) {
-            log_message('error', 'Chatbot: knowledge base file missing at ' . self::KNOWLEDGE_BASE_PATH);
+            log_message('error', 'Siteapp: knowledge base file missing at ' . self::KNOWLEDGE_BASE_PATH);
             return $this->response->setJSON(['reply' => null, 'error' => 'no_knowledge_base']);
         }
 
         $systemPrompt = $this->buildSystemPrompt($knowledgeBase);
-        $messages     = $this->buildMessages($history, $message);
+        $messages     = $this->buildMessages($systemPrompt, $history, $message);
 
-        $reply = $this->callAnthropic($apiKey, $systemPrompt, $messages);
+        $reply = $this->callDeepSeek($apiKey, $messages);
 
         if ($reply === null) {
             // Let the widget fall back to its local keyword match instead of
@@ -66,6 +66,7 @@ class Chatbot extends BaseController
     private function buildSystemPrompt(string $knowledgeBase): string
     {
         return "You are DAPPMC Chat, a friendly assistant for Dr. Arturo P. Pingoy Medical Center (DAPPMC).\n\n"
+            . "Do not use markdown formatting such as asterisks (**) or hashes (#) in your responses.\n\n"
             . "Answer the visitor's question using ONLY the information in the knowledge base below. "
             . "Keep answers concise (a few sentences, or a short bulleted list for multi-part answers). "
             . "Use a warm, helpful tone appropriate for a hospital's patients and visitors.\n\n"
@@ -80,9 +81,13 @@ class Chatbot extends BaseController
             . "\n--- KNOWLEDGE BASE END ---";
     }
 
-    private function buildMessages(array $history, string $message): array
+    private function buildMessages(string $systemPrompt, array $history, string $message): array
     {
-        $messages = [];
+        // DeepSeek uses the OpenAI format: system prompt is just the first
+        // message in the array, not a separate top-level field like Anthropic.
+        $messages = [
+            ['role' => 'system', 'content' => $systemPrompt],
+        ];
 
         // Trim to the last N turns and coerce to the {role, content} shape
         // the API expects, dropping anything malformed.
@@ -100,24 +105,22 @@ class Chatbot extends BaseController
         return $messages;
     }
 
-    private function callAnthropic(string $apiKey, string $systemPrompt, array $messages): ?string
+    private function callDeepSeek(string $apiKey, array $messages): ?string
     {
         $payload = [
             'model'      => self::MODEL,
             'max_tokens' => 500,
-            'system'     => $systemPrompt,
             'messages'   => $messages,
         ];
 
-        $ch = curl_init('https://api.anthropic.com/v1/messages');
+        $ch = curl_init('https://api.deepseek.com/chat/completions');
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => json_encode($payload),
             CURLOPT_HTTPHEADER     => [
                 'content-type: application/json',
-                'x-api-key: ' . $apiKey,
-                'anthropic-version: 2023-06-01',
+                'authorization: Bearer ' . $apiKey,
             ],
             CURLOPT_TIMEOUT        => 20,
         ]);
@@ -128,17 +131,17 @@ class Chatbot extends BaseController
         curl_close($ch);
 
         if ($raw === false) {
-            log_message('error', 'Chatbot: curl error calling Anthropic API: ' . $curlError);
+            log_message('error', 'Siteapp: curl error calling DeepSeek API: ' . $curlError);
             return null;
         }
 
         $decoded = json_decode($raw, true);
 
-        if ($status !== 200 || ! isset($decoded['content'][0]['text'])) {
-            log_message('error', 'Chatbot: Anthropic API returned status ' . $status . ': ' . $raw);
+        if ($status !== 200 || ! isset($decoded['choices'][0]['message']['content'])) {
+            log_message('error', 'Siteapp: DeepSeek API returned status ' . $status . ': ' . $raw);
             return null;
         }
 
-        return trim($decoded['content'][0]['text']);
+        return trim($decoded['choices'][0]['message']['content']);
     }
 }
