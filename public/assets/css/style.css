@@ -491,6 +491,13 @@ footer {
   overflow-y: auto;
 }
 
+.news-card-img-top{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  /* max-height: 180px; */
+}
+
 /* Image sizing — update aspect-ratio once you confirm your actual image dimensions */
 .flip-card .card-img-top {
   width: 100%;
@@ -515,8 +522,6 @@ footer {
 }
 .flip-card .card-img-top {
   object-fit: contain;
-  /* height: 520px;
-  width: 416px; */
   background-color: #f8f9fa; /* fills empty space if aspect ratio doesn't match */
 }
 
@@ -592,14 +597,6 @@ footer {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
 }
 
-/* Sharp modal corners */
-/* .modal-content,
-.modal-header,
-.modal-body,
-.modal-footer {
-  border-radius: 0 !important;
-  border: none !important;
-} */
 
 .modal-header {
   border-bottom: 4px solid #c6b350;

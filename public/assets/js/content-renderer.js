@@ -98,8 +98,8 @@
   function buildNewsCard(item, meta) {
     var dateLabel = CMS.formatDate(item.date);
     var imageHtml = item.image
-      ? '<img src="' + CMS.escapeHtml(item.image) + '" class="card-img-top" style="height:180px;object-fit:cover" alt="' + CMS.escapeHtml(item.title) + '">'
-      : '<div class="card-img-top d-flex align-items-center justify-content-center" style="height:180px;background:linear-gradient(135deg,#002c6d,#c6b350)">' +
+      ? '<img src="' + CMS.escapeHtml(item.image) + '" class="news-card-img-top" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;" alt="' + CMS.escapeHtml(item.title) + '">'
+      : '<div class="news-card-img-top d-flex align-items-center justify-content-center" style="aspect-ratio:16/10;background:linear-gradient(135deg,#002c6d,#c6b350)">' +
         '  <i class="bi ' + meta.icon + '" style="font-size:4rem;color:#fff"></i>' +
         '</div>';
 
